@@ -1,0 +1,41 @@
+# Environment & secrets
+.env
+.env.*
+!.env.example
+
+# Docker override khusus mesin lokal (dev ringan)
+docker-compose.override.yml
+
+# Dependencies
+node_modules/
+vendor/
+
+# Build output
+dist/
+build/
+.vite/
+coverage/
+*.tsbuildinfo
+
+# Database lokal & runtime Laravel
+*.sqlite
+*.sqlite-journal
+apps/api/storage/*.key
+apps/api/storage/logs/*
+apps/api/storage/framework/cache/*
+apps/api/storage/framework/sessions/*
+apps/api/storage/framework/views/*
+apps/api/bootstrap/cache/*
+!apps/api/bootstrap/cache/.gitignore
+.phpunit.result.cache
+
+# Log
+*.log
+npm-debug.log*
+
+# Editor & OS
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db

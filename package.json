@@ -1,0 +1,21 @@
+{
+  "name": "jagapadi-v3",
+  "version": "3.0.0",
+  "private": true,
+  "description": "JAGAPADI v3 Monorepo — Sistem Pelaporan & Analitik Pertanian Kabupaten Jember (3509)",
+  "workspaces": [
+    "apps/web",
+    "packages/shared"
+  ],
+  "scripts": {
+    "dev:web": "npm --workspace=@jagapadi/web run dev",
+    "build": "npm --workspaces --if-present run build",
+    "lint": "npm --workspaces --if-present run lint",
+    "typecheck": "npm --workspaces --if-present run typecheck",
+    "test": "npm --workspaces --if-present run test",
+    "sync-types": "npm --workspace=@jagapadi/shared run sync-types"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}
