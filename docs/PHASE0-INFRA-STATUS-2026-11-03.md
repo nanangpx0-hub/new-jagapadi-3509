@@ -9,7 +9,7 @@ Instalasi Laragon: `C:\laragon`
 
 Seluruh komponen infrastruktur Fase 0 telah diperiksa ulang secara langsung (*live verification*) melalui bridge VS Code pada 2026-11-03. Pemeriksaan meliputi runtime host (PHP, Composer, Node.js, npm), status container Docker Compose, query langsung ke PostgreSQL/PostGIS, serta uji konektivitas Redis.
 
-**Status dokumen ini:** **TERVERIFIKASI LULUS (Fase 0 Infrastruktur Selesai).**
+**Status dokumen ini:** **Infrastruktur host TERVERIFIKASI LULUS.** Dokumen ini hanya mencakup infrastruktur (runtime host dan container). **Fase 0 secara keseluruhan belum selesai**: scaffolding aplikasi (`apps/web`, paket backend sesuai Blueprint, endpoint `/api/health`, dan CI) masih berjalan. Lihat Definisi Selesai Fase 0 di [ROADMAP.md](ROADMAP.md).
 
 ## 2. Spesifikasi Server Host (`DESKTOP-221G8EB`)
 

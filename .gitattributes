@@ -1,0 +1,18 @@
+# Normalisasi akhir baris agar konsisten di semua mesin (laptop dev & PC produksi)
+* text=auto eol=lf
+
+# Skrip Windows tetap CRLF
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# Berkas biner
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.woff binary
+*.woff2 binary
+*.sqlite binary
