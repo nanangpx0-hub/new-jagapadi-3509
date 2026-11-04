@@ -70,4 +70,4 @@ export type SyncState = (typeof SYNC_STATES)[keyof typeof SYNC_STATES];
 // Tipe OpenAPI hasil generate (`npm run sync-types`) akan diekspor dari sini
 // setelah file ./api-types.d.ts tersedia. Jangan mengaktifkan baris di bawah
 // sebelum file itu ada, karena akan membuat typecheck gagal.
-// export type * from './api-types';
+export type * from './api-types';

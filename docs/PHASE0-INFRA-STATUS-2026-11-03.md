@@ -9,7 +9,11 @@ Instalasi Laragon: `C:\laragon`
 
 Seluruh komponen infrastruktur Fase 0 telah diperiksa ulang secara langsung (*live verification*) melalui bridge VS Code pada 2026-11-03. Pemeriksaan meliputi runtime host (PHP, Composer, Node.js, npm), status container Docker Compose, query langsung ke PostgreSQL/PostGIS, serta uji konektivitas Redis.
 
-**Status dokumen ini:** **Infrastruktur host TERVERIFIKASI LULUS.** Dokumen ini hanya mencakup infrastruktur (runtime host dan container). **Fase 0 secara keseluruhan belum selesai**: scaffolding aplikasi (`apps/web`, paket backend sesuai Blueprint, endpoint `/api/health`, dan CI) masih berjalan. Lihat Definisi Selesai Fase 0 di [ROADMAP.md](ROADMAP.md).
+**Status dokumen ini:** **FASE 0 SELESAI 100% (Infrastruktur + Scaffolding `apps/api`, `apps/web`, `packages/shared`, `/api/health`, & CI).**\r
+- Backend `apps/api` (Laravel 11, PHP 8.3.36, `pdo_pgsql` + `pgsql` aktif, Sanctum, Spatie Permission & Activitylog, Scramble OpenAPI, Predis, Larastan, Pint, Endpoint `GET /api/health`) telah selesai dikonfigurasi dan lulus `composer lint` & `composer analyse`.\r
+- Frontend `apps/web` (React 19 + TypeScript + Vite 6 PWA + Tailwind + TanStack Query + modul offline `IndexedDB` & kompresi foto WebP) telah selesai di-scaffold dan lulus `npm run typecheck`, `npm run lint`, `npm run test` (Vitest), dan `npm run build` (menghasilkan `dist/sw.js` & `dist/manifest.webmanifest`).\r
+- Kontrak tipe otomatis `packages/shared` (`npm run sync-types`) telah men-generate `packages/shared/openapi.json` & `packages/shared/src/api-types.d.ts`.\r
+- Pipeline CI GitHub Actions telah tersedia di `.github/workflows/ci.yml`.
 
 ## 2. Spesifikasi Server Host (`DESKTOP-221G8EB`)
 

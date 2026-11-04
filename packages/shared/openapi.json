@@ -1,0 +1,165 @@
+{
+    "openapi": "3.1.2",
+    "info": {
+        "title": "JAGAPADI v3",
+        "version": "0.0.1"
+    },
+    "servers": [
+        {
+            "url": "http://127.0.0.1:8000/api"
+        }
+    ],
+    "paths": {
+        "/health": {
+            "get": {
+                "operationId": "health",
+                "summary": "Memeriksa kesehatan infrastruktur JAGAPADI v3 (PostgreSQL, PostGIS, Redis, dan Storage)",
+                "tags": [
+                    "Health"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "enum": [
+                                                "ok",
+                                                "degraded"
+                                            ]
+                                        },
+                                        "service": {
+                                            "type": "string"
+                                        },
+                                        "timezone": {
+                                            "type": "string"
+                                        },
+                                        "timestamp": {
+                                            "type": "string"
+                                        },
+                                        "checks": {
+                                            "type": "object",
+                                            "properties": {
+                                                "database": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "status": {
+                                                            "type": "string",
+                                                            "enum": [
+                                                                "ok",
+                                                                "error"
+                                                            ]
+                                                        },
+                                                        "driver": {
+                                                            "type": "string"
+                                                        },
+                                                        "message": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "status",
+                                                        "driver"
+                                                    ]
+                                                },
+                                                "postgis": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "status": {
+                                                            "type": "string",
+                                                            "enum": [
+                                                                "ok",
+                                                                "error"
+                                                            ]
+                                                        },
+                                                        "version": {
+                                                            "type": [
+                                                                "string",
+                                                                "null"
+                                                            ]
+                                                        },
+                                                        "message": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "status",
+                                                        "version"
+                                                    ]
+                                                },
+                                                "redis": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "status": {
+                                                            "type": "string",
+                                                            "enum": [
+                                                                "ok",
+                                                                "error"
+                                                            ]
+                                                        },
+                                                        "response": {
+                                                            "type": [
+                                                                "string",
+                                                                "null"
+                                                            ]
+                                                        },
+                                                        "message": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "status",
+                                                        "response"
+                                                    ]
+                                                },
+                                                "storage": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "status": {
+                                                            "type": "string",
+                                                            "enum": [
+                                                                "ok",
+                                                                "error"
+                                                            ]
+                                                        },
+                                                        "writable": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "message": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "status",
+                                                        "writable"
+                                                    ]
+                                                }
+                                            },
+                                            "required": [
+                                                "database",
+                                                "postgis",
+                                                "redis",
+                                                "storage"
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "service",
+                                        "timezone",
+                                        "timestamp",
+                                        "checks"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

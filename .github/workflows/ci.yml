@@ -1,0 +1,105 @@
+name: JAGAPADI v3 CI
+
+on:
+  push:
+    branches: [main, master, develop]
+  pull_request:
+    branches: [main, master, develop]
+
+jobs:
+  api:
+    name: Backend API (PHP 8.3 + PostGIS + Redis)
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgis/postgis:16-3.4-alpine
+        env:
+          POSTGRES_DB: jagapadi_v3
+          POSTGRES_USER: jagapadi
+          POSTGRES_PASSWORD: jagapadi_secret
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U jagapadi -d jagapadi_v3"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=10
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd="redis-cli ping"
+          --health-interval=5s
+          --health-timeout=3s
+          --health-retries=10
+
+    defaults:
+      run:
+        working-directory: apps/api
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP 8.3
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, xml, ctype, json, bcmath, pdo_pgsql, pgsql, gd, zip, intl
+          coverage: none
+
+      - name: Copy .env
+        run: |
+          cp .env.example .env
+          sed -i 's/REDIS_PORT=16379/REDIS_PORT=6379/g' .env
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Generate App Key
+        run: php artisan key:generate
+
+      - name: Enable PostGIS extensions
+        run: |
+          PGPASSWORD=jagapadi_secret psql -h 127.0.0.1 -U jagapadi -d jagapadi_v3 -c "CREATE EXTENSION IF NOT EXISTS postgis; CREATE EXTENSION IF NOT EXISTS postgis_topology; CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";"
+
+      - name: Run Migrations
+        run: php artisan migrate --force
+
+      - name: Run Laravel Pint (Code Style)
+        run: composer lint
+
+      - name: Run PHPStan / Larastan (Static Analysis)
+        run: composer analyse
+
+      - name: Run PHPUnit Feature & Unit Tests
+        run: composer test
+
+  web:
+    name: Frontend PWA & OpenAPI Contract (Node 22)
+    runs-on: ubuntu-latest
+    needs: api
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js 22 LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install NPM Workspace Dependencies
+        run: npm ci
+
+      - name: Typecheck Shared & Web Workspaces
+        run: npm run typecheck
+
+      - name: Lint Web Workspace
+        run: npm run lint
+
+      - name: Run Vitest Suite
+        run: npm run test
+
+      - name: Build Production PWA Bundle
+        run: npm run build

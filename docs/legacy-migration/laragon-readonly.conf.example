@@ -1,0 +1,47 @@
+# TEMPLATE ONLY: choose Nginx OR Apache. Never include this combined file directly.
+# Apply to the LEGACY virtual host only, including its HTTP/HTTPS variants and aliases.
+# No active Laragon configuration has been changed.
+
+# ==================== NGINX ====================
+# Insert this fragment inside each legacy server {} block, before location blocks.
+# Keep existing root, PHP FastCGI, TLS and Laravel routing settings.
+# Only GET and HEAD are allowed. PATCH/OPTIONS/TRACE/etc are deliberately denied too.
+# A return-only if is used in server rewrite context; it does not rewrite the URI.
+#
+# if ($request_method !~ ^(GET|HEAD)$) {
+#     return 403 "JAGAPADI lama dalam mode arsip baca-saja. Gunakan JAGAPADI v3 untuk pelaporan.\n";
+# }
+# add_header X-JAGAPADI-Archive "read-only" always;
+#
+# Validate using the nginx.exe belonging to the ACTIVE Laragon nginx installation:
+# nginx.exe -t
+# Then reload through Laragon or the same installation's nginx.exe -s reload.
+# If using a custom -p/-c path, pass exactly the same paths to test and reload.
+
+# ==================== APACHE 2.4 ====================
+# Insert inside each legacy <VirtualHost ...>, NOT globally for all sites.
+# Requires mod_rewrite. Place before any existing front-controller RewriteRule.
+#
+# RewriteEngine On
+# RewriteCond %{REQUEST_METHOD} !^(GET|HEAD)$
+# RewriteRule ^ - [F,L]
+# ErrorDocument 403 "JAGAPADI lama dalam mode arsip baca-saja. Gunakan JAGAPADI v3 untuk pelaporan."
+# Header always set X-JAGAPADI-Archive "read-only"
+#
+# The Header directive requires mod_headers; omit it if the module is not enabled.
+# Existing application 403 responses will also use the ErrorDocument message.
+# Validate with the active installation's httpd.exe -t, then restart/reload in Laragon.
+# If there is a reverse proxy, restrict the backend too so another port cannot bypass it.
+
+# SECURITY / CONSISTENCY NOTES
+# 1. GET endpoints may still mutate data; HTTP method filtering is NOT database read-only.
+# 2. Disable scheduler, queue workers, Windows Task Scheduler jobs, imports and webhooks.
+# 3. Stop writes first, drain in-flight requests/jobs, then make the consistent final snapshot.
+# 4. Use a dedicated MySQL application account restricted to SELECT on the legacy schema.
+#    Do not grant EXECUTE, FILE, SUPER, or broad global privileges.
+# 5. Audit existing GET login/session/cache/analytics behavior: SELECT-only application access
+#    may break database sessions/cache. Prefer a verified static archive or separate session/cache
+#    storage; do not grant writes to all 67 tables just to make archive sessions work.
+# 6. Maintain access control on historical sensitive data. Read-only does not mean public.
+# 7. Check all domain aliases, direct IP access, localhost ports, PHP aliases, and TLS vhosts.
+# 8. Test a GET route known to be nonmutating before assuming the archive remains usable.

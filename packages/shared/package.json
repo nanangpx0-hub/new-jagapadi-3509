@@ -10,8 +10,10 @@
     "./api-types": "./src/api-types.d.ts"
   },
   "scripts": {
-    "sync-types": "openapi-typescript http://127.0.0.1:8000/docs/api.json -o ./src/api-types.d.ts",
-    "typecheck": "tsc --noEmit"
+    "sync-types": "php ../../apps/api/artisan scramble:export --path=./openapi.json && openapi-typescript ./openapi.json -o ./src/api-types.d.ts",
+    "typecheck": "tsc --noEmit",
+    "lint": "tsc --noEmit",
+    "build": "tsc --noEmit"
   },
   "devDependencies": {
     "openapi-typescript": "^7.4.0",
