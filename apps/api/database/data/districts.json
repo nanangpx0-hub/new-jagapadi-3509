@@ -1,0 +1,219 @@
+[
+    {
+        "legacy_id": 1,
+        "code": "3509010",
+        "name": "Ajung",
+        "latitude": -8.218,
+        "longitude": 113.642
+    },
+    {
+        "legacy_id": 2,
+        "code": "3509020",
+        "name": "Ambulu",
+        "latitude": -8.345,
+        "longitude": 113.61
+    },
+    {
+        "legacy_id": 3,
+        "code": "3509030",
+        "name": "Arjasa",
+        "latitude": -8.12,
+        "longitude": 113.83
+    },
+    {
+        "legacy_id": 4,
+        "code": "3509040",
+        "name": "Balung",
+        "latitude": -8.26,
+        "longitude": 113.55
+    },
+    {
+        "legacy_id": 5,
+        "code": "3509050",
+        "name": "Bangsalsari",
+        "latitude": -8.18,
+        "longitude": 113.58
+    },
+    {
+        "legacy_id": 19,
+        "code": "3509060",
+        "name": "Gumukmas",
+        "latitude": -8.31,
+        "longitude": 113.47
+    },
+    {
+        "legacy_id": 20,
+        "code": "3509070",
+        "name": "Jelbuk",
+        "latitude": -8.05,
+        "longitude": 113.8
+    },
+    {
+        "legacy_id": 21,
+        "code": "3509080",
+        "name": "Jenggawah",
+        "latitude": -8.28,
+        "longitude": 113.64
+    },
+    {
+        "legacy_id": 22,
+        "code": "3509090",
+        "name": "Jombang",
+        "latitude": -8.22,
+        "longitude": 113.51
+    },
+    {
+        "legacy_id": 23,
+        "code": "3509100",
+        "name": "Kalisat",
+        "latitude": -8.15,
+        "longitude": 113.81
+    },
+    {
+        "legacy_id": 24,
+        "code": "3509110",
+        "name": "Kaliwates",
+        "latitude": -8.1617,
+        "longitude": 113.7214
+    },
+    {
+        "legacy_id": 25,
+        "code": "3509120",
+        "name": "Kencong",
+        "latitude": -8.29,
+        "longitude": 113.38
+    },
+    {
+        "legacy_id": 26,
+        "code": "3509130",
+        "name": "Ledokombo",
+        "latitude": -8.08,
+        "longitude": 113.85
+    },
+    {
+        "legacy_id": 27,
+        "code": "3509140",
+        "name": "Mayang",
+        "latitude": -8.13,
+        "longitude": 113.76
+    },
+    {
+        "legacy_id": 28,
+        "code": "3509150",
+        "name": "Mumbulsari",
+        "latitude": -8.24,
+        "longitude": 113.68
+    },
+    {
+        "legacy_id": 29,
+        "code": "3509160",
+        "name": "Pakusari",
+        "latitude": -8.11,
+        "longitude": 113.78
+    },
+    {
+        "legacy_id": 30,
+        "code": "3509170",
+        "name": "Panti",
+        "latitude": -8.09,
+        "longitude": 113.7
+    },
+    {
+        "legacy_id": 31,
+        "code": "3509180",
+        "name": "Patrang",
+        "latitude": -8.1392,
+        "longitude": 113.7169
+    },
+    {
+        "legacy_id": 32,
+        "code": "3509190",
+        "name": "Puger",
+        "latitude": -8.37,
+        "longitude": 113.48
+    },
+    {
+        "legacy_id": 33,
+        "code": "3509200",
+        "name": "Rambipuji",
+        "latitude": -8.21,
+        "longitude": 113.62
+    },
+    {
+        "legacy_id": 34,
+        "code": "3509210",
+        "name": "Semboro",
+        "latitude": -8.23,
+        "longitude": 113.45
+    },
+    {
+        "legacy_id": 35,
+        "code": "3509220",
+        "name": "Silo",
+        "latitude": -8.2,
+        "longitude": 113.9
+    },
+    {
+        "legacy_id": 36,
+        "code": "3509230",
+        "name": "Sukorambi",
+        "latitude": -8.1,
+        "longitude": 113.68
+    },
+    {
+        "legacy_id": 37,
+        "code": "3509240",
+        "name": "Sukowono",
+        "latitude": -8.12,
+        "longitude": 113.86
+    },
+    {
+        "legacy_id": 38,
+        "code": "3509250",
+        "name": "Sumberbaru",
+        "latitude": -8.27,
+        "longitude": 113.4
+    },
+    {
+        "legacy_id": 39,
+        "code": "3509260",
+        "name": "Sumberjambe",
+        "latitude": -8.15,
+        "longitude": 113.92
+    },
+    {
+        "legacy_id": 40,
+        "code": "3509270",
+        "name": "Sumbersari",
+        "latitude": -8.1725,
+        "longitude": 113.7161
+    },
+    {
+        "legacy_id": 41,
+        "code": "3509280",
+        "name": "Tanggul",
+        "latitude": -8.17,
+        "longitude": 113.5
+    },
+    {
+        "legacy_id": 42,
+        "code": "3509290",
+        "name": "Tempurejo",
+        "latitude": -8.3,
+        "longitude": 113.75
+    },
+    {
+        "legacy_id": 43,
+        "code": "3509300",
+        "name": "Umbulsari",
+        "latitude": -8.25,
+        "longitude": 113.42
+    },
+    {
+        "legacy_id": 44,
+        "code": "3509310",
+        "name": "Wuluhan",
+        "latitude": -8.32,
+        "longitude": 113.53
+    }
+]

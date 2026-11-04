@@ -4,6 +4,108 @@
  */
 
 export interface paths {
+    "/auth/login": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Login pengguna dan terbitkan Sanctum access token */
+        post: operations["auth.login"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/me": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Mendapatkan profil pengguna yang sedang login beserta role dan permission */
+        get: operations["auth.me"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/logout": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Logout dan cabut token aktif */
+        post: operations["auth.logout"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/change-password": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Ganti kata sandi pengguna */
+        post: operations["auth.change-password"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/districts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Menampilkan daftar 31 kecamatan di Kabupaten Jember beserta koordinat dan jumlah desa */
+        get: operations["districts.index"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/districts/{district}/villages": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Menampilkan daftar desa di bawah kecamatan tertentu */
+        get: operations["districts.villages"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/health": {
         parameters: {
             query?: never;
@@ -21,11 +123,147 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/opts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Menampilkan daftar Master OPT aktif untuk referensi formulir laporan */
+        get: operations["opts.index"];
+        put?: never;
+        /** Tambah OPT baru (khusus admin/operator) */
+        post: operations["opts.store"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/opts/{opt}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Detail satu OPT */
+        get: operations["opts.show"];
+        /** Perbarui OPT (khusus admin/operator) */
+        put: operations["opts.update"];
+        post?: never;
+        /** Hapus OPT (soft delete, khusus admin) */
+        delete: operations["opts.destroy"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
-    schemas: never;
-    responses: never;
+    schemas: {
+        /** District */
+        District: {
+            id: number;
+            code: string;
+            regency_bps_code: string;
+            name: string;
+            latitude: number | null;
+            longitude: number | null;
+            source: string;
+            source_feature_id: string | null;
+            /** Format: date-time */
+            created_at: string | null;
+            /** Format: date-time */
+            updated_at: string | null;
+            geom: string | null;
+            centroid: string | null;
+        };
+        /** Opt */
+        Opt: {
+            id: number;
+            code: string;
+            name: string;
+            scientific_name: string | null;
+            local_name: string | null;
+            category: string;
+            danger_level: string | null;
+            target_crop: string | null;
+            etl_reference: number | null;
+            etl_unit: string | null;
+            photo_url: string | null;
+            description: string | null;
+            recommendations: string | null;
+            references: string | null;
+            is_active: boolean;
+            /** Format: date-time */
+            created_at: string | null;
+            /** Format: date-time */
+            updated_at: string | null;
+            /** Format: date-time */
+            deleted_at: string | null;
+        };
+        /** Village */
+        Village: {
+            id: number;
+            district_id: number;
+            code: string;
+            name: string;
+            fallback_radius_m: number | null;
+            source: string;
+            source_feature_id: string | null;
+            /** Format: date-time */
+            created_at: string | null;
+            /** Format: date-time */
+            updated_at: string | null;
+            geom: string | null;
+            centroid: string | null;
+        };
+    };
+    responses: {
+        /** @description Validation error */
+        ValidationException: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": {
+                    /** @description Errors overview. */
+                    message: string;
+                    /** @description A detailed description of each field that failed validation. */
+                    errors: {
+                        [key: string]: string[];
+                    };
+                };
+            };
+        };
+        /** @description Not found */
+        ModelNotFoundException: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": {
+                    /** @description Error overview. */
+                    message: string;
+                };
+            };
+        };
+        /** @description Unauthenticated */
+        AuthenticationException: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": {
+                    /** @description Error overview. */
+                    message: string;
+                };
+            };
+        };
+    };
     parameters: never;
     requestBodies: never;
     headers: never;
@@ -33,6 +271,226 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    "auth.login": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** Format: email */
+                    email: string;
+                    password: string;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        status: "ok";
+                        /** @constant */
+                        message: "Login berhasil.";
+                        token: string;
+                        user: {
+                            id: number;
+                            name: string;
+                            email: string;
+                            phone: string | null;
+                            nip: string | null;
+                            must_change_password: boolean;
+                            roles: {
+                                relations: [
+                                    "roles"
+                                ];
+                            }[];
+                            permissions: unknown[];
+                        };
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        message: "Akun Anda dinonaktifkan. Hubungi administrator.";
+                    };
+                };
+            };
+            422: components["responses"]["ValidationException"];
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    "auth.me": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        status: "ok";
+                        user: {
+                            id: number;
+                            name: string;
+                            email: string;
+                            phone: string | null;
+                            nip: string | null;
+                            must_change_password: boolean;
+                            roles: {
+                                relations: [
+                                    "roles"
+                                ];
+                            }[];
+                            permissions: unknown[];
+                        };
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+        };
+    };
+    "auth.logout": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        status: "ok";
+                        /** @constant */
+                        message: "Logout berhasil.";
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+        };
+    };
+    "auth.change-password": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    current_password: string;
+                    password: string;
+                    password_confirmation: string;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        status: "ok";
+                        /** @constant */
+                        message: "Kata sandi berhasil diubah.";
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            422: components["responses"]["ValidationException"];
+        };
+    };
+    "districts.index": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        status: "ok";
+                        data: components["schemas"]["District"][];
+                    };
+                };
+            };
+        };
+    };
+    "districts.villages": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The district ID */
+                district: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        status: "ok";
+                        district: {
+                            id: number;
+                            code: string;
+                            name: string;
+                        };
+                        data: components["schemas"]["Village"][];
+                    };
+                };
+            };
+            404: components["responses"]["ModelNotFoundException"];
+        };
+    };
     health: {
         parameters: {
             query?: never;
@@ -82,6 +540,185 @@ export interface operations {
                     };
                 };
             };
+        };
+    };
+    "opts.index": {
+        parameters: {
+            query?: {
+                category?: string;
+                target_crop?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        status: "ok";
+                        data: components["schemas"]["Opt"][];
+                    };
+                };
+            };
+        };
+    };
+    "opts.store": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    code: string;
+                    name: string;
+                    scientific_name?: string | null;
+                    local_name?: string | null;
+                    /** @enum {string} */
+                    category: "hama" | "penyakit" | "gulma";
+                    /** @enum {string|null} */
+                    danger_level?: "Rendah" | "Sedang" | "Tinggi" | null;
+                    target_crop?: string | null;
+                    etl_reference?: number | null;
+                    etl_unit?: string | null;
+                    description?: string | null;
+                    recommendations?: string | null;
+                    photo_url?: string | null;
+                    is_active?: boolean;
+                };
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        status: "ok";
+                        /** @constant */
+                        message: "Master OPT berhasil ditambahkan.";
+                        data: components["schemas"]["Opt"];
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            422: components["responses"]["ValidationException"];
+        };
+    };
+    "opts.show": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The opt ID */
+                opt: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        status: "ok";
+                        data: components["schemas"]["Opt"];
+                    };
+                };
+            };
+            404: components["responses"]["ModelNotFoundException"];
+        };
+    };
+    "opts.update": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The opt ID */
+                opt: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    name?: string;
+                    scientific_name?: string | null;
+                    local_name?: string | null;
+                    /** @enum {string} */
+                    category?: "hama" | "penyakit" | "gulma";
+                    /** @enum {string|null} */
+                    danger_level?: "Rendah" | "Sedang" | "Tinggi" | null;
+                    target_crop?: string | null;
+                    etl_reference?: number | null;
+                    etl_unit?: string | null;
+                    description?: string | null;
+                    recommendations?: string | null;
+                    photo_url?: string | null;
+                    is_active?: boolean;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        status: "ok";
+                        /** @constant */
+                        message: "Master OPT berhasil diperbarui.";
+                        data: components["schemas"]["Opt"];
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            404: components["responses"]["ModelNotFoundException"];
+            422: components["responses"]["ValidationException"];
+        };
+    };
+    "opts.destroy": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The opt ID */
+                opt: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        status: "ok";
+                        /** @constant */
+                        message: "Master OPT berhasil dihapus.";
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            404: components["responses"]["ModelNotFoundException"];
         };
     };
 }
