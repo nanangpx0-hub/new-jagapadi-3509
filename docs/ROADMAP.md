@@ -18,6 +18,7 @@ dicantumkan — fokus pada cakupan & definisi selesai.
 | **1** | Auth + Master Data | Login, RBAC 5 role, wilayah (PostGIS + normalisasi BPS), OPT |
 | **2** | Laporan inti + PWA | Hama & irigasi (draf→verifikasi), validasi spasial `ST_Contains`, offline draft, kompresi WebP |
 | **3** | Dashboard & Analitik | KPI, grafik, peta sebaran PostGIS, KSA/BPS, ekspor |
+| **3.5** | Kanal publik & komunikasi *(amandemen 2026-11-05)* | Website Publik: beranda hero, 4 kategori, Peta Kejadian read-only, Pembaruan Diverifikasi tanpa PII, CTA → PWA petugas |
 | **4** | Data eksternal & tambahan | Usulan OPT, 4 domain laporan sisa, klimatologi, harga, queue scraper, IoT |
 | **5** | Hardening & rilis | Observability, backup/restore drill, DAST, deployment VPS, UAT/SUS |
 
@@ -111,6 +112,33 @@ dicantumkan — fokus pada cakupan & definisi selesai.
 
 ---
 
+## FASE 3.5 — Kanal Publik & Komunikasi *(amandemen 2026-11-05)*
+
+**Latar:** Pemilik produk menyetujui arah visual dengan permukaan **Website Publik** (lihat `docs/DESIGN.md` v3). Permukaan ini **belum ada** di baseline v3 dan kini diresmikan sebagai fase tersendiri. Data yang tampil ke publik **hanya** laporan berstatus `Diverifikasi` dan agregat per kecamatan — **tanpa PII pelapor** (nama, kontak, atau identitas lain).
+
+**Deliverable**
+1. **Beranda publik** (`apps/web`, route group publik):
+   - Navbar: wordmark "JAGAPADI — Kabupaten Jember", tautan **Peta Kejadian**, **Panduan**, ikon pencarian.
+   - Hero: foto sawah berlisensi (milik sendiri/stock bebas) + headline *"Kenali kondisi sekitar. Laporkan lebih cepat."* + CTA **Buat Laporan** dan **Lihat Peta**.
+   - **Pilih Kategori Laporan** (4 kartu penyederhanaan tampilan, dipetakan ke domain PRD): Hama→`pest`, Penyakit→`pest`, Genangan→`irrigation`, Kekeringan→`weather`.
+   - Peta Kejadian (read-only): marker per kategori (Hama/Penyakit/Genangan/Kekeringan), filter wilayah kecamatan, atribusi tile; klik marker → ringkas publik (kategori, kecamatan, tanggal, status — tanpa data pribadi).
+   - **Pembaruan Kejadian**: feed laporan `Diverifikasi` terkurasi — thumbnail foto, tag kategori, kecamatan, waktu relatif; tanpa nama pelapor.
+   - Halaman **Panduan**: cara melapor (mengacu ke PWA petugas), FAQ singkat, kontak BPS 3509.
+2. **Akses publik**: tanpa login; **"Buat Laporan" publik diarahkan ke PWA petugas** (login). Tidak ada formulir pengaduan publik bermoderasi pada fase ini (keputusan 2026-11-05).
+3. **API publik khusus**: endpoint read-only terkurasi (mis. `GET /api/public/events`, `GET /api/public/stats`) yang hanya mengekspos agregat & laporan Diverifikasi — bukan `/api/reports` penuh. Rate-limit ketat, tanpa data pribadi, `Cache-Control` wajar.
+4. **SEO & sosial**: title/meta description, Open Graph image, favicon/ikon konsisten, `sitemap.xml`.
+5. **Keamanan publik**: audit endpoint (tidak ada field PII ter-expose), CSP, dan uji akses tanpa kredensial.
+
+**Definisi Selesai**
+- [ ] Warga tanpa login dapat melihat peta kejadian & pembaruan (hanya data Diverifikasi, tanpa PII).
+- [ ] CTA publik mengarahkan ke PWA petugas; tidak ada data transaksi/PII yang bocor (audit endpoint publik).
+- [ ] Kontras & responsif lulus (terang; mode gelap mengikuti aturan `docs/DESIGN.md` v3 §3.1b), Lighthouse ≥ 90 untuk performance & accessibility best-practice.
+- [ ] Uji dengan 3–5 warga/petani (gerbang validasi `docs/DESIGN.md` §8).
+
+**Keputusan produk terkunci (2026-11-05):** publik = read-only + arahan ke PWA; pemetaan 4 kategori → domain PRD disetujui; Website Publik masuk ROADMAP sebagai Fase 3.5.
+
+---
+
 ## FASE 4 — Data Eksternal & Modul Tambahan
 
 **Deliverable**
@@ -153,6 +181,7 @@ dicantumkan — fokus pada cakupan & definisi selesai.
 | 2 | 1 | Koneksi lapangan & akurasi titik GPS → Offline draft PWA (`IndexedDB`), kompresi WebP, & cek `ST_Contains` |
 | 3 | 2 | Akurasi KSA/BPS & konsistensi cache → Invalidation terpusat di `ReportService` & pengujian regresi angka |
 | 4 | 3 | Scraper bergantung sumber eksternal → Isolasi di Redis Queue dengan retry/backoff & alerting gagal |
+| 3.5 | 3 | Risiko bocornya data pribadi / konten tanpa kurasi → Hanya laporan `Diverifikasi`, agregat per kecamatan, endpoint publik read-only terpisah, audit tanpa kredensial |
 | 5 | semua | Kesiapan infrastruktur produksi → Standarisasi container Docker sejak Fase 0 |
 
 ---
@@ -174,3 +203,9 @@ dicantumkan — fokus pada cakupan & definisi selesai.
 ---
 
 *Dokumen terkait: `docs/BLUEPRINT.md`, `docs/PRD.md`.*
+
+---
+
+## Amandemen 2026-11-05
+
+- **Penambahan Fase 3.5 — Kanal Publik & Komunikasi**: permukaan **Website Publik** disetujui pemilik produk (baca publik: peta kejadian & pembaruan laporan terverifikasi, tanpa PII; CTA mengarah ke PWA petugas). Rincian brief & token visual: `docs/DESIGN.md` v3. Tidak ada data transaksi baru yang diekspos; API publik dibatasi read-only dan terkurasi.

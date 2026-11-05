@@ -1,264 +1,262 @@
-# JAGAPADI v3 — Design Brief & Token Sistem (DRAFT v2 — menunggu Validasi Lapangan)
+# JAGAPADI v3 — Design Brief & Token Sistem (v3 — Arah Visual DISETUJUI PEMILIK)
 
-> Status: **DRAFT v2** — arah sudah dikunci pemilik (Kartografi Ladang, hijau + kuning padi, Bricolage + Public Sans), **belum baseline**. Wajib lulus **gerbang validasi lapangan** (§9) sebelum dikunci.
-> Tanggal: 2026-11-05 (WIB) — revisi dari v1
-> Berlaku untuk: `apps/web` (React 19 + Vite + Tailwind v3 PWA)
-> Metode: proses dua-tahap ala skill `frontend-design` (Anthropic): **rencanakan token → review terhadap brief → baru bangun → kritik dengan screenshot**.
-> Acuan: `docs/BLUEPRINT.md` (§4.2, §7, §8), `docs/PRD.md`, `docs/ROADMAP.md`, kondisi UI aktual (`apps/web/src/App.tsx`, `index.css`, `tailwind.config.js`, `vite.config.ts`).
+> Status: **v3.2 — arah visual disetujui + Fase 3.5 disahkan pemilik**. Belum baseline final: wajib lulus **gerbang validasi lapangan** (§8; permukaan C: mitra statistik BPS / PPL / petugas TPHP kec.; permukaan B: 3–5 warga/petani); sisa keputusan §9 terbuka.
+> Tanggal: 2026-11-05 (WIB)
+> Berlaku untuk: **tiga permukaan** — (A) Admin/Backend, (B) Website Publik, (C) Android PWA, semua di `apps/web` kecuali diputuskan lain (§9).
+> Acuan: `docs/BLUEPRINT.md`, `docs/PRD.md`, `docs/ROADMAP.md`, contoh tampilan pemilik (mockup 3-panel "SIAGALAHAN", nama produk tetap **JAGAPADI**), `docs/DESIGN.md` v2 (superseded).
 >
-> **Perubahan v1 → v2:** (1) signature "cap nomor laporan" **dihapus**; keberanian dialihkan ke perlakuan tipografi display; (2) **mode gelap dirancang sejak awal** (sebelumnya ditunda ke Fase 5); (3) seluruh rasio kontras **dihitung ulang**, 2 token diperbaiki (`tinta-3`, klaim `sawah-*`/`padi-400`); (4) gerbang validasi lapangan eksplisit sebelum token dikunci; (5) semua angka kontras di §3 sudah terverifikasi.
+> **Perubahan v2 → v3:** (1) arah visual berganti dari "Kartografi Ladang" (tenang, hairline) ke **full adopsi mockup**: sidebar hijau gelap, kartu radius besar + soft shadow + **pastel tint per status/kategori**, CTA hijau solid, peta-sentris; (2) **Website Publik masuk scope** (permukaan baru, di luar ROADMAP — butuh amandamen, §9); (3) seluruh tiga permukaan didefinisikan; (4) mode gelap tetap dirancang (adaptasi pastel → tint transparan + teks berwarna); (5) aturan status **tetap enum PRD** — status asing dari mockup ("Ditugaskan") TIDAK diimpor; (6) rasio kontras diverifikasi ulang.
 
 ---
 
-## 1. Brief Desain (dikunci dulu, baru estetika)
+## 1. Brief Desain
 
 | Aspek | Isi |
 |---|---|
 | Produk | JAGAPADI v3 — Sistem Pelaporan & Analitik Pertanian Geospasial Kabupaten Jember (BPS 3509) |
-| Audiens | **Petugas lapangan (POPT)** di lapangan; **statistisi** (verifikator) & **operator** di kantor; **pimpinan (viewer)** sebagai pembaca; **admin** sebagai pengelola |
-| Pekerjaan utama | Petugas: *catat & kirim laporan dengan cepat dan akurat, walau sinyal lemah dan layar terkena matahari*. Statistisi: *verifikasi antrian laporan dengan andal*. Pimpinan: *membaca tren tanpa pelatihan* |
-| Konteks pemakaian | Android kelas menengah-bawah, outdoor (terik matahari), satu tangan, gangguan sinyal; Bahasa Indonesia; WIB (`Asia/Jakarta`); sesi kantor untuk entri & verifikasi. Pengguna boleh memilih mode **terang (default outdoor)** atau **gelap** (kantor/cahaya redup) — keduanya dibangun sejak Fase 2 |
-| Batasan keras (dari BLUEPRINT §8 & PRD) | WCAG 2.1 AA minimal, target AAA teks tubuh · kontras tinggi outdoor · Bahasa Indonesia · mobile-first PWA · target sentuh ≥ 44 px · timezone konsisten · offline-first |
-| Yang BUKAN tujuan | Identitas "studio" eksperimental; gaya marketing/landing; dekorasi yang menambah beban unduh di jaringan lemah |
-
-**Aturan main:** brief di atas menang atas selera. Skill `frontend-design` dipakai untuk *eksekusi* (anti-generik, token disiplin, copy yang jelas) — bukan untuk memberi lisensi desain yang mengalahkan kejelasan operasional.
+| Audiens | **(A) Admin/Backend:** admin, operator, statistisi, pimpinan (viewer) — desktop-first. **(B) Website Publik:** warga Jember — terutama petani/poktan & umum — read-most. **(C) Android PWA:** **mitra statistik BPS Kabupaten Jember & PPL / petugas pengolah data tingkat kecamatan Dinas TPHP Kabupaten Jember** — mobile-first, outdoor |
+| Pekerjaan utama | A: verifikasi & pantau laporan di peta. B: mengenali kondisi pertanian sekitar & melapor/melihat kejadian. C: lapor cepat dari lapangan, sinyal lemah |
+| Konteks | A: kantor, monitor. C: Android kelas menengah-bawah, terik matahari, satu tangan. B: browser umum, publik |
+| Batasan keras | WCAG 2.1 AA (AAA target teks tubuh) · kontras tinggi outdoor (permukaan C) · Bahasa Indonesia · WIB · offline-first (C) · target sentuh ≥ 44 px · **enum status PRD** (`Draf/Submitted/Diverifikasi/Ditolak/Diarsipkan`) · **6 domain laporan PRD** |
+| Tagline kandidat (dari mockup, opsional) | "Data cepat. Tindakan tepat. Pertanian lebih tangguh." |
+| Yang BUKAN tujuan | Identitas "studio" eksperimental; dekorasi tanpa fungsi; status/domain di luar PRD; klaim logo resmi BPS tanpa file resmi |
 
 ---
 
-## 2. Konsep Arah Visual: "Kartografi Ladang"
+## 2. Konsep Arah Visual (Full Adopsi Mockup)
 
-Bahasa visual diambil dari dunia subjeknya sendiri: **peta survei pertanian dan buku lapangan petugas** — bukan dari template admin panel.
+Bahasa visual dari mockup pemilik: **"peta pertanian aktif"** — permukaan kerja yang hidup, hijau dalam institusional, pastel lembut untuk pengelompokan informasi, peta sebagai jangkar dashboard.
 
-- **Tanpa cap/stempel.** (Keputusan v2 — mohon tidak dikembalikan.) Keberanian tunggal dialihkan ke **perlakuan tipografi display**: *wordmark* "JAGAPADI", judul layar (H1), dan angka-angka besar KPI memakai **Bricolage Grotesque** dengan tracking rapat dan berat tebal — tipe sebagai elemen aktif, bukan kendaraan netral. Tidak ada rotasi, border ganda, atau kemiripan dokumen resmi.
-- **Sisanya quiet:** panel hairline-border (tanpa bayangan seragam — menghindari "SaaS card kit"), satu keluarga display + satu keluarga UI, ikon garis tunggal (lucide), ruang napas lega di alur lapor, rapat di tabel data.
-- **Identitas institusional, bukan dekoratif:** hijau dalam khas "papan nama balai pertanian", tinta kehijauan (bukan hitam/biru netral), aksen kuning padi untuk aksi primer di atas gelap. Tanpa gradasi ungu, tanpa krim+terakota+serif, tanpa ALL-CAPS eyebrow.
+- **Identitas inti:** hijau dalam (`sawah-950`) untuk sidebar & panel gelap; latar off-white kehijauan; tombol primer hijau solid; kartu besar radius 18px dengan soft shadow; angka KPI besar; chip berwarna lembut per status/kategori.
+- **Peta selalu terlihat:** dashboard admin & halaman publik sama-sama menyandarkan ke peta tematik Jember (MapLibre/Leaflet, marker kategori berwarna + legenda) — bukan tabel belaka.
+- **Ikon keluarga `Sprout/Leaf`:** daun tunas untuk brand mark (lucide `Sprout`); kategori laporan memakai ikon spesifik: Hama (`Bug`/`Leaf`), Penyakit (`Cross`/`ShieldPlus`), Genangan (`Waves`), Kekeringan (`Sun`) — plus domain lain: Pupuk (`FlaskConical`), Panen (`Wheat`), Cuaca (`CloudRain`), Alat-Sarana (`Tractor`).
+- **Nama tetap JAGAPADI;** wordmark: ikon Sprout + "JAGAPADI" (Bricolage Grotesque 700, tracking rapat) + subline "Kabupaten Jember".
 
-### Prinsip (dipakai untuk review setiap layar)
+### Prinsip (review tiap layar)
 
-1. **Satu layar, satu pekerjaan.** Tepat satu aksi primer yang jelas; sisanya sekunder.
-2. **Lapangan dulu.** Target & kontras diverifikasi untuk skenario matahari langsung; mode terang adalah default.
-3. **Struktur = informasi.** Border, nomor urut, dan badge hanya bila mengkodekan urutan/status nyata (kode desa, nomor laporan, status lifecycle) — bukan hiasan.
-4. **Bahasa pengguna, bukan bahasa sistem.** "Kirim laporan" bukan "Submit"; "Verifikasi" bukan "Approve"; pesan error menyebut apa yang terjadi dan cara memperbaikinya.
-5. **Tenang di kantor, tegas di lapangan.** Ketegasan visual ada pada tipografi display, bobot CTA, dan status yang jelas — bukan pada ornamen.
+1. **Satu layar, satu pekerjaan.** Satu CTA primer per layar (A: Verifikasi/Tolak kontekstual; B: Buat Laporan; C: Buat Laporan).
+2. **Lapangan dulu** (permukaan C): kontras outdoor, target ≥ 44 px, mode terang default.
+3. **Warna menjelaskan kategori/status** — selalu dipadu ikon + label; tidak pernah warna-saja.
+4. **Bahasa pengguna** — aksi sesuai kata yang dipakai tombol → toast → status.
+5. **Dekatkan keputusan ke peta** — lokasi adalah dimensi utama laporan; tampilkan peta/koordinat di detail, bukan sebagai lampiran.
 
 ---
 
 ## 3. Design Tokens
 
-Semua token diimplementasikan sebagai **CSS variables** di `src/index.css`; Tailwind mereferensikan lewat `colors` (`tailwind.config.js`), dengan strategi `darkMode: 'class'` pada elemen `<html data-theme>` / `.dark`. Tidak ada nilai hex ad-hoc di komponen.
+Implementasi: CSS variables di `src/index.css` + `darkMode: 'class'`; Tailwind mereferensikan variable (tidak ada hex ad-hoc di komponen).
 
 ### 3.1 Warna — Mode Terang (default)
 
 | Token | Hex | Peran | Kontras terverifikasi |
 |---|---|---|---|
-| `sawah-950` | `#133D2B` | Latar gelap (header, layar masuk) | vs putih **12.14:1** ✅ AAA |
-| `sawah-800` | `#175438` | Permukaan hijau tua sekunder | vs putih **8.89:1** ✅ AAA |
-| `sawah-700` | `#1E5B3E` | Aksi primer di atas terang (hover/solid) | vs putih **8.01:1** ✅ AAA |
-| `padi-400` | `#E9B44C` | Aksen aksi primer **di atas latar gelap saja** | vs `sawah-950` **6.41:1** ✅ AA-large/UI |
-| `latar` | `#F5F6F2` | Latar halaman (off-white netral, bukan krim `#F4F1EA`) | — |
-| `tinta` | `#1B2A21` | Teks utama | vs `latar` **13.82:1** ✅ AAA |
-| `tinta-2` | `#4A5A50` | Teks sekunder | vs `latar` **6.74:1** ✅ AA |
-| `tinta-3` | `#57685C` | Teks tersier/caption (v2: dipergelap dari `#6B7A70` yang hanya 4.17:1) | vs `latar` **5.47:1** ✅ AA |
-| `garis` | `#DDE0DA` | Hairline border (elemen non-teks) | vs `latar` **1.23:1** — cukup untuk hairline, bukan untuk batas grafis penting |
+| `latar` | `#F2F7F0` | Latar halaman (off-white kehijauan) | — |
+| `tinta` | `#1B2A21` | Teks utama | 13.82:1 ✅ AAA |
+| `tinta-2` | `#4A5A50` | Teks sekunder | 6.74:1 ✅ AA |
+| `tinta-3` | `#57685C` | Teks tersier/caption | 5.46:1 ✅ AA |
+| `sawah-950` | `#133D2B` | Sidebar admin, panel gelap, CTA di atas gelap | vs putih 12.14:1 ✅ AAA |
+| `sawah-800` | `#175438` | Permukaan hijau tua sekunder | vs putih 8.89:1 ✅ AAA |
+| `sawah-700` | `#1E5B3E` | **CTA hijau solid** (teks putih) | vs putih 8.01:1 ✅ AAA |
+| `padi-400` | `#E9B44C` | Aksen/badge "menunggu" di atas gelap saja | vs `sawah-950` 6.41:1 ✅ |
+| `garis` | `#DDE5DC` | Hairline border & divider | hairline non-teks |
 
-**Semantik status laporan — mode terang** (selalu berpasangan ikon + teks; tidak pernah warna saja; aman buta warna):
+**Kartu pastel (KPI & chip)** — angka besar (≥ 28 px bold) & label `tinta-2`:
 
-| Status (nilai DB) | Label UI | Hex | Kontras vs `latar` |
+| Kartu/chip | Latar tint | Teks/ikon utama | Kontras |
 |---|---|---|---|
-| `Draf` | Draf | `#475569` | **6.98:1** ✅ |
-| `Submitted` | Dikirim | `#1D4ED8` | **6.17:1** ✅ |
-| `Diverifikasi` | Diverifikasi | `#166534` | **6.57:1** ✅ |
-| `Ditolak` | Ditolak | `#B91C1C` | **5.96:1** ✅ |
-| `Diarsipkan` | Diarsipkan | `#4B5563` | **6.96:1** ✅ |
-| Peringatan koordinat (`is_coordinate_mismatch`) | "Titik di luar batas desa" | `#B45309` | **4.63:1** ✅ (gunakan + ikon segitiga) |
+| KPI "Laporan" / positif | `#E7F4EA` | `#14532D` | 8.04:1 ✅ |
+| KPI "Perlu Verifikasi" / peringatan | `#FCF3D9` | `#B45309`* | 4.53:1 ✅ (teks besar) |
+| KPI "Ditangani" / info | `#E3ECFB` | `#1D4ED8` | 5.63:1 ✅ |
+| Chip amber (mis. "Dikirim"?) — gunakan untuk "Menunggu" | `#FDE68A` | `#92400E` | 5.69:1 ✅ |
+| Chip biru (mis. "Diproses") | `#BFDBFE` | `#1E40AF` | 6.14:1 ✅ |
+| Chip hijau (mis. "Selesai"/"Diverifikasi") | `#A7F3D0` | `#065F46` | 5.99:1 ✅ |
+| Chip merah (mis. "Ditolak") | `#FECACA` | `#991B1B` | 5.74:1 ✅ |
 
-Fokus keyboard — terang: `#1D4ED8` (**6.17:1**); di atas gelap: `#FCD34D` (**8.42:1** vs `sawah-950`).
+\* untuk label kecil di kartu amber gunakan `tinta-2` (6.4:1 di atas `#E7F4EA` analog) — jangan pakai amber kecil sebagai teks.
 
-> `padi-400` **bukan** warna teks di atas latar terang (**1.89:1** vs putih — gagal). Khusus aksi/aksen di atas `sawah-950`/`latar-gelap`.
+**Semantik status laporan (enum PRD — JANGAN tambah nilai):** `Draf`→chip abu `#F1F5F9/#475569` · `Submitted` (UI "Dikirim")→chip biru `#BFDBFE/#1E40AF` · `Diverifikasi`→chip hijau `#A7F3D0/#065F46` · `Ditolak`→chip merah `#FECACA/#991B1B` · `Diarsipkan`→chip abu tua `#E2E8F0/#4B5563`. Peringatan koordinat → chip amber `#FDE68A/#92400E` + ikon `TriangleAlert`.
 
-### 3.1b Warna — Mode Gelap (dibangun sejak Fase 2)
+### 3.1b Mode Gelap (dibangun sejak Fase 2)
 
-| Token | Hex | Peran | Kontras terverifikasi |
+| Token | Hex | Peran | Kontras |
 |---|---|---|---|
-| `latar-gelap` | `#101E16` | Latar halaman gelap (hijau nyaris hitam, bukan `#0B0B0B`) | vs `tinta-gelap` **14.66:1** ✅ AAA |
-| `panel-gelap` | `#182A20` | Panel/kartu di atas latar gelap | vs `tinta-gelap` **12.85:1** ✅ AAA |
-| `tinta-gelap` | `#E9EEE9` | Teks utama di gelap (off-white kehijauan) | 14.66:1 / 12.85:1 ✅ |
-| `tinta-2-gelap` | `#A9B8AD` | Teks sekunder di gelap | vs `latar-gelap` **8.32:1** ✅ AAA |
-| `garis-gelap` | `#2A3B2F` | Hairline border di gelap | cukup sebagai hairline non-teks |
-| `padi-400` | `#E9B44C` | Aksi primer di gelap (tetap dipakai) | vs `latar-gelap` **9.10:1** ✅ AAA |
-| Fokus | `#FCD34D` | Ring fokus di gelap | vs `latar-gelap` **11.94:1** ✅ AAA |
+| `latar-gelap` | `#101E16` | Latar gelap | vs `tinta-gelap` 14.66:1 ✅ |
+| `panel-gelap` | `#182A20` | Panel/kartu | 12.85:1 ✅ |
+| `tinta-gelap` | `#E9EEE9` | Teks utama | 14.66:1 ✅ |
+| `tinta-2-gelap` | `#A9B8AD` | Teks sekunder | 8.32:1 ✅ |
+| `garis-gelap` | `#2A3B2F` | Border hairline | non-teks |
+| `padi-400` | `#E9B44C` | CTA primer di gelap | 9.10:1 ✅ |
+| CTA hijau di gelap | `#2E7D4F` bg + `#EAF6EE` teks | tombol hijau solid versi gelap | ≥ 4.5:1 |
+| Fokus | `#FCD34D` | ring fokus | 11.94:1 ✅ |
 
-**Semantik status — mode gelap** (varian terang dari hue yang sama; semua ≥ 9:1):
+**Kartu pastel di gelap** = tint transparan + teks berwarna (bukan pastel pekat): hijau `rgba(74,222,128,.10)` + `#86EFAC` · amber `rgba(251,191,36,.12)` + `#FDE68A` · biru `rgba(96,165,250,.12)` + `#93C5FD` · merah `rgba(248,113,113,.12)` + `#FCA5A5` · abu `rgba(203,213,225,.10)` + `#CBD5E1`. **Chip status** memakai pasangan teks terang yang sama di atas tint transparan (≥ 9:1).
 
-| Status | Label | Hex (gelap) | Kontras vs `latar-gelap` |
-|---|---|---|---|
-| Draf | Draf | `#CBD5E1` | **11.60:1** ✅ |
-| Dikirim | Dikirim | `#93C5FD` | **9.55:1** ✅ |
-| Diverifikasi | Diverifikasi | `#86EFAC` | **12.27:1** ✅ |
-| Ditolak | Ditolak | `#FCA5A5` | **9.07:1** ✅ |
-| Diarsipkan | Diarsipkan | `#B8C2BB` | **9.41:1** ✅ |
-| Peringatan koordinat | "Titik di luar batas desa" | `#FDE68A` | **13.83:1** ✅ |
-
-**Aturan mode:** default mengikuti `prefers-color-scheme`; toggle manual (terang/gelap/sistem) di menu pengaturan, disimpan di `localStorage`. Meta `theme-color` tunggal (`#133D2B`) — opsional ditambah varian `media="(prefers-color-scheme: dark)"` nanti; `icon.svg` harus terbaca di kedua mode. Mode gelap **bukan** "near-black + acid green": hijau tetap dalam, teks off-white, aksen padi.
-
-**Dataviz (Fase 3):** palet kategorikal aman buta warna Okabe–Ito (`#0072B2`, `#E69F00`, `#009E73`, `#D55E00`, `#CC79A7`, `#56B4E9`); choropleth single-hue sekuensial hijau `latar → sawah-950` (`#EAF3EC, #D2E6D8, #A9CDB6, #6FA988, #3F7A58, #133D2B`); selalu dengan legenda & label langsung bila memungkinkan; varian gelap memakai urutan yang sama dengan latar `#101E16`.
+**Dataviz (Fase 3):** Okabe–Ito kategorikal; choropleth single-hue hijau; legenda selalu; mode gelap memakai urutan ramp sama di atas `#101E16`. Marker kategori peta: Hama `#16A34A` · Penyakit `#D97706` · Genangan/Banjir `#2563EB` · Kekeringan `#F59E0B` · Pupuk `#7C3AED` · Panen `#65A30D` · Cuaca `#0EA5E9` · Alat-Sarana `#78716C` — dengan ikon bentuk berbeda (lingkaran/segitiga/kotak) agar aman buta warna.
 
 ### 3.2 Tipografi
 
 | Peran | Typeface | Catatan |
 |---|---|---|
-| Display / wordmark / H1 / angka KPI | **Bricolage Grotesque** (Variable, OFL) | **Satu-satunya tempat berani** (v2): tracking rapat, berat 650–800; tanpa ornamen |
-| Teks UI & body | **Public Sans** (Variable, OFL) | Legibility kelas government-grade; netral, terbaca di layar kecil & silau |
-| Data & kode (nomor laporan, kode BPS, koordinat) | **IBM Plex Mono** (400/500, OFL) | Hanya untuk data teknis; **bukan** label dekoratif |
+| Display: wordmark, H1, angka KPI besar, headline hero publik | **Bricolage Grotesque** (Variable, OFL) | Berat 650–800, tracking rapat |
+| Teks UI & body | **Public Sans** (Variable, OFL) | Semua ukuran ≤ H3 |
+| Data & kode (nomor laporan, kode BPS, koordinat) | **IBM Plex Mono** (400/500, OFL) | Bukan label dekoratif |
 
-- Self-host via `@fontsource-variable/bricolage-grotesque`, `@fontsource-variable/public-sans`, `@fontsource/ibm-plex-mono`; subset `latin` saja. Total ≤ ~120 KB woff2; tanpa request CDN (offline-first).
-- Skala (minor third, per *Elements of Typographic Style*): `12 / 14 / 16 / 19 / 23 / 28 / 34 / 41` px; line-height body **1.55**, heading **1.2**; panjang baris teks baca ≤ **75 ch**.
-- Headline memakai Bricolage; jangan tambah keluarga ketiga. Jangan Inter/Roboto/Arial sebagai default.
+Self-host via Fontsource, subset `latin`, tanpa CDN. Skala 1.2: `12/14/16/19/23/28/34/41` px; line-height body 1.55, heading 1.2; baris baca ≤ 75 ch. (Mockup tampak memakai sans geometris bulat — Bricolage dipilih agar tetap legal/OFL, khas, dan satu rumpun dengan v2.)
 
-### 3.3 Layout & bentuk
+### 3.3 Bentuk, bayangan, spacing
 
-- Radius: `--radius-sm: 6px` (input, badge), `--radius-md: 10px` (panel), `--radius-lg: 14px` (layar masuk/kartu besar). Hindari radius seragam untuk semua hierarki.
-- Border: `1px solid var(--garis)` (terang) / `var(--garis-gelap)`; bayangan hanya untuk elemen yang benar-benar melayang (dropdown, toast), bukan setiap panel.
-- Spacing: basis 4 px; konten laporan `max-w-3xl`; dashboard `max-w-7xl`.
-- Alur lapangan (petugas): **satu kolom**, CTA primer melekat di bawah (sticky bottom bar); alur kantor (verifikasi/analisis): dua kolom — antrian + detail.
+- Radius: `sm 8px` (input/chip) · `md 14px` (kartu KPI, panel) · `lg 18px` (hero, kartu besar, layar PWA) · tombol utama `full` (pill) sesuai mockup CTA.
+- **Soft shadow (v3, menggantikan hairline-only v2):** `--shadow-card: 0 10px 30px rgb(19 61 43 / .10)`; `--shadow-pop: 0 16px 40px rgb(19 61 43 / .18)` — hanya kartu elevated & floating; tabel/antrian tetap hairline.
+- Spacing basis 4 px; grid: admin `max-w-none` (sidebar 264 px + konten), publik `max-w-7xl`, PWA full-bleed mobile `px-4`.
 
 ### 3.4 Ikon & media
 
-- `lucide-react` (sudah dependency; belum dipakai) — stroke `2`, ukuran `20–24` px. Ganti semua emoji UI (📡🖼️💾⚙️) dengan ikon lucide.
-- Foto laporan: thumbnail 96 px, klik untuk penuh; `loading="lazy"`.
-- Logo: pakai **logo resmi BPS** bila tersedia; jangan mengarang logo. Wordmark sementara: "JAGAPADI" + "Kabupaten Jember".
+- `lucide-react`, stroke 2, 20–24 px. Ganti seluruh emoji di UI dengan ikon lucide.
+- Foto hero publik & foto laporan: WebP, hero ≤ 300 KB (crop 21:9), alt text bermakna. Titik peta memakai divIcon berlabel ikon kategori.
+- Logo: Sprout lucide di dalam lingkaran `sawah-950`/`latar` sesuai permukaan; wordmark "JAGAPADI". Jika BPS menyerahkan logo/ brand guideline resmi → ganti, token disesuaikan.
 
 ### 3.5 Motion
 
-- Hanya motion yang menjelaskan perubahan: buka/tutup antrian, simpan draf → toast, transisi status badge.
-- `prefers-reduced-motion: reduce` → animasi non-esensial dimatikan.
-- Tanpa fade-and-slide-up per seksi; tanpa hover-scale per kartu; tanpa animasi "kemenangan" submit.
+- Mikro: transisi warna/opacity 150–200 ms untuk hover & tab; toast masuk/keluar; buka/tutup panel detail.
+- **Satu orkestrasi maksimal per permukaan:** B: fade-up hero sekali saat load (hormati `prefers-reduced-motion`); C: tidak ada animasi; A: none.
+- Tanpa hover-zoom kartu; tanpa staggered list animation pada tabel/antrian.
 
 ---
 
-## 4. Copy & Bahasa (aturan ringkas)
+## 4. Tiga Permukaan — Spesifikasi
 
-- Bahasa Indonesia, kalimat aktif, kata kerja plain: **Simpan draf · Kirim laporan · Verifikasi · Tolak · Arsipkan · Masuk · Keluar**.
-- Satu aksi = satu nama, konsisten dari tombol → toast → status ("Laporan terkirim", bukan "Data berhasil disubmit").
-- Error = sebab + tindakan: *"Minimal 1 foto wajib diisi sebelum laporan dikirim. Ambil foto kondisi lahan."* Bukan *"Validasi gagal."*
-- Empty state mengundang aksi: *"Belum ada laporan Hama. Ketuk + Lapor untuk membuat draf pertama."*
-- Label status UI: `Draf`, `Dikirim`, `Diverifikasi`, `Ditolak`, `Diarsipkan` (PRD §98; nilai DB tetap).
-- Angka & tanggal: format `id-ID` (`5 Nov 2026, 13.45 WIB`); ribuan titik, desimal koma; nomor laporan & kode BPS mono.
-- Dilarang: ALL-CAPS dekoratif, eyebrow di atas setiap heading, `→` di akhir teks tombol, "Silakan" tanpa makna.
-
----
-
-## 5. Contoh Wireframe (alur lapor petugas — mobile)
+### A. Admin/Backend (desktop-first) — mockup panel kiri
 
 ```text
-┌─────────────────────────────────────┐
-│  ←  Lapor Hama            Draf ●    │  ← chip status (status-draf + ikon)
-├─────────────────────────────────────┤
-│  Desa/Kelurahan *                   │
-│  [3509010006 — Jambesari        ▾]  │
-│  ⚠ Titik GPS di luar batas desa     │  ← banner status-peringatan + ikon
-│  [Ambil titik GPS]                  │
-│                                     │
-│  OPT *            [wereng cokelat ▾]│
-│  Luas serangan *  [ 1,5 ] ha        │
-│  Foto kondisi lahan *               │
-│  [＋] [foto][foto]                   │  ← min. 1 foto; kompres WebP
-│                                     │
-│  Catatan                            │
-│  [____________________________]     │
-╞═════════════════════════════════════╡
-│ [Simpan draf]      [Kirim laporan]  │  ← sticky; Kirim = padi-400 di atas
-└─────────────────────────────────────┘     sawah-950, tinta gelap
+Sidebar (264px, sawah-950)          Konten (latar)
+┌───────────────┐ ┌───────────────────────────────────────┐
+│ Sprout JAGAPADI│ Ringkasan Wilayah        🔔 [Admin ▾]  │
+│  Kabupaten Jbr│ ┌────────┐┌────────┐┌─────────┐        │
+│               │ │ 48     ││ 12     ││ 8       │        │
+│ ▸ Ringkasan   │ │Laporan ││Perlu   ││Ditangani│        │
+│ ▸ Peta Laporan│ └────────┘└────────┘└─────────┘        │
+│ ▸ Verifikasi 12│ ┌───────────────────────────────┐      │
+│ ▸ Penugasan   │ │ Peta Jember (marker kategori) │      │
+│ ▸ Analitik    │ └───────────────────────────────┘      │
+│               │ Antrean Verifikasi      Lihat Semua →  │
+│               │ No │ Jenis │ Lokasi │ Tanggal │ Status │
+└───────────────┘ └───────────────────────────────────────┘
 ```
 
-Layar sukses setelah kirim (sederhana, **tanpa cap**):
+- Sidebar: ikon+label; item aktif: pill `hijau` semi-terang + teks putih; badge jumlah di "Verifikasi".
+- KPI: 3 kartu pastel + 1 aksen netral (v3: **4 kartu** — "Laporan" `#E7F4EA`, "Perlu Verifikasi" `#FCF3D9`, "Ditangani" `#E3ECFB`, opsional "Selesai Bulan Ini" `#EDE9FE→` diganti hijau muda `#E9F5DA`? gunakan `#E7F4EA` keluarga — jangan tambah hue ungu).
+- Peta: layer batas kecamatan (PostGIS), marker per laporan aktif, legend chip kategori, kontrol zoom + locate; klik marker → panel ringkas (nomor, jenis, status, tombol "Buka").
+- Antrean Verifikasi: tabel hairline, kolom No/Jenis/Lokasi/Tanggal/Status (chip), aksi hover; baris klik → detail (drawer kanan): foto, peta, `is_coordinate_mismatch` banner amber, catatan, tombol **Verifikasi** (`sawah-700`) / **Tolak…** (outline merah).
+- "Penugasan" & "Analitik" = Fase 3/4 (placeholder route dengan empty state ber-ikon, bukan halaman kosong).
+
+### B. Website Publik (BARU — lihat §9) — mockup panel tengah
 
 ```text
-┌─────────────────────────────────────┐
-│            ( ✓ )                    │  ← ikon check, lingkaran sawah-700
-│      Laporan terkirim               │  ← H1 Bricolage, tegas
-│  Nomor laporan Anda:                │
-│  LH-20261105-0001                   │  ← blok mono, hairline border,
-│                                     │     rata kiri, tanpa rotasi
-│  Petugas verifikasi akan meninjau.  │
-│  [Lihat laporan]   [Lapor lagi]     │
-└─────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────┐
+│ Sprout JAGAPADI   Peta Kejadian · Panduan · 🔍 · ☰      │
+├─────────────────────────────────────────────────────────┤
+│ ▓ foto sawah + overlay gelap                             │
+│   Kenali kondisi sekitar. Laporkan lebih cepat.         │
+│   Panen aman, hama terkendali.                          │
+│   [ Buat Laporan ]   [ Lihat Peta ]                     │
+├─────────────────────────────────────────────────────────┤
+│ Pilih Kategori Laporan                                  │
+│ ┌─Hama─┐ ┌─Penyakit─┐ ┌─Genangan─┐ ┌─Kekeringan─┐       │
+├─────────────────────────────────────────────────────────┤
+│ Peta Kejadian (read-only, marker kategori) │ Pembaruan  │
+│ ───────────────────────────────────────────│ Kejadian ▸ │
+│  (feed: thumbnail + tag status + kecamatan + waktu)     │
+└─────────────────────────────────────────────────────────┘
 ```
 
-Antrian verifikasi (desktop, dua kolom):
+- **Akses:** publik read-only untuk peta & pembaruan; "Buat Laporan" → jika pengunjung bukan petugas: arahan login/PWA (opsi: **formulir pengaduan publik dengan moderasi** — keputusan produk, §9). Data publik **tidak boleh** memuat PII pelapor; hanya agregat/kecamatan + status.
+- Kategori publik (4 kartu) adalah **penyederhanaan tampilan**: Hama→`pest`, Penyakit→`pest` (sub-tipe), Genangan→`irrigation`, Kekeringan→`weather`. Pemetaan final 6 domain → keputusan produk (§9).
+- Konten "Pembaruan Kejadian" = laporan *Diverifikasi* terpilih (kurasi otomatis: hanya Diverifikasi, tanpa PII) atau konten editorial BPS — keputusan konten (§9).
+- SEO/prerender: pertimbangkan SSG untuk landing (Vite + vite-plugin? cukup SPA + meta tags untuk fase awal).
+
+### C. Android PWA (mobile-first) — mockup panel kanan
 
 ```text
-┌──────────────┬──────────────────────────────────────┐
-│ Antrian (12) │  LH-20261105-0003 · Hama             │
-│ ───────────  │  Petugas: Siti Aminah · 5 Nov 13.20  │
-│ LH-…-0003   ●│  Desa: 3509010006 Jambesari          │
-│ LH-…-0004    │  ⚠ Titik 1,2 km di luar batas desa   │
-│ LH-…-0005    │  [Peta lokasi]  [Foto 1] [Foto 2]    │
-│ …            │  Catatan petugas: "…"                │
-│              │  [Tolak…]            [Verifikasi]    │
-└──────────────┴──────────────────────────────────────┘
+┌──────────────────────────┐
+│ 9:41                     │
+│ Sprout SiagaLahan → JAGAPADI   🔔︎│
+│ Wilayah: Jember          │
+│ ┌──────────────────────┐ │
+│ │ ✎ Buat Laporan       │ │  ← CTA full-width sawah-700
+│ └──────────────────────┘ │
+│ ┌─⏱─ 2 diproses · 1 perlu data ─▶│  ← kartu hijau #E7F4EA
+│ ┌─📄 2 laporan menunggu dikirim ▶│  ← kartu amber #FCF3D9
+│ Laporan Terbaru          │
+│ ┌──── foto ────[Menunggu Verifikasi]┐
+│ │ Dugaan hama pada jagung          │
+│ │ Kec. Sumberbaru · 12 Jun 09:24   │
+│ └──────────────────────────────────┘
+│ [Beranda] [Peta] [Laporan] [Akun]  ← bottom nav, aktif hijau
+└──────────────────────────┘
 ```
 
----
-
-## 6. Yang Berubah vs UI Saat Ini
-
-| Area | Sekarang | Usulan |
-|---|---|---|
-| Header | `bg-green-800` + bayangan | `sawah-950`, hairline border bawah, wordmark Bricolage |
-| Latar / teks | `#f8fafc` / `slate-*` | `latar` / `tinta`, `tinta-2`, `tinta-3` |
-| Font | `system-ui` | Public Sans (UI) + Bricolage Grotesque (display) + Plex Mono (data) |
-| Mode | terang saja | **terang + gelap** sejak Fase 2 (`class` strategy, CSS variables) |
-| Tombol primer | amber/green ad-hoc | `padi-400` di atas gelap / `sawah-700` di atas terang — satu pola |
-| Status laporan | belum ada | Badge semantik §3.1 + ikon lucide (`FileClock, Send, BadgeCheck, XCircle, Archive`) |
-| Emoji UI | 📡🖼️💾⚙️ | Ikon lucide stroke-2 |
-| Kartu/panel | radius & shadow seragam | radius per hierarki, hairline border, shadow hanya untuk floating |
-| Focus ring | `#1d4ed8` 3px | terang `#1D4ED8`; gelap `#FCD34D` |
-| `theme-color` & manifest PWA | `#15803d` / `#f8fafc` | `#133D2B` (keduanya) / `#F5F6F2` |
-| H1 & angka KPI | `font-extrabold system-ui` | Bricolage Grotesque 650–800, tracking rapat |
-
-Tetap dipertahankan: target sentuh ≥ 44 px, `touch-action: manipulation`, focus-visible, `CascadingRegionSelect`, TanStack Query.
+- Header sticky: wordmark kecil + lonceng (badge count notifikasi) + "Wilayah: Jember" (dropdown ganti wilayah bila petugas ditugaskan lintas kecamatan — Fase lanjut).
+- CTA primer = satu tombol besar; 2 kartu ringkasan status (jumlah diproses / menunggu kirim) — dari data nyata user login.
+- "Laporan Terbaru": kartu foto penuh-lebar (16:10) + badge status amber "Dikirim"/"Menunggu Verifikasi" sesuai enum; tap → detail.
+- **Bottom nav** (`fixed`, 4 item): Beranda (`House`), Peta (`Map`), Laporan (`FileText`), Akun (`CircleUserRound`); aktif = hijau + dot.
+- Alur lapor: form satu kolom → draf lokal IndexedDB → kompres WebP → submit + `Idempotency-Key` → kartu status berubah; offline indicator chip saat `navigator.onLine === false`.
 
 ---
 
-## 7. Rencana Implementasi & Gerbang Validasi
+## 5. Copy & ikon (aturan tetap)
 
-1. **Fase 2 (sekarang):** token CSS variables (terang + gelap) di `index.css`; `darkMode: 'class'` di Tailwind; toggle tema (sistem/terang/gelap) di pengaturan; self-host 3 font; komponen inti: `Button`, `Panel`, `StatusBadge`, `EmptyState`, `Field`, `StickyActionBar`. Bangun UI laporan & antrian verifikasi langsung dengan token (bukan retrofit kemudian).
-2. **Retrofit shell Fase 1** (header/tab/login) ke token + mode gelap.
-3. **Fase 3:** token dataviz; dashboard KPI (Bricolage untuk angka besar); peta choropleth.
-4. **GERBANG VALIDASI LAPANGAN (wajib sebelum token dikunci baseline):** uji keterbacaan ke **2–3 petugas lapangan** di bawah matahari langsung (form laporan, banner peringatan, CTA sticky; keduanya mode terang & gelap) + 1 statistisi untuk antrian verifikasi; catat temuan; revisi token; baru dokumen ini naik status menjadi *baseline v1.0* di Fase 5 (bersama audit UAT/SUS).
+Aturan copy v2 tetap berlaku (bahasa pengguna, aktif, error = sebab+tindakan, `id-ID`). Penyesuaian v3:
 
-**Checklist review tiap PR UI:** kontras teks ≥ 4.5:1 (target 7:1) · fokus keyboard terlihat di kedua mode · target ≥ 44 px · status tidak pernah warna-saja · tidak ada ALL-CAPS dekoratif · copy menyebut aksi nyata · 0 request font/CDN eksternal · lolos `prefers-reduced-motion` · tampilan benar di **kedua** mode.
+- Tagline kandidat beranda publik: **"Data cepat. Tindakan tepat. Pertanian lebih tangguh."** (boleh diganti pemilik).
+- Headline hero: **"Kenali kondisi sekitar. Laporkan lebih cepat."** (dari mockup; generik lintas domain — tidak menyebut domain tertentu).
+- CTA publik: **"Buat Laporan"** / **"Lihat Peta"**. CTA PWA: sama. Admin: **"Verifikasi"** / **"Tolak…"** / **"Simpan draf"** / **"Kirim laporan"**.
+- Status UI: `Draf · Dikirim · Diverifikasi · Ditolak · Diarsipkan` — **tidak ada** status lain; badge mockup "Menunggu Verifikasi" hanya *display synonym* untuk `Submitted` bila disetujui (default: tampilkan "Dikirim").
 
----
+## 6. Ikon brand (lucide)
 
-## 8. Anti-Pattern yang Dilarang di Codebase Ini
+`Sprout` (logo) · kategori: `Bug`, `Leaf`, `Waves`, `Sun`, `FlaskConical`, `Wheat`, `CloudRain`, `Tractor` · status: `FileClock`, `Send`, `BadgeCheck`, `CircleX`, `Archive` · peringatan: `TriangleAlert` · nav: `House`, `Map`, `FileText`, `CircleUserRound` · aksi: `Pencil`/`PenLine` (lapor), `Search`, `Bell`, `ChevronRight`, `Plus`, `Camera`, `MapPin`.
 
-- Krim `#F4F1EA` + terakota + serif; near-black + hijau asam; gradasi ungu–biru.
-- **Cap/stempel "dokumen resmi" pada nomor laporan** (ditolak v2) dan gimmick sejenis (rotasi, border ganda).
-- "SaaS card kit": kartu radius-seragam + shadow kecil di semua tempat + ikon dalam lingkaran pastel.
-- Eyebrow ALL-CAPS di atas setiap heading; angka "01/02/03" untuk konten yang bukan urutan.
-- Inter/system-ui sebagai "keputusan tipografi" tanpa diskusi.
-- Warna sebagai satu-satunya pembawa makna status.
-- Keluarga font keempat; font dari CDN; emoji sebagai ikon; hex langsung di komponen (selalu lewat token).
+## 7. Rencana Implementasi (tiga permukaan, inkremental)
 
----
+1. **Fase 2 (sekarang):** token v3 di `index.css` (terang+gelap), `tailwind.config.js`, font self-host; komponen: `Button`, `Chip`, `KpiCard`, `Panel`, `StatusBadge`, `EmptyState`, `Field`, `MapView` (marker divIcon kategori), `BottomNav`, `StickyActionBar`. Bangun **C (PWA)** untuk alur laporan + **A** untuk antrian/verifikasi minimal (tabel + drawer). Retrofit shell/login.
+2. **Fase 3:** KPI + peta choropleth (A), grafik analitik; **B (Website Publik) v1**: hero statis + kategori + peta read-only + pembaruan Diverifikasi terkurasi (tanpa PII); butuh **amandamen ROADMAP** (tambah permukaan/Fase publik) — §9.
+3. **Fase 4/5:** "Penugasan" (A), monitoring publik penuh; uji lapangan C di bawah matahari; audit kontras; SUS; kunci baseline.
+4. Setiap PR: checklist §7 DESIGN sebelumnya + tampilan benar di **kedua** mode + ketiga permukaan terdampak di-screenshot.
 
-## 9. Pertanyaan Terbuka & Status Keputusan
+## 8. Gerbang Validasi (tetap berlaku)
 
-**Sudah diputuskan (2026-11-05):** arah "Kartografi Ladang" (hijau + kuning padi) ✅ · tipografi Bricolage + Public Sans (+ Plex Mono data) ✅ · cap nomor laporan **ditolak** ✅ · mode terang **dan** gelap sejak awal ✅ · validasi 2–3 petugas sebelum token dikunci ✅.
+Uji ke **2–3 mitra statistik BPS / PPL / petugas pengolah data TPHP se-kecamatan** (permukaan C, outdoor, terang+gelap — mereka adalah target pengguna sebenarnya; pemilik produk yang menunjuk respondennya) + **1 statistisi** (permukaan A, antrian) sebelum dikunci baseline. Untuk **B**: uji keterbacaan ke **3–5 warga/petani umum** (audiens publik); mitra/PPL dapat dipakai sebagai proxy dengan catatan kemungkinan bias. Kriteria kelulusan: ditetapkan pemilik produk (§9).
 
-**Masih terbuka:**
-1. **Merek resmi BPS**: apakah ada logo/warna resmi yang wajib dipakai? Jika ada, `sawah`/`padi` disesuaikan.
-2. **Ambang & lokasi toggle tema**: di header layar masuk saja, atau di semua layar (menu pengaturan)?
-3. **Choropleth mode gelap**: perlu ramp sekuensial alternatif (hijau di atas `#101E16` mudah banding-banding buruk) — diputuskan saat Fase 3.
-4. **Kriteria kelulusan validasi lapangan** (mis. ≥ 80% petugas membaca status & CTA tanpa ragu) — disusun bersama pemilik produk sebelum uji dilakukan.
+## 9. Keputusan Pemilik Produk & Status
 
----
+**Diputuskan 2026-11-05 (sesi ini):**
+1. ✅ Website Publik **ditambahkan** ke ROADMAP sebagai **Fase 3.5 — Kanal Publik & Komunikasi** (ROADMAP + BLUEPRINT diamandemen; dibaca publik tanpa login; CTA → PWA petugas).
+2. ✅ Alur "Buat Laporan" publik: **diarahkan ke PWA petugas** (login). Tidak ada formulir publik bermoderasi pada fase ini.
+3. ✅ Pemetaan 4 kategori publik → domain PRD disetujui: Hama→`pest`, Penyakit→`pest`, Genangan→`irrigation`, Kekeringan→`weather` (hanya penyederhanaan tampilan; data tetap enum PRD).
 
-## 10. Riwayat
+**Masih menunggu:**
+4. **Arsitektur Website Publik**: rekomendasi sementara — route group publik di `apps/web` (satu SPA, lazy route `/`, `/peta`, `/panduan`, `/pembaruan`, shared design system) vs aplikasi terpisah `apps/public`. Menunggu putusan berbasis hosting/traffic.
+5. **Sumber & lisensi foto hero sawah** (milik sendiri atau stock bebas lisensi) + **tile server peta produksi** (OSM dev; produksi: Geoportal/self-host/tile policy + atribusi).
+6. **Logo/merek resmi BPS** — bila tersedia, menggantikan Sprout/wordmark.
+7. **Badge "Menunggu Verifikasi"** untuk `Submitted` (display synonym) — boleh, atau tetap "Dikirim"?
+8. **Tagline** — pakai "Data cepat. Tindakan tepat. Pertanian lebih tangguh."?
+9. **Gerbang validasi (§8)** — termasuk **3–5 warga/petani** untuk Website Publik; pemilik produk menunjuk respondennya (mis. lewat kontak penyuluh/poktan/BPS). Kriteria kelulusan belum ditetapkan.
+
+## 10. Anti-Pattern (v3)
+
+- Status/domain di luar PRD demi menyerupai mockup ("Ditugaskan" dsb.) — **dilarang**.
+- Pastel pekat sebagai teks kecil (kontras gagal) — teks kecil selalu `tinta`/`tinta-2` atau varian gelap §3.1b.
+- Menyembunyikan `is_coordinate_mismatch` demi estetika — selalu tampil amber + ikon.
+- PII pelapor di permukaan publik — agregat & kecamatan saja.
+- Hex ad-hoc di komponen; font dari CDN; emoji sebagai ikon; animasi non-esensial.
+- Mengunci token sebelum gerbang validasi §8 lulus.
+
+## 11. Riwayat
 
 | Tanggal | Perubahan |
 |---|---|
-| 2026-11-05 | v1 draft awal: brief, konsep Kartografi Ladang, token terang, cap nomor laporan sebagai signature, aturan copy, wireframe. |
-| 2026-11-05 | **v2 (revisi):** cap nomor laporan dihapus (keputusan pemilik); keberanian dialihkan ke tipografi Bricolage; **mode gelap dirancang penuh** (§3.1b); semua rasio kontras dihitung ulang — `tinta-3` diperbaiki `#6B7A70`→`#57685C` (5.47:1), klaim `sawah-800` 9.6→8.89:1, `sawah-700` 7.4→8.01:1, `padi-400` 7.5→6.41:1 (vs `sawah-950`) & 9.10:1 (vs `latar-gelap`); gerbang validasi lapangan eksplisit (§7, §9); aturan & anti-pattern disesuaikan. Menunggu validasi lapangan → baseline v1.0. |
+| 2026-11-05 | v1 draft awal (Kartografi Ladang, cap nomor laporan). |
+| 2026-11-05 | v2: cap dihapus; mode gelap dirancang; kontras dihitung ulang. |
+| 2026-11-05 | **v3: full adopsi mockup pemilik** (`data/Desain/tampilan/generated-image.png`): tiga permukaan (A Admin/Backend, B **Website Publik — BARU**, C Android PWA); kartu radius 18px + soft shadow + pastel tint; CTA hijau solid; peta-sentris; bottom nav mobile; status tetap enum PRD; tagline kandidat; kontras kartu/chip diverifikasi (≥4.5:1); dark mode = tint transparan + teks terang; nama produk tetap JAGAPADI. Menunggu putusan §9 (amandamen ROADMAP + alur publik) & gerbang validasi §8. |
+| 2026-11-05 | **v3.1: keputusan pemilik dikunci** — Website Publik resmi masuk ROADMAP sebagai **Fase 3.5** (BLUEPRINT ikut diamandemen); CTA publik → PWA petugas; pemetaan 4 kategori → domain PRD disetujui; ROADMAP.md & BLUEPRINT.md diperbarui. Masih terbuka: arsitektur B, foto hero, tile peta, merek BPS, badge synonym, tagline, kriteria & responden gerbang validasi (termasuk 3–5 warga/petani). |
+| 2026-11-05 | **v3.2: komposisi pengguna diperjelas pemilik produk** — pengumpul laporan lapangan = **mitra statistik BPS Kabupaten Jember** (sekarang) + **PPL / petugas pengolah data TPHP se-kecamatan** (rencana). PRD §3.1 diamandemen; audiens C & responden §8 diperbarui. Sisa §9 terbuka. |

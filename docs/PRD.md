@@ -41,7 +41,7 @@ Sistem menggunakan `spatie/laravel-permission` dengan **5 role eksplisit**. Kepe
 1. **`admin` (Administrator Sistem):** Pemilik penuh sistem; mengelola pengguna, master wilayah, master OPT, memverifikasi/menolak/mengarsipkan laporan seluruh kabupaten, memantau *queue*/scraper, dan melihat audit log.
 2. **`operator` (Operator Data Kabupaten):** Pengelola operasional harian; memverifikasi/menolak laporan petugas yang masuk (`Submitted`), mengelola master OPT & usulan OPT, serta mengimpor/memperbarui data pendukung (KSA, BPS, harga, iklim). Tidak mengelola akun pengguna atau konfigurasi sistem.
 3. **`statistisi` (Analis & Verifikator Statistik):** Konsumen analitik & penjaga kualitas data; memiliki akses baca global ke seluruh laporan resmi (`Submitted` & `Diverifikasi`), dashboard, peta PostGIS, evaluasi akurasi panen, **hak verifikasi kualitas laporan**, serta **ekspor data penuh (XLSX/CSV/PDF)**.
-4. **`petugas` (Petugas Lapangan / POPT / Penyuluh):** Ujung tombak pelaporan di lahan; membuat draf laporan (online maupun offline PWA), mengambil titik GPS & foto lapangan, mengirim (`submit`) dan memperbaiki laporan miliknya yang ditolak (`resubmit`), mengajukan usulan OPT baru, serta melihat dashboard/peta/riwayat **khusus laporan miliknya sendiri**.
+4. **`petugas` (Petugas/Mitra Pengumpul Data Lapangan):** Ujung tombak pelaporan di lahan. Pada praktiknya role ini **diisi oleh mitra statistik BPS Kabupaten Jember** dan — sesuai rencana — oleh **PPL (Penyuluh Pertanian Lapangan) / petugas pengolah data tingkat kecamatan di Dinas TPHP Kabupaten Jember**. Membuat draf laporan (online maupun offline PWA), mengambil titik GPS & foto lapangan, mengirim (`submit`) dan memperbaiki laporan miliknya yang ditolak (`resubmit`), mengajukan usulan OPT baru, serta melihat dashboard/peta/riwayat **khusus laporan miliknya sendiri**.
 5. **`viewer` (Pimpinan / Eksekutif):** Konsumen informasi baca-saja (*read-only*); memantau KPI dashboard tingkat kabupaten/kecamatan/desa, peta sebaran interaktif, tren KSA/BPS/harga/iklim, dan mengunduh laporan ekspor resmi.
 
 ### 3.2 Matriks Permission per Modul
@@ -310,3 +310,9 @@ Untuk menjamin keandalan di area persawahan Kabupaten Jember yang bersinyal lema
 4. **Data Transaksi Lama vs Data Referensi (Konfirmasi Gap-Check §4):**
    * **Data Referensi Diimpor:** Master Wilayah Jember (31 kecamatan, 248 desa), Master OPT (51 OPT), KSA Bulanan (3.952 baris, 2018–2026), Data Pertanian BPS, Harga Komoditas (2022–2026), dan Klimatologi Historis (2020–2026) diimpor bersih dari database `jagapadi_local`.
    * **Data Transaksi Laporan Dimulai Bersih (Fresh):** Laporan lapangan dimulai bersih di skema v3 (di `jagapadi_local` lama hanya ada 9 laporan hama & 7 laporan irigasi sampel).
+
+---
+
+## Amandemen 2026-11-05
+
+- **Komposisi role `petugas` diperjelas** berdasarkan klarifikasi pemilik produk: pengumpul laporan di lapangan adalah **mitra statistik BPS Kabupaten Jember**, dengan rencana perluasan ke **PPL / petugas pengolah data tingkat kecamatan di Dinas TPHP Kabupaten Jember**. Definisi peran di §3.1 diperbarui; matriks permission dan perilaku role tidak berubah.

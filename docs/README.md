@@ -12,7 +12,7 @@
 | # | Dokumen | Isi |
 |---|---------|-----|
 | 0 | [BLUEPRINT.md](BLUEPRINT.md) | Blueprint arsitektur JAGAPADI v3 (baseline disetujui) |
-| 0 | [DESIGN.md](DESIGN.md) | **DRAFT** Brief desain & sistem token UI (konsep "Kartografi Ladang", warna/tipografi/copy/wireframe) untuk `apps/web` |
+| 0 | [DESIGN.md](DESIGN.md) | **v3.1** Brief desain & token UI (adopsi penuh mockup pemilik): tiga permukaan A Admin/Backend, B Website Publik (Fase 3.5), C Android PWA |
 | 0 | [PRD.md](PRD.md) | **Product Requirements Document**: matriks RBAC 5 role, skema detail 6 domain, idempotency offline PWA, dan keputusan modul legacy |
 | 0 | [ROADMAP.md](ROADMAP.md) | Rencana fase 0–5 & definisi selesai |
 | 0 | [SERVER-HARDWARE-SPEC.md](SERVER-HARDWARE-SPEC.md) | **Spesifikasi perangkat keras server (`DESKTOP-221G8EB`)**, alokasi RAM 32 GB (WSL2/PostgreSQL/Redis), dan checklist operasional host |

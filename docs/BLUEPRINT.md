@@ -281,4 +281,10 @@ Catatan:
 
 ---
 
+---
+
+## Amandemen 2026-11-05 — Website Publik (Fase 3.5)
+
+Pemilik produk menyetujui penambahan permukaan **Website Publik** di samping Web Admin & PWA Lapangan: beranda dengan hero + 4 kategori penyederhanaan (Hama→`pest`, Penyakit→`pest`, Genangan→`irrigation`, Kekeringan→`weather`), Peta Kejadian read-only, dan pembaruan laporan `Diverifikasi` terkurasi **tanpa PII**. CTA "Buat Laporan" mengarahkan ke PWA petugas (tanpa formulir publik bermoderasi). Terdaftar sebagai **Fase 3.5** di `docs/ROADMAP.md`; brief & sistem token UI: `docs/DESIGN.md` v3. Arsitektur dan keamanan lain dari blueprint ini tidak berubah.
+
 *Dokumen terkait: `docs/PRD.md` (persyaratan produk & matriks RBAC), `docs/ROADMAP.md` (rencana fase).*
