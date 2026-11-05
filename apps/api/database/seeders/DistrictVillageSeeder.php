@@ -18,6 +18,7 @@ class DistrictVillageSeeder extends Seeder
 
         if (! file_exists($districtsPath) || ! file_exists($villagesPath)) {
             $this->command?->warn('File data wilayah JSON tidak ditemukan.');
+
             return;
         }
 

@@ -18,7 +18,7 @@ final class RbacTest extends TestCase
 
         $response = $this->actingAs($petugas)
             ->postJson('/api/opts', [
-                'code' => 'OPT-TEST-' . uniqid(),
+                'code' => 'OPT-TEST-'.uniqid(),
                 'name' => 'Hama Uji Coba',
                 'category' => 'hama',
             ]);
@@ -29,7 +29,7 @@ final class RbacTest extends TestCase
     public function test_operator_can_create_opt(): void
     {
         $operator = User::where('email', 'operator@jagapadi.test')->firstOrFail();
-        $code = 'OPT-OP-' . uniqid();
+        $code = 'OPT-OP-'.uniqid();
 
         $response = $this->actingAs($operator)
             ->postJson('/api/opts', [

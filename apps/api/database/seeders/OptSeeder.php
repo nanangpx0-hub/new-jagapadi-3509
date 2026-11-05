@@ -15,6 +15,7 @@ class OptSeeder extends Seeder
 
         if (! file_exists($optsPath)) {
             $this->command?->warn('File opts.json tidak ditemukan.');
+
             return;
         }
 

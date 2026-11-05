@@ -66,6 +66,9 @@ jobs:
       - name: Run Migrations
         run: php artisan migrate --force
 
+      - name: Seed Database (RBAC, Demo Users, Wilayah, OPT)
+        run: php artisan db:seed --force
+
       - name: Run Laravel Pint (Code Style)
         run: composer lint
 

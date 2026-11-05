@@ -160,6 +160,109 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/reports": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Menampilkan daftar laporan dengan filter dan pembatasan hak akses berbasis peran (RBAC) */
+        get: operations["reports.index"];
+        put?: never;
+        /** Membuat laporan baru (Draf atau Langsung Submit) */
+        post: operations["reports.store"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/reports/{report}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Detail satu laporan */
+        get: operations["reports.show"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/reports/{report}/submit": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Submit laporan dari draf / ditolak */
+        post: operations["reports.submit"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/reports/{report}/photos": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Unggah foto lampiran laporan lapangan */
+        post: operations["reports.photos"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/reports/{report}/verify": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Verifikasi laporan oleh verifikator (Admin / Operator / Statistisi) */
+        post: operations["reports.verify"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/reports/{report}/reject": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Tolak laporan dengan alasan penolakan wajib */
+        post: operations["reports.reject"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -204,6 +307,53 @@ export interface components {
             updated_at: string | null;
             /** Format: date-time */
             deleted_at: string | null;
+        };
+        /** Report */
+        Report: {
+            id: number;
+            client_uuid: string | null;
+            report_number: string | null;
+            report_type: string;
+            user_id: number;
+            status: string;
+            /** Format: date */
+            report_date: string;
+            regency_bps_code: string;
+            district_id: number;
+            village_id: number | null;
+            location_name: string | null;
+            address_detail: string | null;
+            latitude: number | null;
+            longitude: number | null;
+            is_coordinate_mismatch: boolean;
+            notes: string | null;
+            verified_by: number | null;
+            /** Format: date-time */
+            verified_at: string | null;
+            verification_notes: string | null;
+            submitted_ip: string | null;
+            /** Format: date-time */
+            created_at: string | null;
+            /** Format: date-time */
+            updated_at: string | null;
+            /** Format: date-time */
+            deleted_at: string | null;
+            geom: string | null;
+        };
+        /** ReportPhoto */
+        ReportPhoto: {
+            id: number;
+            report_id: number;
+            file_path: string;
+            caption: string | null;
+            file_size_bytes: number | null;
+            mime_type: string;
+            width: number | null;
+            height: number | null;
+            /** Format: date-time */
+            created_at: string | null;
+            /** Format: date-time */
+            updated_at: string | null;
         };
         /** Village */
         Village: {
@@ -719,6 +869,322 @@ export interface operations {
             };
             401: components["responses"]["AuthenticationException"];
             404: components["responses"]["ModelNotFoundException"];
+        };
+    };
+    "reports.index": {
+        parameters: {
+            query?: {
+                status?: string;
+                report_type?: string;
+                district_id?: string;
+                village_id?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        status: "ok";
+                        data: components["schemas"]["Report"][];
+                        meta: {
+                            current_page: number;
+                            last_page: number;
+                            per_page: number;
+                            total: number;
+                        };
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+        };
+    };
+    "reports.store": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** Format: uuid */
+                    client_uuid?: string | null;
+                    /** @enum {string} */
+                    report_type: "pest" | "irrigation" | "fertilizer" | "harvest" | "weather" | "equipment";
+                    /** @enum {string|null} */
+                    action?: "draft" | "submit" | null;
+                    /** Format: date-time */
+                    report_date?: string | null;
+                    district_id: number;
+                    village_id?: number | null;
+                    location_name?: string | null;
+                    address_detail?: string | null;
+                    latitude?: number | null;
+                    longitude?: number | null;
+                    notes?: string | null;
+                    /** @description Validasi Domain Pest */
+                    pest_detail?: {
+                        opt_id?: number;
+                        crop_type?: string | null;
+                        crop_age_days?: number | null;
+                        crop_phase?: string | null;
+                        /** @enum {string} */
+                        intensity_level?: "Ringan" | "Sedang" | "Berat" | "Puso";
+                        affected_area_ha?: number;
+                        threatened_area_ha?: number | null;
+                        control_recommendation?: string | null;
+                    };
+                    /** @description Validasi Domain Irrigation */
+                    irrigation_detail?: {
+                        irrigation_area_name?: string | null;
+                        /** @enum {string} */
+                        channel_type?: "Primer" | "Sekunder" | "Tersier";
+                        /** @enum {string} */
+                        physical_condition?: "Bagus" | "Sedang" | "Tidak Bagus" | "Rusak";
+                        /** @enum {string} */
+                        water_discharge_status?: "Cukup" | "Kurang" | "Kering";
+                        service_area_ha?: number | null;
+                        /** @enum {string|null} */
+                        repair_status?: "Normal" | "Belum Ditangani" | "Dalam Perbaikan" | "Selesai Diperbaiki" | null;
+                        action_taken?: string | null;
+                    };
+                };
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        status: "ok";
+                        /** @enum {string} */
+                        message: "Laporan berhasil dikirim." | "Draf laporan berhasil disimpan.";
+                        data: components["schemas"]["Report"];
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            422: components["responses"]["ValidationException"];
+        };
+    };
+    "reports.show": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The report ID */
+                report: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        status: "ok";
+                        data: components["schemas"]["Report"];
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        message: "Anda tidak memiliki akses ke laporan ini.";
+                    };
+                };
+            };
+            404: components["responses"]["ModelNotFoundException"];
+        };
+    };
+    "reports.submit": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The report ID */
+                report: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        status: "ok";
+                        /** @constant */
+                        message: "Laporan berhasil diajukan untuk verifikasi.";
+                        data: components["schemas"]["Report"];
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        message: "Anda tidak memiliki hak akses mengirim laporan ini.";
+                    };
+                };
+            };
+            404: components["responses"]["ModelNotFoundException"];
+        };
+    };
+    "reports.photos": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The report ID */
+                report: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": {
+                    /**
+                     * Format: binary
+                     * @description Maximum file size: 5120 kilobytes.
+                     */
+                    photo: string;
+                    /** @description Max 5MB */
+                    caption?: string | null;
+                };
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        status: "ok";
+                        /** @constant */
+                        message: "Foto berhasil diunggah.";
+                        data: components["schemas"]["ReportPhoto"];
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        message: "Anda tidak memiliki hak mengunggah foto ke laporan ini.";
+                    };
+                };
+            };
+            404: components["responses"]["ModelNotFoundException"];
+            422: components["responses"]["ValidationException"];
+        };
+    };
+    "reports.verify": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The report ID */
+                report: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    notes?: string | null;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        status: "ok";
+                        /** @constant */
+                        message: "Laporan berhasil diverifikasi.";
+                        data: components["schemas"]["Report"];
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            404: components["responses"]["ModelNotFoundException"];
+            422: components["responses"]["ValidationException"];
+        };
+    };
+    "reports.reject": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The report ID */
+                report: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    reason: string;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        status: "ok";
+                        /** @constant */
+                        message: "Laporan ditolak.";
+                        data: components["schemas"]["Report"];
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            404: components["responses"]["ModelNotFoundException"];
+            422: components["responses"]["ValidationException"];
         };
     };
 }

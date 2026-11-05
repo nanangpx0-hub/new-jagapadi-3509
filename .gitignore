@@ -17,6 +17,12 @@ build/
 coverage/
 *.tsbuildinfo
 
+# Data GIS/referensi lokal (GeoJSON/GPKG besar, sumber impor) — jangan di-commit
+data/
+
+# Perintah lokal & artefak test
+.phpunit.result.cache
+
 # Database lokal & runtime Laravel
 *.sqlite
 *.sqlite-journal
@@ -27,7 +33,6 @@ apps/api/storage/framework/sessions/*
 apps/api/storage/framework/views/*
 apps/api/bootstrap/cache/*
 !apps/api/bootstrap/cache/.gitignore
-.phpunit.result.cache
 
 # Log
 *.log

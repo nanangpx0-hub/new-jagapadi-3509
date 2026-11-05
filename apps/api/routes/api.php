@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\DistrictController;
 use App\Http\Controllers\Api\HealthController;
 use App\Http\Controllers\Api\OptController;
+use App\Http\Controllers\Api\ReportController;
 use Illuminate\Support\Facades\Route;
 
 // Health Check
@@ -42,5 +43,20 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/', [OptController::class, 'store'])->name('opts.store');
         Route::put('/{opt}', [OptController::class, 'update'])->name('opts.update');
         Route::delete('/{opt}', [OptController::class, 'destroy'])->name('opts.destroy');
+    });
+
+    // Modul Pelaporan (Fase 2: Hama & Irigasi)
+    Route::prefix('reports')->group(function () {
+        Route::get('/', [ReportController::class, 'index'])->name('reports.index');
+        Route::get('/{report}', [ReportController::class, 'show'])->name('reports.show');
+        Route::post('/', [ReportController::class, 'store'])->name('reports.store');
+        Route::post('/{report}/submit', [ReportController::class, 'submit'])->name('reports.submit');
+        Route::post('/{report}/photos', [ReportController::class, 'uploadPhoto'])->name('reports.photos');
+
+        // Verifikasi & Penolakan Laporan (Admin, Operator, Statistisi)
+        Route::middleware('permission:reports.verify')->group(function () {
+            Route::post('/{report}/verify', [ReportController::class, 'verify'])->name('reports.verify');
+            Route::post('/{report}/reject', [ReportController::class, 'reject'])->name('reports.reject');
+        });
     });
 });
