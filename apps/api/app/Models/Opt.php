@@ -24,6 +24,8 @@ class Opt extends Model
         'etl_unit',
         'photo_url',
         'description',
+        'attack_signs',
+        'management',
         'recommendations',
         'references',
         'is_active',

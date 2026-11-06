@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220" role="img" aria-label="Ilustrasi skematis OPT">
+  <rect width="320" height="220" rx="16" fill="#F7FAF5" stroke="#DDE5DC"/>
+  <circle cx="288" cy="32" r="14" fill="#B45309" opacity="0.15"/>
+  <circle cx="288" cy="32" r="5" fill="#B45309"/>
+  <g stroke="#1B2A21" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="#133D2B">
+    <line x1="126.0" y1="88.0" x2="102.0" y2="66.0"/>
+    <line x1="194.0" y1="88.0" x2="218.0" y2="66.0"/>
+    <ellipse cx="160" cy="126.0" rx="44.0" ry="40.0" fill="#133D2B" fill-opacity="0.9"/>
+    <ellipse cx="160" cy="130.0" rx="16.0" ry="28.0" fill="#F7FAF5" fill-opacity="0.25" stroke="none"/>
+    <circle cx="160" cy="80.0" r="18.0"/>
+    <line x1="160" y1="88.0" x2="160" y2="162.0" stroke="#F7FAF5" stroke-width="3"/>
+    <line x1="116.0" y1="120.0" x2="94.0" y2="136.0"/>
+    <line x1="204.0" y1="120.0" x2="226.0" y2="136.0"/>
+    <line x1="120.0" y1="146.0" x2="100.0" y2="164.0"/>
+    <line x1="200.0" y1="146.0" x2="220.0" y2="164.0"/>
+  </g>
+</svg>

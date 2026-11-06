@@ -8,9 +8,12 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
+use Laravel\Sanctum\PersonalAccessToken;
 
 final class AuthController extends Controller
 {
@@ -52,6 +55,18 @@ final class AuthController extends Controller
 
         RateLimiter::clear($throttleKey);
 
+        // 1) Autentikasi sesi (browser SPA/PWA) — middleware stateful Sanctum + cookie HttpOnly.
+        //    Hanya berlaku bila request memiliki session store (stateful); request stateless
+        //    (klien eksternal/test) berjalan murni dengan bearer token.
+        if ($request->hasSession()) {
+            Auth::guard('web')->attempt([
+                'email' => $validated['email'],
+                'password' => $validated['password'],
+            ], true);
+            $request->session()->regenerate();
+        }
+
+        // 2) Token tetap diterbitkan untuk klien eksternal (opsional, BLUEPRINT §2 & §7)
         $token = $user->createToken('jagapadi-auth-token')->plainTextToken;
 
         return response()->json([
@@ -65,9 +80,31 @@ final class AuthController extends Controller
                 'phone' => $user->phone,
                 'nip' => $user->nip,
                 'must_change_password' => $user->must_change_password,
+                'theme_preference' => $user->theme_preference,
                 'roles' => $user->getRoleNames(),
                 'permissions' => $user->getAllPermissions()->pluck('name'),
             ],
+        ]);
+    }
+
+    /**
+     * Simpan preferensi tema pengguna yang sedang login (dark | white | sawah).
+     */
+    public function updateTheme(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'theme_preference' => ['required', 'string', Rule::in(['dark', 'white', 'sawah'])],
+        ]);
+
+        /** @var User $user */
+        $user = $request->user();
+        $user->theme_preference = $validated['theme_preference'];
+        $user->save();
+
+        return response()->json([
+            'status' => 'ok',
+            'message' => 'Preferensi tema tersimpan.',
+            'data' => ['theme_preference' => $user->theme_preference],
         ]);
     }
 
@@ -88,6 +125,7 @@ final class AuthController extends Controller
                 'phone' => $user->phone,
                 'nip' => $user->nip,
                 'must_change_password' => $user->must_change_password,
+                'theme_preference' => $user->theme_preference,
                 'roles' => $user->getRoleNames(),
                 'permissions' => $user->getAllPermissions()->pluck('name'),
             ],
@@ -99,7 +137,18 @@ final class AuthController extends Controller
      */
     public function logout(Request $request): JsonResponse
     {
-        $request->user()?->currentAccessToken()?->delete();
+        // Cabut token milik klien eksternal bila sedang dipakai
+        $token = $request->user()?->currentAccessToken();
+        if ($token instanceof PersonalAccessToken) {
+            $token->delete();
+        }
+
+        // Cabut sesi browser (SPA/PWA) dan rotasi token CSRF
+        if ($request->hasSession()) {
+            Auth::guard('web')->logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+        }
 
         return response()->json([
             'status' => 'ok',

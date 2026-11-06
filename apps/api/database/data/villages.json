@@ -2,1241 +2,1241 @@
     {
         "district_code": "3509010",
         "code": "3509010001",
-        "name": "Ajung"
+        "name": "Paseban"
     },
     {
         "district_code": "3509010",
         "code": "3509010002",
-        "name": "Klompangan"
-    },
-    {
-        "district_code": "3509020",
-        "code": "3509020001",
-        "name": "Ambulu"
-    },
-    {
-        "district_code": "3509020",
-        "code": "3509020002",
-        "name": "Andongsari"
-    },
-    {
-        "district_code": "3509030",
-        "code": "3509030001",
-        "name": "Arjasa"
-    },
-    {
-        "district_code": "3509030",
-        "code": "3509030002",
-        "name": "Biting"
-    },
-    {
-        "district_code": "3509040",
-        "code": "3509040001",
-        "name": "Balung Kidul"
-    },
-    {
-        "district_code": "3509040",
-        "code": "3509040002",
-        "name": "Balung Kulon"
-    },
-    {
-        "district_code": "3509050",
-        "code": "3509050001",
-        "name": "Badean"
-    },
-    {
-        "district_code": "3509050",
-        "code": "3509050002",
-        "name": "Bangsalsari"
+        "name": "Cakru"
     },
     {
         "district_code": "3509010",
         "code": "3509010003",
-        "name": "Mangaran"
+        "name": "Kraton"
     },
     {
         "district_code": "3509010",
         "code": "3509010004",
-        "name": "Pancakarya"
-    },
-    {
-        "district_code": "3509020",
-        "code": "3509020003",
-        "name": "Karang Anyar"
-    },
-    {
-        "district_code": "3509020",
-        "code": "3509020004",
-        "name": "Pontang"
-    },
-    {
-        "district_code": "3509030",
-        "code": "3509030003",
-        "name": "Candijati"
-    },
-    {
-        "district_code": "3509030",
-        "code": "3509030004",
-        "name": "Darsono"
-    },
-    {
-        "district_code": "3509040",
-        "code": "3509040003",
-        "name": "Balung Lor"
-    },
-    {
-        "district_code": "3509050",
-        "code": "3509050003",
-        "name": "Banjarsari"
-    },
-    {
-        "district_code": "3509050",
-        "code": "3509050004",
-        "name": "Curahkalong"
+        "name": "Wonorejo"
     },
     {
         "district_code": "3509010",
         "code": "3509010005",
-        "name": "Rowoindah"
+        "name": "Kencong"
     },
     {
-        "district_code": "3509010",
-        "code": "3509010006",
-        "name": "Sukamakmur"
+        "district_code": "3509020",
+        "code": "3509020001",
+        "name": "Kepanjen"
     },
     {
-        "district_code": "3509010",
-        "code": "3509010007",
-        "name": "Wirowongso"
+        "district_code": "3509020",
+        "code": "3509020002",
+        "name": "Mayangan"
+    },
+    {
+        "district_code": "3509020",
+        "code": "3509020003",
+        "name": "Menampu"
+    },
+    {
+        "district_code": "3509020",
+        "code": "3509020004",
+        "name": "Bagorejo"
     },
     {
         "district_code": "3509020",
         "code": "3509020005",
-        "name": "Sabrang"
+        "name": "Gumukmas"
     },
     {
         "district_code": "3509020",
         "code": "3509020006",
-        "name": "Sumberejo"
+        "name": "Purwoasri"
     },
     {
         "district_code": "3509020",
         "code": "3509020007",
-        "name": "Tegalsari"
+        "name": "Tembokrejo"
+    },
+    {
+        "district_code": "3509020",
+        "code": "3509020008",
+        "name": "Karangrejo"
+    },
+    {
+        "district_code": "3509030",
+        "code": "3509030001",
+        "name": "Mojomulyo"
+    },
+    {
+        "district_code": "3509030",
+        "code": "3509030002",
+        "name": "Mojosari"
+    },
+    {
+        "district_code": "3509030",
+        "code": "3509030003",
+        "name": "Puger Kulon"
+    },
+    {
+        "district_code": "3509030",
+        "code": "3509030004",
+        "name": "Puger Wetan"
     },
     {
         "district_code": "3509030",
         "code": "3509030005",
-        "name": "Kamal"
+        "name": "Grenden"
     },
     {
         "district_code": "3509030",
         "code": "3509030006",
-        "name": "Kemuning Lor"
+        "name": "Mlokorejo"
+    },
+    {
+        "district_code": "3509030",
+        "code": "3509030007",
+        "name": "Kasiyan"
+    },
+    {
+        "district_code": "3509030",
+        "code": "3509030008",
+        "name": "Kasiyan Timur"
+    },
+    {
+        "district_code": "3509030",
+        "code": "3509030009",
+        "name": "Wonosari"
+    },
+    {
+        "district_code": "3509030",
+        "code": "3509030010",
+        "name": "Jambearum"
+    },
+    {
+        "district_code": "3509030",
+        "code": "3509030011",
+        "name": "Bagon"
+    },
+    {
+        "district_code": "3509030",
+        "code": "3509030012",
+        "name": "Wringin Telu"
+    },
+    {
+        "district_code": "3509040",
+        "code": "3509040001",
+        "name": "Lojejer"
+    },
+    {
+        "district_code": "3509040",
+        "code": "3509040002",
+        "name": "Ampel"
+    },
+    {
+        "district_code": "3509040",
+        "code": "3509040003",
+        "name": "Tanjung Rejo"
     },
     {
         "district_code": "3509040",
         "code": "3509040004",
-        "name": "Curahlele"
+        "name": "Kesilir"
     },
     {
         "district_code": "3509040",
         "code": "3509040005",
-        "name": "Gumelar"
+        "name": "Dukuh Dempok"
     },
     {
         "district_code": "3509040",
         "code": "3509040006",
-        "name": "Karangduren"
+        "name": "Tamansari"
     },
     {
         "district_code": "3509040",
         "code": "3509040007",
-        "name": "Karang Semanding"
+        "name": "Glundengan"
     },
     {
-        "district_code": "3509040",
-        "code": "3509040008",
-        "name": "Tutul"
+        "district_code": "3509050",
+        "code": "3509050001",
+        "name": "Sumberrejo"
+    },
+    {
+        "district_code": "3509050",
+        "code": "3509050002",
+        "name": "Andongsari"
+    },
+    {
+        "district_code": "3509050",
+        "code": "3509050003",
+        "name": "Sabrang"
+    },
+    {
+        "district_code": "3509050",
+        "code": "3509050004",
+        "name": "Ambulu"
     },
     {
         "district_code": "3509050",
         "code": "3509050005",
-        "name": "Gambirono"
+        "name": "Pontang"
     },
     {
         "district_code": "3509050",
         "code": "3509050006",
-        "name": "Karangsono"
+        "name": "Karang Anyar"
     },
     {
         "district_code": "3509050",
         "code": "3509050007",
-        "name": "Langkap"
-    },
-    {
-        "district_code": "3509050",
-        "code": "3509050008",
-        "name": "Petung"
-    },
-    {
-        "district_code": "3509050",
-        "code": "3509050009",
-        "name": "Sukorejo"
-    },
-    {
-        "district_code": "3509050",
-        "code": "3509050010",
-        "name": "Tisnogambar"
-    },
-    {
-        "district_code": "3509050",
-        "code": "3509050011",
-        "name": "Tugusari"
+        "name": "Tegalsari"
     },
     {
         "district_code": "3509060",
         "code": "3509060001",
-        "name": "Bagorejo"
+        "name": "Andongrejo"
     },
     {
         "district_code": "3509060",
         "code": "3509060002",
-        "name": "Gumukmas"
+        "name": "Curahnongko"
     },
     {
         "district_code": "3509060",
         "code": "3509060003",
-        "name": "Karangrejo"
+        "name": "Sanenrejo"
     },
     {
         "district_code": "3509060",
         "code": "3509060004",
-        "name": "Kepanjen"
+        "name": "Wonoasri"
     },
     {
         "district_code": "3509060",
         "code": "3509060005",
-        "name": "Mayangan"
+        "name": "Sidodadi"
     },
     {
         "district_code": "3509060",
         "code": "3509060006",
-        "name": "Menampu"
+        "name": "Pondokrejo"
     },
     {
         "district_code": "3509060",
         "code": "3509060007",
-        "name": "Purwoasri"
+        "name": "Curahtakir"
     },
     {
         "district_code": "3509060",
         "code": "3509060008",
-        "name": "Tembokrejo"
+        "name": "Tempurejo"
     },
     {
         "district_code": "3509070",
         "code": "3509070001",
-        "name": "Jelbuk"
+        "name": "Mulyorejo"
     },
     {
         "district_code": "3509070",
         "code": "3509070002",
-        "name": "Panduman"
+        "name": "Pace"
     },
     {
         "district_code": "3509070",
         "code": "3509070003",
-        "name": "Sucopangepok"
+        "name": "Harjomulyo"
     },
     {
         "district_code": "3509070",
         "code": "3509070004",
-        "name": "Sugerkidul"
+        "name": "Karangharjo"
     },
     {
         "district_code": "3509070",
         "code": "3509070005",
-        "name": "Sukojember"
+        "name": "Silo"
     },
     {
         "district_code": "3509070",
         "code": "3509070006",
-        "name": "Sukowiryo"
+        "name": "Sempolan"
+    },
+    {
+        "district_code": "3509070",
+        "code": "3509070007",
+        "name": "Sumberjati"
+    },
+    {
+        "district_code": "3509070",
+        "code": "3509070008",
+        "name": "Garahan"
+    },
+    {
+        "district_code": "3509070",
+        "code": "3509070009",
+        "name": "Sidomulyo"
     },
     {
         "district_code": "3509080",
         "code": "3509080001",
-        "name": "Cangkring"
+        "name": "Seputih"
     },
     {
         "district_code": "3509080",
         "code": "3509080002",
-        "name": "Jatimulyo"
+        "name": "Sidomukti"
     },
     {
         "district_code": "3509080",
         "code": "3509080003",
-        "name": "Jatisari"
+        "name": "Sumber Kejayan"
     },
     {
         "district_code": "3509080",
         "code": "3509080004",
-        "name": "Jenggawah"
+        "name": "Tegalrejo"
     },
     {
         "district_code": "3509080",
         "code": "3509080005",
-        "name": "Kemuningsari Kidul"
+        "name": "Tegalwaru"
     },
     {
         "district_code": "3509080",
         "code": "3509080006",
-        "name": "Kertonegoro"
+        "name": "Mayang"
     },
     {
         "district_code": "3509080",
         "code": "3509080007",
-        "name": "Sruni"
-    },
-    {
-        "district_code": "3509080",
-        "code": "3509080008",
-        "name": "Wonojati"
+        "name": "Mrawan"
     },
     {
         "district_code": "3509090",
         "code": "3509090001",
-        "name": "Jombang"
+        "name": "Kawangrejo"
     },
     {
         "district_code": "3509090",
         "code": "3509090002",
-        "name": "Keting"
+        "name": "Tamansari"
     },
     {
         "district_code": "3509090",
         "code": "3509090003",
-        "name": "Ngampelrejo"
+        "name": "Suco"
     },
     {
         "district_code": "3509090",
         "code": "3509090004",
-        "name": "Padomasan"
+        "name": "Lampeji"
     },
     {
         "district_code": "3509090",
         "code": "3509090005",
-        "name": "Sarimulyo"
+        "name": "Mumbulsari"
     },
     {
         "district_code": "3509090",
         "code": "3509090006",
-        "name": "Wringinagung"
+        "name": "Lengkong"
+    },
+    {
+        "district_code": "3509090",
+        "code": "3509090007",
+        "name": "Karangkedawung"
     },
     {
         "district_code": "3509100",
         "code": "3509100001",
-        "name": "Ajung"
+        "name": "Kemuning Sari Kidul"
     },
     {
         "district_code": "3509100",
         "code": "3509100002",
-        "name": "Gambiran"
+        "name": "Kertonegoro"
     },
     {
         "district_code": "3509100",
         "code": "3509100003",
-        "name": "Glagahwero"
+        "name": "Jatisari"
     },
     {
         "district_code": "3509100",
         "code": "3509100004",
-        "name": "Gumuksari"
+        "name": "Sruni"
     },
     {
         "district_code": "3509100",
         "code": "3509100005",
-        "name": "Kalisat"
+        "name": "Cangkring"
     },
     {
         "district_code": "3509100",
         "code": "3509100006",
-        "name": "Patempuran"
+        "name": "Wonojati"
     },
     {
         "district_code": "3509100",
         "code": "3509100007",
-        "name": "Plalangan"
+        "name": "Jenggawah"
     },
     {
         "district_code": "3509100",
         "code": "3509100008",
-        "name": "Sebanen"
-    },
-    {
-        "district_code": "3509100",
-        "code": "3509100009",
-        "name": "Sukoreno"
-    },
-    {
-        "district_code": "3509100",
-        "code": "3509100010",
-        "name": "Sumberjeruk"
-    },
-    {
-        "district_code": "3509100",
-        "code": "3509100011",
-        "name": "Sumberkalong"
-    },
-    {
-        "district_code": "3509100",
-        "code": "3509100012",
-        "name": "Sumberketempa"
+        "name": "Jatimulyo"
     },
     {
         "district_code": "3509110",
         "code": "3509110001",
-        "name": "Jember Kidul"
+        "name": "Mangaran"
     },
     {
         "district_code": "3509110",
         "code": "3509110002",
-        "name": "Kaliwates"
+        "name": "Sukamakmur"
     },
     {
         "district_code": "3509110",
         "code": "3509110003",
-        "name": "Kebon Agung"
+        "name": "Klompangan"
     },
     {
         "district_code": "3509110",
         "code": "3509110004",
-        "name": "Kepatihan"
+        "name": "Pancakarya"
     },
     {
         "district_code": "3509110",
         "code": "3509110005",
-        "name": "Mangli"
+        "name": "Ajung"
     },
     {
         "district_code": "3509110",
         "code": "3509110006",
-        "name": "Sempusari"
+        "name": "Wirowongso"
     },
     {
         "district_code": "3509110",
         "code": "3509110007",
-        "name": "Tegal Besar"
+        "name": "Rowo Indah"
     },
     {
         "district_code": "3509120",
         "code": "3509120001",
-        "name": "Cakru"
+        "name": "Curahmalang"
     },
     {
         "district_code": "3509120",
         "code": "3509120002",
-        "name": "Kencong"
+        "name": "Nogosari"
     },
     {
         "district_code": "3509120",
         "code": "3509120003",
-        "name": "Kraton"
+        "name": "Rowotamtu"
     },
     {
         "district_code": "3509120",
         "code": "3509120004",
-        "name": "Paseban"
+        "name": "Pecoro"
     },
     {
         "district_code": "3509120",
         "code": "3509120005",
-        "name": "Wonorejo"
+        "name": "Rambipuji"
+    },
+    {
+        "district_code": "3509120",
+        "code": "3509120006",
+        "name": "Kaliwining"
+    },
+    {
+        "district_code": "3509120",
+        "code": "3509120007",
+        "name": "Rambigundam"
+    },
+    {
+        "district_code": "3509120",
+        "code": "3509120008",
+        "name": "Gugut"
     },
     {
         "district_code": "3509130",
         "code": "3509130001",
-        "name": "Karangpaiton"
+        "name": "Karang Duren"
     },
     {
         "district_code": "3509130",
         "code": "3509130002",
-        "name": "Ledokombo"
+        "name": "Karang Semanding"
     },
     {
         "district_code": "3509130",
         "code": "3509130003",
-        "name": "Lembengan"
+        "name": "Tutul"
     },
     {
         "district_code": "3509130",
         "code": "3509130004",
-        "name": "Slateng"
+        "name": "Balung Kulon"
     },
     {
         "district_code": "3509130",
         "code": "3509130005",
-        "name": "Sukogidri"
+        "name": "Balung Kidul"
     },
     {
         "district_code": "3509130",
         "code": "3509130006",
-        "name": "Sumberanget"
+        "name": "Balung Lor"
     },
     {
         "district_code": "3509130",
         "code": "3509130007",
-        "name": "Sumberbulus"
+        "name": "Gumelar"
     },
     {
         "district_code": "3509130",
         "code": "3509130008",
-        "name": "Sumberlesung"
-    },
-    {
-        "district_code": "3509130",
-        "code": "3509130009",
-        "name": "Sumbersalak"
-    },
-    {
-        "district_code": "3509130",
-        "code": "3509130010",
-        "name": "Suren"
+        "name": "Curahlele"
     },
     {
         "district_code": "3509140",
         "code": "3509140001",
-        "name": "Mayang"
+        "name": "Sukoreno"
     },
     {
         "district_code": "3509140",
         "code": "3509140002",
-        "name": "Mrawan"
+        "name": "Gunungsari"
     },
     {
         "district_code": "3509140",
         "code": "3509140003",
-        "name": "Seputih"
+        "name": "Umbulsari"
     },
     {
         "district_code": "3509140",
         "code": "3509140004",
-        "name": "Sidomukti"
+        "name": "Tanjungsari"
     },
     {
         "district_code": "3509140",
         "code": "3509140005",
-        "name": "Sumberkejayan"
+        "name": "Paleran"
     },
     {
         "district_code": "3509140",
         "code": "3509140006",
-        "name": "Tegalwaru"
+        "name": "Umbulrejo"
     },
     {
         "district_code": "3509140",
         "code": "3509140007",
-        "name": "Tegalrejo"
+        "name": "Gadingrejo"
+    },
+    {
+        "district_code": "3509140",
+        "code": "3509140008",
+        "name": "Sidorejo"
+    },
+    {
+        "district_code": "3509140",
+        "code": "3509140009",
+        "name": "Tegalwangi"
+    },
+    {
+        "district_code": "3509140",
+        "code": "3509140010",
+        "name": "Mundurejo"
     },
     {
         "district_code": "3509150",
         "code": "3509150001",
-        "name": "Karang Kedawung"
+        "name": "Rejo Agung"
     },
     {
         "district_code": "3509150",
         "code": "3509150002",
-        "name": "Kawangrejo"
+        "name": "Semboro"
     },
     {
         "district_code": "3509150",
         "code": "3509150003",
-        "name": "Lampeji"
+        "name": "Sidomekar"
     },
     {
         "district_code": "3509150",
         "code": "3509150004",
-        "name": "Lengkong"
+        "name": "Sidomulyo"
     },
     {
         "district_code": "3509150",
         "code": "3509150005",
-        "name": "Mumbulsari"
+        "name": "Pondok Joyo"
     },
     {
         "district_code": "3509150",
         "code": "3509150006",
-        "name": "Suco"
-    },
-    {
-        "district_code": "3509150",
-        "code": "3509150007",
-        "name": "Tamansari"
+        "name": "Pondok Dalem"
     },
     {
         "district_code": "3509160",
         "code": "3509160001",
-        "name": "Bedadung"
+        "name": "Keting"
     },
     {
         "district_code": "3509160",
         "code": "3509160002",
-        "name": "Jatian"
+        "name": "Jombang"
     },
     {
         "district_code": "3509160",
         "code": "3509160003",
-        "name": "Kertosari"
+        "name": "Padomasan"
     },
     {
         "district_code": "3509160",
         "code": "3509160004",
-        "name": "Pakusari"
+        "name": "Ngampelrejo"
     },
     {
         "district_code": "3509160",
         "code": "3509160005",
-        "name": "Patemon"
+        "name": "Wringin Agung"
     },
     {
         "district_code": "3509160",
         "code": "3509160006",
-        "name": "Subo"
-    },
-    {
-        "district_code": "3509160",
-        "code": "3509160007",
-        "name": "Sumberpinang"
+        "name": "Sarimulyo"
     },
     {
         "district_code": "3509170",
         "code": "3509170001",
-        "name": "Glagahwero"
+        "name": "Sumber Agung"
     },
     {
         "district_code": "3509170",
         "code": "3509170002",
-        "name": "Kemiri"
+        "name": "Rowo Tengah"
     },
     {
         "district_code": "3509170",
         "code": "3509170003",
-        "name": "Kemuningsari Lor"
+        "name": "Yosorati"
     },
     {
         "district_code": "3509170",
         "code": "3509170004",
-        "name": "Pakis"
+        "name": "Pringgowirawan"
     },
     {
         "district_code": "3509170",
         "code": "3509170005",
-        "name": "Panti"
+        "name": "Karang Bayat"
     },
     {
         "district_code": "3509170",
         "code": "3509170006",
-        "name": "Serut"
+        "name": "Gelang"
     },
     {
         "district_code": "3509170",
         "code": "3509170007",
-        "name": "Suci"
+        "name": "Jatiroto"
+    },
+    {
+        "district_code": "3509170",
+        "code": "3509170008",
+        "name": "Jamintoro"
+    },
+    {
+        "district_code": "3509170",
+        "code": "3509170009",
+        "name": "Kaliglagah"
+    },
+    {
+        "district_code": "3509170",
+        "code": "3509170010",
+        "name": "Jambesari"
     },
     {
         "district_code": "3509180",
         "code": "3509180001",
-        "name": "Banjarsengon"
+        "name": "Tanggul Kulon"
     },
     {
         "district_code": "3509180",
         "code": "3509180002",
-        "name": "Baratan"
+        "name": "Tanggul Wetan"
     },
     {
         "district_code": "3509180",
         "code": "3509180003",
-        "name": "Bintoro"
+        "name": "Klatakan"
     },
     {
         "district_code": "3509180",
         "code": "3509180004",
-        "name": "Gebang"
+        "name": "Selodakon"
     },
     {
         "district_code": "3509180",
         "code": "3509180005",
-        "name": "Jemberlor"
+        "name": "Darungan"
     },
     {
         "district_code": "3509180",
         "code": "3509180006",
-        "name": "Jumerto"
+        "name": "Manggisan"
     },
     {
         "district_code": "3509180",
         "code": "3509180007",
-        "name": "Patrang"
+        "name": "Patemon"
     },
     {
         "district_code": "3509180",
         "code": "3509180008",
-        "name": "Slawu"
+        "name": "Kramat Sukoharjo"
     },
     {
         "district_code": "3509190",
         "code": "3509190001",
-        "name": "Bagon"
+        "name": "Karangsono"
     },
     {
         "district_code": "3509190",
         "code": "3509190002",
-        "name": "Grenden"
+        "name": "Sukorejo"
     },
     {
         "district_code": "3509190",
         "code": "3509190003",
-        "name": "Jambearum"
+        "name": "Petung"
     },
     {
         "district_code": "3509190",
         "code": "3509190004",
-        "name": "Kasiyan"
+        "name": "Tisnogambar"
     },
     {
         "district_code": "3509190",
         "code": "3509190005",
-        "name": "Kasiyan Timur"
+        "name": "Langkap"
     },
     {
         "district_code": "3509190",
         "code": "3509190006",
-        "name": "Mlokorejo"
+        "name": "Bangsalsari"
     },
     {
         "district_code": "3509190",
         "code": "3509190007",
-        "name": "Mojomulyo"
+        "name": "Gambirono"
     },
     {
         "district_code": "3509190",
         "code": "3509190008",
-        "name": "Mojosari"
+        "name": "Curah Kalong"
     },
     {
         "district_code": "3509190",
         "code": "3509190009",
-        "name": "Puger Kulon"
+        "name": "Tugusari"
     },
     {
         "district_code": "3509190",
         "code": "3509190010",
-        "name": "Puger Wetan"
+        "name": "Banjarsari"
     },
     {
         "district_code": "3509190",
         "code": "3509190011",
-        "name": "Wonosari"
-    },
-    {
-        "district_code": "3509190",
-        "code": "3509190012",
-        "name": "Wringintelu"
+        "name": "Badean"
     },
     {
         "district_code": "3509200",
         "code": "3509200001",
-        "name": "Curahmalang"
+        "name": "Kemuningsari Lor"
     },
     {
         "district_code": "3509200",
         "code": "3509200002",
-        "name": "Gugut"
+        "name": "Glagahwero"
     },
     {
         "district_code": "3509200",
         "code": "3509200003",
-        "name": "Kaliwining"
+        "name": "Serut"
     },
     {
         "district_code": "3509200",
         "code": "3509200004",
-        "name": "Nogosari"
+        "name": "Panti"
     },
     {
         "district_code": "3509200",
         "code": "3509200005",
-        "name": "Pecoro"
+        "name": "Pakis"
     },
     {
         "district_code": "3509200",
         "code": "3509200006",
-        "name": "Rambigundam"
+        "name": "Suci"
     },
     {
         "district_code": "3509200",
         "code": "3509200007",
-        "name": "Rambipuji"
-    },
-    {
-        "district_code": "3509200",
-        "code": "3509200008",
-        "name": "Rowotamtu"
+        "name": "Kemiri"
     },
     {
         "district_code": "3509210",
         "code": "3509210001",
-        "name": "Pondokdalem"
+        "name": "Jubung"
     },
     {
         "district_code": "3509210",
         "code": "3509210002",
-        "name": "Pondokjoyo"
+        "name": "Dukuh Mencek"
     },
     {
         "district_code": "3509210",
         "code": "3509210003",
-        "name": "Rejoagung"
+        "name": "Sukorambi"
     },
     {
         "district_code": "3509210",
         "code": "3509210004",
-        "name": "Semboro"
+        "name": "Karangpring"
     },
     {
         "district_code": "3509210",
         "code": "3509210005",
-        "name": "Sidomekar"
-    },
-    {
-        "district_code": "3509210",
-        "code": "3509210006",
-        "name": "Sidomulyo"
+        "name": "Kelungkung"
     },
     {
         "district_code": "3509220",
         "code": "3509220001",
-        "name": "Garahan"
+        "name": "Kemuningllor"
     },
     {
         "district_code": "3509220",
         "code": "3509220002",
-        "name": "Harjomulyo"
+        "name": "Darsono"
     },
     {
         "district_code": "3509220",
         "code": "3509220003",
-        "name": "Karangharjo"
+        "name": "Arjasa"
     },
     {
         "district_code": "3509220",
         "code": "3509220004",
-        "name": "Mulyorejo"
+        "name": "Biting"
     },
     {
         "district_code": "3509220",
         "code": "3509220005",
-        "name": "Pace"
+        "name": "Candijati"
     },
     {
         "district_code": "3509220",
         "code": "3509220006",
-        "name": "Sempolan"
-    },
-    {
-        "district_code": "3509220",
-        "code": "3509220007",
-        "name": "Sidomulyo"
-    },
-    {
-        "district_code": "3509220",
-        "code": "3509220008",
-        "name": "Silo"
-    },
-    {
-        "district_code": "3509220",
-        "code": "3509220009",
-        "name": "Sumberjati"
+        "name": "Kamal"
     },
     {
         "district_code": "3509230",
         "code": "3509230001",
-        "name": "Dukuhmencek"
+        "name": "Kertosari"
     },
     {
         "district_code": "3509230",
         "code": "3509230002",
-        "name": "Jubung"
+        "name": "Pakusari"
     },
     {
         "district_code": "3509230",
         "code": "3509230003",
-        "name": "Karangpring"
+        "name": "Jatian"
     },
     {
         "district_code": "3509230",
         "code": "3509230004",
-        "name": "Klungkung"
+        "name": "Subo"
     },
     {
         "district_code": "3509230",
         "code": "3509230005",
-        "name": "Sukorambi"
+        "name": "Sumber Pinang"
+    },
+    {
+        "district_code": "3509230",
+        "code": "3509230006",
+        "name": "Bedadung"
+    },
+    {
+        "district_code": "3509230",
+        "code": "3509230007",
+        "name": "Patemon"
     },
     {
         "district_code": "3509240",
         "code": "3509240001",
-        "name": "Arjasa"
+        "name": "Gambiran"
     },
     {
         "district_code": "3509240",
         "code": "3509240002",
-        "name": "Balet Baru"
+        "name": "Plalangan"
     },
     {
         "district_code": "3509240",
         "code": "3509240003",
-        "name": "Dawuhanmangli"
+        "name": "Ajung"
     },
     {
         "district_code": "3509240",
         "code": "3509240004",
-        "name": "Mojogemi"
+        "name": "Glagahwero"
     },
     {
         "district_code": "3509240",
         "code": "3509240005",
-        "name": "Pocangan"
+        "name": "Sumber Jeruk"
     },
     {
         "district_code": "3509240",
         "code": "3509240006",
-        "name": "Sukokerto"
+        "name": "Gumuksari"
     },
     {
         "district_code": "3509240",
         "code": "3509240007",
-        "name": "Sukorejo"
+        "name": "Patempuran"
     },
     {
         "district_code": "3509240",
         "code": "3509240008",
-        "name": "Sukosari"
+        "name": "Kalisat"
     },
     {
         "district_code": "3509240",
         "code": "3509240009",
-        "name": "Sukowono"
+        "name": "Sumber Ketempah"
     },
     {
         "district_code": "3509240",
         "code": "3509240010",
-        "name": "Sumberwringin"
+        "name": "Sukoreno"
     },
     {
         "district_code": "3509240",
         "code": "3509240011",
-        "name": "Sumberdanti"
+        "name": "Sumber Kalong"
     },
     {
         "district_code": "3509240",
         "code": "3509240012",
-        "name": "Sumberwaru"
+        "name": "Sebanen"
     },
     {
         "district_code": "3509250",
         "code": "3509250001",
-        "name": "Gelang"
+        "name": "Suren"
     },
     {
         "district_code": "3509250",
         "code": "3509250002",
-        "name": "Jambesari"
+        "name": "Sumber Salak"
     },
     {
         "district_code": "3509250",
         "code": "3509250003",
-        "name": "Jamintoro"
+        "name": "Sumber Bulus"
     },
     {
         "district_code": "3509250",
         "code": "3509250004",
-        "name": "Jatiroto"
+        "name": "Sumber Lesung"
     },
     {
         "district_code": "3509250",
         "code": "3509250005",
-        "name": "Kaliglagah"
+        "name": "Lembengan"
     },
     {
         "district_code": "3509250",
         "code": "3509250006",
-        "name": "Karangbayat"
+        "name": "Sumber Anget"
     },
     {
         "district_code": "3509250",
         "code": "3509250007",
-        "name": "Pringgowirawan"
+        "name": "Ledokombo"
     },
     {
         "district_code": "3509250",
         "code": "3509250008",
-        "name": "Rowotengah"
+        "name": "Slateng"
     },
     {
         "district_code": "3509250",
         "code": "3509250009",
-        "name": "Sumberagung"
+        "name": "Sukogidri"
     },
     {
         "district_code": "3509250",
         "code": "3509250010",
-        "name": "Yosorati"
+        "name": "Karang Paiton"
     },
     {
         "district_code": "3509260",
         "code": "3509260001",
-        "name": "Cumedak"
+        "name": "Randu Agung"
     },
     {
         "district_code": "3509260",
         "code": "3509260002",
-        "name": "Gunungmalang"
+        "name": "Cumedak"
     },
     {
         "district_code": "3509260",
         "code": "3509260003",
-        "name": "Jambearum"
+        "name": "Gunung Malang"
     },
     {
         "district_code": "3509260",
         "code": "3509260004",
-        "name": "Plerean"
-    },
-    {
-        "district_code": "3509260",
-        "code": "3509260005",
-        "name": "Pringgondani"
-    },
-    {
-        "district_code": "3509260",
-        "code": "3509260006",
-        "name": "Randuagung"
-    },
-    {
-        "district_code": "3509260",
-        "code": "3509260007",
         "name": "Rowosari"
     },
     {
         "district_code": "3509260",
-        "code": "3509260008",
+        "code": "3509260005",
         "name": "Sumberjambe"
     },
     {
         "district_code": "3509260",
+        "code": "3509260006",
+        "name": "Sumber Pakem"
+    },
+    {
+        "district_code": "3509260",
+        "code": "3509260007",
+        "name": "Plereyan"
+    },
+    {
+        "district_code": "3509260",
+        "code": "3509260008",
+        "name": "Pringgondani"
+    },
+    {
+        "district_code": "3509260",
         "code": "3509260009",
-        "name": "Sumberpakem"
+        "name": "Jambe Arum"
     },
     {
         "district_code": "3509270",
         "code": "3509270001",
-        "name": "Antirogo"
+        "name": "Sumberwaru"
     },
     {
         "district_code": "3509270",
         "code": "3509270002",
-        "name": "Karangrejo"
+        "name": "Sukorejo"
     },
     {
         "district_code": "3509270",
         "code": "3509270003",
-        "name": "Kebonsari"
+        "name": "Sukosari"
     },
     {
         "district_code": "3509270",
         "code": "3509270004",
-        "name": "Kranjingan"
+        "name": "Balet Baru"
     },
     {
         "district_code": "3509270",
         "code": "3509270005",
-        "name": "Sumbersari"
+        "name": "Sumber Wringin"
     },
     {
         "district_code": "3509270",
         "code": "3509270006",
-        "name": "Tegalgede"
+        "name": "Mojogemi"
     },
     {
         "district_code": "3509270",
         "code": "3509270007",
-        "name": "Wirolegi"
+        "name": "Sukokerto"
+    },
+    {
+        "district_code": "3509270",
+        "code": "3509270008",
+        "name": "Sukowono"
+    },
+    {
+        "district_code": "3509270",
+        "code": "3509270009",
+        "name": "Dawuhan Mangli"
+    },
+    {
+        "district_code": "3509270",
+        "code": "3509270010",
+        "name": "Arjasa"
+    },
+    {
+        "district_code": "3509270",
+        "code": "3509270011",
+        "name": "Sumberdanti"
+    },
+    {
+        "district_code": "3509270",
+        "code": "3509270012",
+        "name": "Pocangan"
     },
     {
         "district_code": "3509280",
         "code": "3509280001",
-        "name": "Darungan"
+        "name": "Panduman"
     },
     {
         "district_code": "3509280",
         "code": "3509280002",
-        "name": "Klatakan"
+        "name": "Jelbuk"
     },
     {
         "district_code": "3509280",
         "code": "3509280003",
-        "name": "Kramat Sukoharjo"
+        "name": "Sukowiryo"
     },
     {
         "district_code": "3509280",
         "code": "3509280004",
-        "name": "Manggisan"
+        "name": "Suger Kidul"
     },
     {
         "district_code": "3509280",
         "code": "3509280005",
-        "name": "Patemon"
+        "name": "Suko Jember"
     },
     {
         "district_code": "3509280",
         "code": "3509280006",
-        "name": "Selodakon"
+        "name": "Suco Pangepok"
     },
     {
-        "district_code": "3509280",
-        "code": "3509280007",
-        "name": "Tanggul Kulon"
+        "district_code": "3509710",
+        "code": "3509710001",
+        "name": "Mangli"
     },
     {
-        "district_code": "3509280",
-        "code": "3509280008",
-        "name": "Tanggul Wetan"
+        "district_code": "3509710",
+        "code": "3509710002",
+        "name": "Sempusari"
     },
     {
-        "district_code": "3509290",
-        "code": "3509290001",
-        "name": "Andongrejo"
+        "district_code": "3509710",
+        "code": "3509710003",
+        "name": "Kaliwates"
     },
     {
-        "district_code": "3509290",
-        "code": "3509290002",
-        "name": "Curahnongko"
+        "district_code": "3509710",
+        "code": "3509710004",
+        "name": "Tegal Besar"
     },
     {
-        "district_code": "3509290",
-        "code": "3509290003",
-        "name": "Curahtakir"
+        "district_code": "3509710",
+        "code": "3509710005",
+        "name": "Jember Kidul"
     },
     {
-        "district_code": "3509290",
-        "code": "3509290004",
-        "name": "Pondokrejo"
+        "district_code": "3509710",
+        "code": "3509710006",
+        "name": "Kepatihan"
     },
     {
-        "district_code": "3509290",
-        "code": "3509290005",
-        "name": "Sanenrejo"
+        "district_code": "3509710",
+        "code": "3509710007",
+        "name": "Kebon Agung"
     },
     {
-        "district_code": "3509290",
-        "code": "3509290006",
-        "name": "Sidodadi"
+        "district_code": "3509720",
+        "code": "3509720001",
+        "name": "Keranjingan"
     },
     {
-        "district_code": "3509290",
-        "code": "3509290007",
-        "name": "Tempurejo"
+        "district_code": "3509720",
+        "code": "3509720002",
+        "name": "Wirolegi"
     },
     {
-        "district_code": "3509290",
-        "code": "3509290008",
-        "name": "Wonoasri"
+        "district_code": "3509720",
+        "code": "3509720003",
+        "name": "Karangrejo"
     },
     {
-        "district_code": "3509300",
-        "code": "3509300001",
-        "name": "Gadingrejo"
+        "district_code": "3509720",
+        "code": "3509720004",
+        "name": "Kebonsari"
     },
     {
-        "district_code": "3509300",
-        "code": "3509300002",
-        "name": "Gunungsari"
+        "district_code": "3509720",
+        "code": "3509720005",
+        "name": "Sumbersari"
     },
     {
-        "district_code": "3509300",
-        "code": "3509300003",
-        "name": "Mundurejo"
+        "district_code": "3509720",
+        "code": "3509720006",
+        "name": "Tegal Gede"
     },
     {
-        "district_code": "3509300",
-        "code": "3509300004",
-        "name": "Paleran"
+        "district_code": "3509720",
+        "code": "3509720007",
+        "name": "Antirogo"
     },
     {
-        "district_code": "3509300",
-        "code": "3509300005",
-        "name": "Sidorejo"
+        "district_code": "3509730",
+        "code": "3509730001",
+        "name": "Gebang"
     },
     {
-        "district_code": "3509300",
-        "code": "3509300006",
-        "name": "Sukoreno"
+        "district_code": "3509730",
+        "code": "3509730002",
+        "name": "Jember Lor"
     },
     {
-        "district_code": "3509300",
-        "code": "3509300007",
-        "name": "Tanjungsari"
+        "district_code": "3509730",
+        "code": "3509730003",
+        "name": "Patrang"
     },
     {
-        "district_code": "3509300",
-        "code": "3509300008",
-        "name": "Tegalwangi"
+        "district_code": "3509730",
+        "code": "3509730004",
+        "name": "Baratan"
     },
     {
-        "district_code": "3509300",
-        "code": "3509300009",
-        "name": "Umbulrejo"
+        "district_code": "3509730",
+        "code": "3509730005",
+        "name": "Bintoro"
     },
     {
-        "district_code": "3509300",
-        "code": "3509300010",
-        "name": "Umbulsari"
+        "district_code": "3509730",
+        "code": "3509730006",
+        "name": "Slawu"
     },
     {
-        "district_code": "3509310",
-        "code": "3509310001",
-        "name": "Ampel"
+        "district_code": "3509730",
+        "code": "3509730007",
+        "name": "Jumerto"
     },
     {
-        "district_code": "3509310",
-        "code": "3509310002",
-        "name": "Dukuhdempok"
-    },
-    {
-        "district_code": "3509310",
-        "code": "3509310003",
-        "name": "Glundengan"
-    },
-    {
-        "district_code": "3509310",
-        "code": "3509310004",
-        "name": "Kesilir"
-    },
-    {
-        "district_code": "3509310",
-        "code": "3509310005",
-        "name": "Lojejer"
-    },
-    {
-        "district_code": "3509310",
-        "code": "3509310006",
-        "name": "Tamansari"
-    },
-    {
-        "district_code": "3509310",
-        "code": "3509310007",
-        "name": "Tanjungrejo"
+        "district_code": "3509730",
+        "code": "3509730008",
+        "name": "Banjar Sengon"
     }
 ]

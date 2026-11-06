@@ -1,1 +1,59 @@
-export default { content: ['./index.html','./src/**/*.{ts,tsx}'], theme: { extend: {} }, plugins: [] };
+export default {
+  darkMode: 'class',
+  content: ['./index.html', './src/**/*.{ts,tsx}'],
+  theme: {
+    extend: {
+      colors: {
+        latar: 'var(--latar)',
+        panel: 'var(--panel)',
+        panel2: 'var(--panel-2)',
+        tinta: 'var(--tinta)',
+        tinta2: 'var(--tinta-2)',
+        tinta3: 'var(--tinta-3)',
+        sawah950: 'var(--sawah-950)',
+        sawah800: 'var(--sawah-800)',
+        sawah700: 'var(--sawah-700)',
+        cta: 'var(--cta)',
+        ctafg: 'var(--cta-fg)',
+        padi: 'var(--padi-400)',
+        garis: 'var(--garis)',
+        ok: 'var(--ok)',
+        err: 'var(--err)',
+        chip: {
+          draf: { bg: 'var(--chip-draf-bg)', fg: 'var(--chip-draf-fg)' },
+          dikirim: { bg: 'var(--chip-dikirim-bg)', fg: 'var(--chip-dikirim-fg)' },
+          verifikasi: { bg: 'var(--chip-verifikasi-bg)', fg: 'var(--chip-verifikasi-fg)' },
+          ditolak: { bg: 'var(--chip-ditolak-bg)', fg: 'var(--chip-ditolak-fg)' },
+          arsip: { bg: 'var(--chip-arsip-bg)', fg: 'var(--chip-arsip-fg)' },
+          warn: { bg: 'var(--chip-warn-bg)', fg: 'var(--chip-warn-fg)' },
+        },
+        kpi: {
+          green: { bg: 'var(--kpi-green-bg)', fg: 'var(--kpi-green-fg)' },
+          amber: { bg: 'var(--kpi-amber-bg)', fg: 'var(--kpi-amber-fg)' },
+          blue: { bg: 'var(--kpi-blue-bg)', fg: 'var(--kpi-blue-fg)' },
+        },
+        sidebar: {
+          bg: 'var(--sidebar-bg)',
+          fg: 'var(--sidebar-fg)',
+          dim: 'var(--sidebar-fg-dim)',
+          active: 'var(--sidebar-active)',
+          activefg: 'var(--sidebar-active-fg)',
+          card: 'var(--sidebar-card)',
+          border: 'var(--sidebar-border)',
+          accent: 'var(--sidebar-accent)',
+        },
+      },
+      fontFamily: {
+        display: ['"Bricolage Grotesque Variable"', 'system-ui', 'sans-serif'],
+        body: ['"Public Sans Variable"', 'system-ui', 'sans-serif'],
+        mono: ['"IBM Plex Mono"', 'ui-monospace', 'monospace'],
+      },
+      borderRadius: { sm: '8px', md: '14px', lg: '18px' },
+      boxShadow: {
+        card: '0 10px 30px rgb(19 61 43 / .10)',
+        pop: '0 16px 40px rgb(19 61 43 / .18)',
+      },
+    },
+  },
+  plugins: [],
+};

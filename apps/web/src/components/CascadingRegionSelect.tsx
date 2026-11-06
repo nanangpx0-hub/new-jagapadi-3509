@@ -73,11 +73,11 @@ export function CascadingRegionSelect({
   return (
     <div className="grid gap-4 sm:grid-cols-2">
       <div>
-        <label className="block text-sm font-semibold text-slate-700 mb-1">
+        <label className="block text-sm font-semibold text-tinta mb-1">
           Kecamatan (Kabupaten Jember)
         </label>
         <select
-          className="w-full rounded-lg border border-slate-300 p-2.5 text-sm bg-white focus:ring-2 focus:ring-green-600 focus:outline-none"
+          className="w-full rounded-lg border border-garis p-2.5 text-sm bg-panel2 focus:ring-2 focus:ring-cta focus:outline-none"
           value={districtId ?? ''}
           onChange={(e) => handleDistrictSelect(Number(e.target.value))}
           disabled={districtsQuery.isLoading}
@@ -92,11 +92,11 @@ export function CascadingRegionSelect({
       </div>
 
       <div>
-        <label className="block text-sm font-semibold text-slate-700 mb-1">
+        <label className="block text-sm font-semibold text-tinta mb-1">
           Desa / Kelurahan
         </label>
         <select
-          className="w-full rounded-lg border border-slate-300 p-2.5 text-sm bg-white focus:ring-2 focus:ring-green-600 focus:outline-none disabled:bg-slate-100 disabled:text-slate-400"
+          className="w-full rounded-lg border border-garis p-2.5 text-sm bg-panel2 focus:ring-2 focus:ring-cta focus:outline-none disabled:bg-panel2 disabled:text-tinta3"
           value={villageId ?? ''}
           onChange={(e) => handleVillageSelect(Number(e.target.value))}
           disabled={!districtId || villagesQuery.isLoading}

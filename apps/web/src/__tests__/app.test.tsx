@@ -1,37 +1,29 @@
-import { afterEach, expect, it, vi } from 'vitest';
-import { cleanup, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import { beforeEach, describe, expect, it } from 'vitest';
 import App from '../App';
+import { StatusBadge } from '../components/StatusBadge';
 
-afterEach(() => {
-  cleanup();
-  vi.unstubAllGlobals();
+describe('Aplikasi JAGAPADI', () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
+  it('menampilkan halaman masuk saat belum terautentikasi', () => {
+    render(<App />);
+    expect(screen.getByRole('heading', { name: /^masuk$/i })).toBeDefined();
+    expect(screen.getByLabelText(/^email$/i)).toBeDefined();
+    expect(screen.getByLabelText(/^kata sandi$/i)).toBeDefined();
+  });
 });
 
-it('menampilkan health live dan konstanta role/domain', async () => {
-  vi.stubGlobal(
-    'fetch',
-    vi.fn().mockResolvedValue(
-      new Response(
-        JSON.stringify({
-          status: 'ok',
-          service: 'jagapadi-v3-api',
-          timezone: 'Asia/Jakarta',
-          timestamp: '2026-11-04T11:00:00+07:00',
-          checks: {
-            database: { status: 'ok', driver: 'pgsql' },
-            postgis: { status: 'ok', version: '3.4.3' },
-            redis: { status: 'ok', response: 'PONG' },
-            storage: { status: 'ok', writable: true },
-          },
-        }),
-        { status: 200, headers: { 'Content-Type': 'application/json' } }
-      )
-    )
-  );
+describe('StatusBadge', () => {
+  it('menampilkan label status enum PRD', () => {
+    render(<StatusBadge status="Diverifikasi" />);
+    expect(screen.getByText('Diverifikasi')).toBeDefined();
+  });
 
-  render(<App />);
-  expect(await screen.findByText(/Seluruh layanan/i)).toBeTruthy();
-  expect(screen.getByText('PostgreSQL')).toBeTruthy();
-  expect(screen.getByText('admin')).toBeTruthy();
-  expect(screen.getByText('equipment')).toBeTruthy();
+  it('menampilkan label Dikirim untuk status Submitted', () => {
+    render(<StatusBadge status="Submitted" />);
+    expect(screen.getByText('Dikirim')).toBeDefined();
+  });
 });

@@ -1,8 +1,224 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-:root { color: #0f172a; background: #f8fafc; font-family: system-ui, sans-serif; font-synthesis: none; }
-body { margin: 0; min-width: 320px; }
-button, a { touch-action: manipulation; }
-button:focus-visible, a:focus-visible { outline: 3px solid #1d4ed8; outline-offset: 4px; }
-button { min-height: 44px; }
+
+/* ============================================================
+   JAGAPADI — 3 Tema:  'sawah' (hijau khas) · 'white' (Clean White) · 'dark' (gelap)
+   Diaktifkan via class di <html>: theme-sawah (default) | theme-white | theme-dark
+   ============================================================ */
+
+:root,
+.theme-sawah {
+  color-scheme: light;
+
+  /* Permukaan */
+  --latar: #f2f7f0;
+  --panel: #ffffff;
+  --panel-2: #f7faf5;
+
+  /* Tinta */
+  --tinta: #1b2a21;
+  --tinta-2: #4a5a50;
+  --tinta-3: #57685c;
+
+  /* Brand */
+  --sawah-950: #133d2b;
+  --sawah-800: #175438;
+  --sawah-700: #1e5b3e;
+  --cta: #1e5b3e;
+  --cta-fg: #ffffff;
+  --padi-400: #e9b44c;
+  --garis: #dde5dc;
+
+  /* Sidebar & Topbar */
+  --sidebar-bg: #133d2b;
+  --sidebar-fg: rgb(255 255 255 / 0.72);
+  --sidebar-fg-dim: rgb(255 255 255 / 0.5);
+  --sidebar-active: rgb(255 255 255 / 0.12);
+  --sidebar-active-fg: #ffffff;
+  --sidebar-card: rgb(255 255 255 / 0.06);
+  --sidebar-border: rgb(255 255 255 / 0.1);
+  --sidebar-accent: #e9b44c;
+
+  /* Chip status laporan (enum PRD) */
+  --chip-draf-bg: #f1f5f9;
+  --chip-draf-fg: #475569;
+  --chip-dikirim-bg: #bfdbfe;
+  --chip-dikirim-fg: #1e40af;
+  --chip-verifikasi-bg: #a7f3d0;
+  --chip-verifikasi-fg: #065f46;
+  --chip-ditolak-bg: #fecaca;
+  --chip-ditolak-fg: #991b1b;
+  --chip-arsip-bg: #e2e8f0;
+  --chip-arsip-fg: #4b5563;
+  --chip-warn-bg: #fde68a;
+  --chip-warn-fg: #92400e;
+
+  /* Kartu KPI pastel */
+  --kpi-green-bg: #e7f4ea;
+  --kpi-green-fg: #14532d;
+  --kpi-amber-bg: #fcf3d9;
+  --kpi-amber-fg: #b45309;
+  --kpi-blue-bg: #e3ecfb;
+  --kpi-blue-fg: #1d4ed8;
+
+  --ok: #166534;
+  --err: #b91c1c;
+  --focus: #1d4ed8;
+}
+
+.theme-white {
+  color-scheme: light;
+
+  --latar: #f8fafc;
+  --panel: #ffffff;
+  --panel-2: #f1f5f9;
+
+  --tinta: #0f172a;
+  --tinta-2: #475569;
+  --tinta-3: #64748b;
+
+  --sawah-950: #ffffff;
+  --sawah-800: #f1f5f9;
+  --sawah-700: #1e5b3e;
+  --cta: #1e5b3e;
+  --cta-fg: #ffffff;
+  --padi-400: #e9b44c;
+  --garis: #e2e8f0;
+
+  /* Sidebar putih dengan teks slate */
+  --sidebar-bg: #ffffff;
+  --sidebar-fg: #475569;
+  --sidebar-fg-dim: #94a3b8;
+  --sidebar-active: #f1f5f9;
+  --sidebar-active-fg: #0f172a;
+  --sidebar-card: #f8fafc;
+  --sidebar-border: #e2e8f0;
+  --sidebar-accent: #1e5b3e;
+
+  --chip-draf-bg: #f1f5f9;
+  --chip-draf-fg: #475569;
+  --chip-dikirim-bg: #dbeafe;
+  --chip-dikirim-fg: #1e40af;
+  --chip-verifikasi-bg: #dcfce7;
+  --chip-verifikasi-fg: #166534;
+  --chip-ditolak-bg: #fee2e2;
+  --chip-ditolak-fg: #991b1b;
+  --chip-arsip-bg: #e2e8f0;
+  --chip-arsip-fg: #4b5563;
+  --chip-warn-bg: #fef3c7;
+  --chip-warn-fg: #92400e;
+
+  --kpi-green-bg: #ecfdf5;
+  --kpi-green-fg: #14532d;
+  --kpi-amber-bg: #fffbeb;
+  --kpi-amber-fg: #b45309;
+  --kpi-blue-bg: #eff6ff;
+  --kpi-blue-fg: #1d4ed8;
+
+  --ok: #15803d;
+  --err: #b91c1c;
+  --focus: #1d4ed8;
+}
+
+.theme-dark {
+  color-scheme: dark;
+
+  --latar: #101e16;
+  --panel: #182a20;
+  --panel-2: #1e3327;
+
+  --tinta: #e9eee9;
+  --tinta-2: #a9b8ad;
+  --tinta-3: #8fa396;
+
+  --sawah-950: #0c1b12;
+  --sawah-800: #142b1e;
+  --sawah-700: #1e5b3e;
+  --cta: #2e7d4f;
+  --cta-fg: #eaf6ee;
+  --padi-400: #e9b44c;
+  --garis: #2a3b2f;
+
+  --sidebar-bg: #0c1b12;
+  --sidebar-fg: rgb(233 238 233 / 0.72);
+  --sidebar-fg-dim: rgb(233 238 233 / 0.48);
+  --sidebar-active: rgb(255 255 255 / 0.08);
+  --sidebar-active-fg: #e9eee9;
+  --sidebar-card: rgb(255 255 255 / 0.04);
+  --sidebar-border: rgb(255 255 255 / 0.09);
+  --sidebar-accent: #e9b44c;
+
+  --chip-draf-bg: rgb(203 213 225 / 0.1);
+  --chip-draf-fg: #cbd5e1;
+  --chip-dikirim-bg: rgb(96 165 250 / 0.13);
+  --chip-dikirim-fg: #93c5fd;
+  --chip-verifikasi-bg: rgb(74 222 128 / 0.12);
+  --chip-verifikasi-fg: #86efac;
+  --chip-ditolak-bg: rgb(248 113 113 / 0.13);
+  --chip-ditolak-fg: #fca5a5;
+  --chip-arsip-bg: rgb(203 213 225 / 0.1);
+  --chip-arsip-fg: #b8c2bb;
+  --chip-warn-bg: rgb(251 191 36 / 0.13);
+  --chip-warn-fg: #fde68a;
+
+  --kpi-green-bg: rgb(74 222 128 / 0.1);
+  --kpi-green-fg: #86efac;
+  --kpi-amber-bg: rgb(251 191 36 / 0.12);
+  --kpi-amber-fg: #fde68a;
+  --kpi-blue-bg: rgb(96 165 250 / 0.12);
+  --kpi-blue-fg: #93c5fd;
+
+  --ok: #86efac;
+  --err: #fca5a5;
+  --focus: #fcd34d;
+}
+
+html {
+  background: var(--latar);
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: var(--latar);
+  color: var(--tinta);
+  font-family: 'Public Sans Variable', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-synthesis: none;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+button,
+a {
+  touch-action: manipulation;
+}
+
+button {
+  min-height: 44px;
+}
+
+::selection {
+  background: var(--padi-400);
+  color: #133d2b;
+}
+
+/* Leaflet menyesuaikan tema */
+.leaflet-container {
+  font-family: inherit;
+  background: var(--panel-2);
+}
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background: var(--panel);
+  color: var(--tinta);
+}

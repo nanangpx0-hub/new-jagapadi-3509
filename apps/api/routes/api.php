@@ -7,6 +7,8 @@ use App\Http\Controllers\Api\DistrictController;
 use App\Http\Controllers\Api\HealthController;
 use App\Http\Controllers\Api\OptController;
 use App\Http\Controllers\Api\ReportController;
+use App\Http\Controllers\Api\SlsController;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
 // Health Check
@@ -21,7 +23,9 @@ Route::prefix('auth')->group(function () {
 Route::prefix('districts')->group(function () {
     Route::get('/', [DistrictController::class, 'index'])->name('districts.index');
     Route::get('/{district}/villages', [DistrictController::class, 'villages'])->name('districts.villages');
+    Route::get('/{district}/sls-stats', [SlsController::class, 'statsByDistrict'])->name('districts.sls-stats');
 });
+Route::get('/villages/{village}/sls', [SlsController::class, 'byVillage'])->name('villages.sls');
 
 // Master OPT (Baca Publik untuk Form Draf)
 Route::prefix('opts')->group(function () {
@@ -36,6 +40,18 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/me', [AuthController::class, 'me'])->name('auth.me');
         Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
         Route::post('/change-password', [AuthController::class, 'changePassword'])->name('auth.change-password');
+        Route::put('/theme', [AuthController::class, 'updateTheme'])->name('auth.theme');
+    });
+
+    // Manajemen Pengguna (Khusus Admin)
+    Route::middleware('permission:users.manage')->prefix('users')->group(function () {
+        Route::get('/', [UserController::class, 'index'])->name('users.index');
+        Route::post('/', [UserController::class, 'store'])->name('users.store');
+        Route::get('/{user}', [UserController::class, 'show'])->name('users.show');
+        Route::put('/{user}', [UserController::class, 'update'])->name('users.update');
+        Route::patch('/{user}/toggle-active', [UserController::class, 'toggleStatus'])->name('users.toggle-active');
+        Route::post('/{user}/reset-password', [UserController::class, 'resetPassword'])->name('users.reset-password');
+        Route::delete('/{user}', [UserController::class, 'destroy'])->name('users.destroy');
     });
 
     // Manajemen Master OPT (Hanya Admin & Operator)
@@ -48,8 +64,11 @@ Route::middleware('auth:sanctum')->group(function () {
     // Modul Pelaporan (Fase 2: Hama & Irigasi)
     Route::prefix('reports')->group(function () {
         Route::get('/', [ReportController::class, 'index'])->name('reports.index');
+        Route::get('/metrics', [ReportController::class, 'metrics'])->name('reports.metrics');
         Route::get('/{report}', [ReportController::class, 'show'])->name('reports.show');
         Route::post('/', [ReportController::class, 'store'])->name('reports.store');
+        Route::put('/{report}', [ReportController::class, 'update'])->name('reports.update')->middleware('permission:reports.update');
+        Route::delete('/{report}', [ReportController::class, 'destroy'])->name('reports.destroy')->middleware('permission:reports.delete');
         Route::post('/{report}/submit', [ReportController::class, 'submit'])->name('reports.submit');
         Route::post('/{report}/photos', [ReportController::class, 'uploadPhoto'])->name('reports.photos');
 
@@ -58,5 +77,8 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::post('/{report}/verify', [ReportController::class, 'verify'])->name('reports.verify');
             Route::post('/{report}/reject', [ReportController::class, 'reject'])->name('reports.reject');
         });
+
+        // Arsip Laporan (Admin, Operator)
+        Route::post('/{report}/archive', [ReportController::class, 'archive'])->name('reports.archive')->middleware('permission:reports.archive');
     });
 });

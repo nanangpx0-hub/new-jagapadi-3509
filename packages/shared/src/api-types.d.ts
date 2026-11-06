@@ -72,6 +72,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/auth/theme": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Simpan preferensi tema pengguna yang sedang login (dark | white | sawah) */
+        put: operations["auth.theme"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/districts": {
         parameters: {
             query?: never;
@@ -170,8 +187,31 @@ export interface paths {
         /** Menampilkan daftar laporan dengan filter dan pembatasan hak akses berbasis peran (RBAC) */
         get: operations["reports.index"];
         put?: never;
-        /** Membuat laporan baru (Draf atau Langsung Submit) */
+        /**
+         * Membuat laporan baru (selalu Draf; sertakan `action=submit` + `photos[]`
+         *     untuk langsung mengirim sesuai PRD — minimal 1 foto wajib)
+         */
         post: operations["reports.store"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/reports/metrics": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Metrik ringkas untuk kartu KPI halaman Laporan (menghormati filter aktif).
+         *     Luas terdampak: SUM affected_area_ha laporan non-Draf/Ditolak
+         */
+        get: operations["reports.metrics"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -187,9 +227,14 @@ export interface paths {
         };
         /** Detail satu laporan */
         get: operations["reports.show"];
-        put?: never;
+        /**
+         * Memperbarui laporan berstatus Draf atau Ditolak.
+         *     Petugas: hanya laporan miliknya; Admin: semua. Operator/Statistisi/Viewer: tidak boleh
+         */
+        put: operations["reports.update"];
         post?: never;
-        delete?: never;
+        /** Hapus laporan (soft delete). Admin: semua status; Petugas: hanya Draf miliknya */
+        delete: operations["reports.destroy"];
         options?: never;
         head?: never;
         patch?: never;
@@ -221,7 +266,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Unggah foto lampiran laporan lapangan */
+        /** Unggah foto lampiran laporan lapangan (maks 5 per laporan, re-encode WebP 1280px q80) */
         post: operations["reports.photos"];
         delete?: never;
         options?: never;
@@ -257,6 +302,131 @@ export interface paths {
         put?: never;
         /** Tolak laporan dengan alasan penolakan wajib */
         post: operations["reports.reject"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/reports/{report}/archive": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Arsipkan laporan Diverifikasi → Diarsipkan (Admin / Operator) */
+        post: operations["reports.archive"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/districts/{district}/sls-stats": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Statistik agregat SLS per kecamatan */
+        get: operations["districts.sls-stats"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/villages/{village}/sls": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Daftar SLS (RT/RW/Dusun) di bawah satu desa/kelurahan.
+         *     Mendukung ?search=<nama/kode> dan ?per_page= (default 500, maks 1000)
+         */
+        get: operations["villages.sls"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/users": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Daftar pengguna (paginasi + filter role + pencarian nama/email/NIP) */
+        get: operations["users.index"];
+        put?: never;
+        /** Tambah pengguna baru */
+        post: operations["users.store"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/users/{user}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Detail satu pengguna */
+        get: operations["users.show"];
+        /** Perbarui data profil & role pengguna */
+        put: operations["users.update"];
+        post?: never;
+        /** Hapus akun (soft delete) */
+        delete: operations["users.destroy"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/users/{user}/toggle-active": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Aktifkan / nonaktifkan akun */
+        patch: operations["users.toggle-active"];
+        trace?: never;
+    };
+    "/users/{user}/reset-password": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Reset kata sandi ke default (wajib ganti saat login berikutnya) */
+        post: operations["users.reset-password"];
         delete?: never;
         options?: never;
         head?: never;
@@ -307,6 +477,8 @@ export interface components {
             updated_at: string | null;
             /** Format: date-time */
             deleted_at: string | null;
+            attack_signs: string | null;
+            management: string | null;
         };
         /** Report */
         Report: {
@@ -354,6 +526,43 @@ export interface components {
             created_at: string | null;
             /** Format: date-time */
             updated_at: string | null;
+        };
+        /** Sls */
+        Sls: {
+            id: number;
+            district_id: number;
+            village_id: number;
+            idsls: string;
+            code: string;
+            name: string;
+            kk: number | null;
+            muatan: number | null;
+            luas: number | null;
+            /** Format: date-time */
+            created_at: string | null;
+            /** Format: date-time */
+            updated_at: string | null;
+        };
+        /** User */
+        User: {
+            id: number;
+            name: string;
+            email: string;
+            /** Format: date-time */
+            email_verified_at: string | null;
+            /** Format: date-time */
+            created_at: string | null;
+            /** Format: date-time */
+            updated_at: string | null;
+            phone: string | null;
+            nip: string | null;
+            is_active: boolean;
+            must_change_password: boolean;
+            created_by: number | null;
+            deleted_by: number | null;
+            /** Format: date-time */
+            deleted_at: string | null;
+            theme_preference: string;
         };
         /** Village */
         Village: {
@@ -456,6 +665,7 @@ export interface operations {
                             phone: string | null;
                             nip: string | null;
                             must_change_password: boolean;
+                            theme_preference: string;
                             roles: {
                                 relations: [
                                     "roles"
@@ -514,6 +724,7 @@ export interface operations {
                             phone: string | null;
                             nip: string | null;
                             must_change_password: boolean;
+                            theme_preference: string;
                             roles: {
                                 relations: [
                                     "roles"
@@ -579,6 +790,42 @@ export interface operations {
                         status: "ok";
                         /** @constant */
                         message: "Kata sandi berhasil diubah.";
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            422: components["responses"]["ValidationException"];
+        };
+    };
+    "auth.theme": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @enum {string} */
+                    theme_preference: "dark" | "white" | "sawah";
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        status: "ok";
+                        /** @constant */
+                        message: "Preferensi tema tersimpan.";
+                        data: {
+                            theme_preference: string;
+                        };
                     };
                 };
             };
@@ -915,9 +1162,10 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": {
+                "multipart/form-data": {
                     /** Format: uuid */
                     client_uuid?: string | null;
+                    payload?: string | null;
                     /** @enum {string} */
                     report_type: "pest" | "irrigation" | "fertilizer" | "harvest" | "weather" | "equipment";
                     /** @enum {string|null} */
@@ -931,7 +1179,9 @@ export interface operations {
                     latitude?: number | null;
                     longitude?: number | null;
                     notes?: string | null;
-                    /** @description Validasi Domain Pest */
+                    /** @description Foto lampiran (opsional untuk draf; wajib minimal 1 saat submit) */
+                    photos?: string[];
+                    /** @description Detail Pest — wajib hanya saat submit (sesuai PRD §5; draf boleh parsial) */
                     pest_detail?: {
                         opt_id?: number;
                         crop_type?: string | null;
@@ -943,7 +1193,7 @@ export interface operations {
                         threatened_area_ha?: number | null;
                         control_recommendation?: string | null;
                     };
-                    /** @description Validasi Domain Irrigation */
+                    /** @description Detail Irrigation — wajib hanya saat submit */
                     irrigation_detail?: {
                         irrigation_area_name?: string | null;
                         /** @enum {string} */
@@ -961,6 +1211,20 @@ export interface operations {
             };
         };
         responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        status: "ok";
+                        /** @constant */
+                        message: "Laporan sudah tersinkron sebelumnya.";
+                        data: components["schemas"]["Report"] | null;
+                    };
+                };
+            };
             201: {
                 headers: {
                     [name: string]: unknown;
@@ -977,6 +1241,40 @@ export interface operations {
             };
             401: components["responses"]["AuthenticationException"];
             422: components["responses"]["ValidationException"];
+        };
+    };
+    "reports.metrics": {
+        parameters: {
+            query?: {
+                report_type?: string;
+                district_id?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        status: "ok";
+                        data: {
+                            total: number;
+                            submitted: number;
+                            diverifikasi: number;
+                            ditolak: number;
+                            draf: number;
+                            affected_area_ha: number;
+                        };
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
         };
     };
     "reports.show": {
@@ -1015,6 +1313,117 @@ export interface operations {
                     };
                 };
             };
+            404: components["responses"]["ModelNotFoundException"];
+        };
+    };
+    "reports.update": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The report ID */
+                report: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /** @enum {string} */
+                    report_type?: "pest" | "irrigation" | "fertilizer" | "harvest" | "weather" | "equipment";
+                    /** Format: date-time */
+                    report_date?: string;
+                    district_id?: number;
+                    village_id?: number | null;
+                    location_name?: string | null;
+                    address_detail?: string | null;
+                    latitude?: number | null;
+                    longitude?: number | null;
+                    notes?: string | null;
+                    pest_detail?: {
+                        opt_id?: number;
+                        crop_type?: string | null;
+                        crop_age_days?: number | null;
+                        crop_phase?: string | null;
+                        /** @enum {string} */
+                        intensity_level?: "Ringan" | "Sedang" | "Berat" | "Puso";
+                        affected_area_ha?: number;
+                        threatened_area_ha?: number | null;
+                        control_recommendation?: string | null;
+                    };
+                    irrigation_detail?: {
+                        irrigation_area_name?: string | null;
+                        /** @enum {string} */
+                        channel_type?: "Primer" | "Sekunder" | "Tersier";
+                        /** @enum {string} */
+                        physical_condition?: "Bagus" | "Sedang" | "Tidak Bagus" | "Rusak";
+                        /** @enum {string} */
+                        water_discharge_status?: "Cukup" | "Kurang" | "Kering";
+                        service_area_ha?: number | null;
+                        /** @enum {string|null} */
+                        repair_status?: "Normal" | "Belum Ditangani" | "Dalam Perbaikan" | "Selesai Diperbaiki" | null;
+                        action_taken?: string | null;
+                    };
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        status: "ok";
+                        /** @constant */
+                        message: "Laporan berhasil diperbarui.";
+                        data: components["schemas"]["Report"];
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        message: "Anda tidak memiliki hak mengedit laporan ini.";
+                    };
+                };
+            };
+            404: components["responses"]["ModelNotFoundException"];
+            422: components["responses"]["ValidationException"];
+        };
+    };
+    "reports.destroy": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The report ID */
+                report: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        status: "ok";
+                        /** @constant */
+                        message: "Laporan berhasil dihapus (soft delete).";
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
             404: components["responses"]["ModelNotFoundException"];
         };
     };
@@ -1077,7 +1486,6 @@ export interface operations {
                      * @description Maximum file size: 5120 kilobytes.
                      */
                     photo: string;
-                    /** @description Max 5MB */
                     caption?: string | null;
                 };
             };
@@ -1185,6 +1593,412 @@ export interface operations {
             401: components["responses"]["AuthenticationException"];
             404: components["responses"]["ModelNotFoundException"];
             422: components["responses"]["ValidationException"];
+        };
+    };
+    "reports.archive": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The report ID */
+                report: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        status: "ok";
+                        /** @constant */
+                        message: "Laporan berhasil diarsipkan.";
+                        data: components["schemas"]["Report"];
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            404: components["responses"]["ModelNotFoundException"];
+        };
+    };
+    "districts.sls-stats": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The district ID */
+                district: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        status: "ok";
+                        data: {
+                            district_id: string;
+                            code: string;
+                            name: string;
+                            total_sls: number;
+                            total_villages: number;
+                            total_kk: number;
+                            total_muatan: number;
+                            total_luas_ha: number;
+                        };
+                    };
+                };
+            };
+            404: components["responses"]["ModelNotFoundException"];
+        };
+    };
+    "villages.sls": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The village ID */
+                village: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        status: "ok";
+                        data: components["schemas"]["Sls"][];
+                        summary: {
+                            total_sls: number;
+                            total_kk: number;
+                            total_muatan: number;
+                            total_luas_ha: number;
+                        };
+                    };
+                };
+            };
+            404: components["responses"]["ModelNotFoundException"];
+        };
+    };
+    "users.index": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        status: "ok";
+                        data: components["schemas"]["User"][];
+                        meta: {
+                            current_page: number;
+                            last_page: number;
+                            per_page: number;
+                            total: number;
+                        };
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+        };
+    };
+    "users.store": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    name: string;
+                    /** Format: email */
+                    email: string;
+                    phone?: string | null;
+                    nip?: string | null;
+                    password: string;
+                    /** @enum {string} */
+                    role: "admin" | "operator" | "statistisi" | "petugas" | "viewer";
+                };
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        status: "ok";
+                        /** @constant */
+                        message: "Pengguna berhasil ditambahkan.";
+                        data: {
+                            id: number;
+                            name: string;
+                            email: string;
+                            phone: string | null;
+                            nip: string | null;
+                            is_active: boolean;
+                            must_change_password: boolean;
+                            roles: {
+                                relations: [
+                                    "roles"
+                                ];
+                            }[];
+                            created_at: string | null;
+                        };
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            422: components["responses"]["ValidationException"];
+        };
+    };
+    "users.show": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The user ID */
+                user: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        status: "ok";
+                        data: {
+                            id: number;
+                            name: string;
+                            email: string;
+                            phone: string | null;
+                            nip: string | null;
+                            is_active: boolean;
+                            must_change_password: boolean;
+                            roles: {
+                                relations: [
+                                    "roles"
+                                ];
+                            }[];
+                            created_at: string | null;
+                        };
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            404: components["responses"]["ModelNotFoundException"];
+        };
+    };
+    "users.update": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The user ID */
+                user: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    name?: string;
+                    /** Format: email */
+                    email?: string;
+                    phone?: string | null;
+                    nip?: string | null;
+                    /** @enum {string} */
+                    role?: "admin" | "operator" | "statistisi" | "petugas" | "viewer";
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        status: "ok";
+                        /** @constant */
+                        message: "Pengguna berhasil diperbarui.";
+                        data: {
+                            id: number;
+                            name: string;
+                            email: string;
+                            phone: string | null;
+                            nip: string | null;
+                            is_active: boolean;
+                            must_change_password: boolean;
+                            roles: {
+                                relations: [
+                                    "roles"
+                                ];
+                            }[];
+                            created_at: string | null;
+                        };
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            404: components["responses"]["ModelNotFoundException"];
+            422: components["responses"]["ValidationException"];
+        };
+    };
+    "users.destroy": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The user ID */
+                user: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        status: "ok";
+                        /** @constant */
+                        message: "Akun berhasil dihapus (soft delete).";
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            404: components["responses"]["ModelNotFoundException"];
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        message: "Anda tidak dapat menghapus akun Anda sendiri.";
+                    };
+                };
+            };
+        };
+    };
+    "users.toggle-active": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The user ID */
+                user: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        status: "ok";
+                        /** @enum {string} */
+                        message: "Akun diaktifkan." | "Akun dinonaktifkan.";
+                        data: {
+                            id: number;
+                            name: string;
+                            email: string;
+                            phone: string | null;
+                            nip: string | null;
+                            is_active: boolean;
+                            must_change_password: boolean;
+                            roles: {
+                                relations: [
+                                    "roles"
+                                ];
+                            }[];
+                            created_at: string | null;
+                        };
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            404: components["responses"]["ModelNotFoundException"];
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        message: "Anda tidak dapat mengubah status akun Anda sendiri.";
+                    };
+                };
+            };
+        };
+    };
+    "users.reset-password": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The user ID */
+                user: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        status: "ok";
+                        /** @constant */
+                        message: "Kata sandi direset ke \"password\". Pengguna wajib mengganti saat login berikutnya.";
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            404: components["responses"]["ModelNotFoundException"];
         };
     };
 }

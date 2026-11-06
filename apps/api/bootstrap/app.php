@@ -19,6 +19,10 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->statefulApi();
 
+        // Aplikasi API-only: tidak ada named route "login"; tamu menerima 401 JSON,
+        // bukan redirect (yang memicu RouteNotFoundException -> 500).
+        $middleware->redirectGuestsTo(fn () => null);
+
         $middleware->alias([
             'role' => RoleMiddleware::class,
             'permission' => PermissionMiddleware::class,
@@ -26,5 +30,10 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        // Semua rute API selalu merespons error sebagai JSON (422, 401, 403, dll.),
+        // bukan redirect HTML — penting untuk klien PWA/fetch yang tidak selalu
+        // mengirim header Accept: application/json.
+        $exceptions->shouldRenderJsonWhen(
+            fn ($request) => $request->is('api/*')
+        );
     })->create();

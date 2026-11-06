@@ -9,6 +9,7 @@ use App\Models\Report;
 use App\Models\ReportIrrigationDetail;
 use App\Models\ReportNumberCounter;
 use App\Models\ReportPestDetail;
+use App\Models\ReportPhoto;
 use App\Models\ReportStatusHistory;
 use App\Models\User;
 use App\Models\Village;
@@ -107,14 +108,14 @@ class ReportService
     }
 
     /**
-     * Membuat laporan baru (Draf atau langsung Submitted).
+     * Membuat laporan baru (selalu berstatus Draf).
+     * Transisi ke Submitted dilakukan via submitReport() agar enforcement
+     * foto & re-check spasial berjalan satu jalur.
      */
     public function createReport(array $data, User $user, ?string $ip = null): Report
     {
         return DB::transaction(function () use ($data, $user, $ip): Report {
             $reportType = $data['report_type'];
-            $isSubmit = ($data['action'] ?? 'draft') === 'submit';
-            $status = $isSubmit ? 'Submitted' : 'Draf';
             $reportDate = $data['report_date'] ?? Carbon::today('Asia/Jakarta')->format('Y-m-d');
 
             $mismatch = false;
@@ -127,17 +128,12 @@ class ReportService
                 );
             }
 
-            $reportNumber = null;
-            if ($isSubmit) {
-                $reportNumber = $this->generateReportNumber($reportType, $reportDate);
-            }
-
             $report = Report::create([
                 'client_uuid' => $data['client_uuid'] ?? null,
-                'report_number' => $reportNumber,
+                'report_number' => null,
                 'report_type' => $reportType,
                 'user_id' => $user->id,
-                'status' => $status,
+                'status' => 'Draf',
                 'report_date' => $reportDate,
                 'regency_bps_code' => '3509',
                 'district_id' => $data['district_id'],
@@ -191,9 +187,9 @@ class ReportService
             ReportStatusHistory::create([
                 'report_id' => $report->id,
                 'from_status' => null,
-                'to_status' => $status,
+                'to_status' => 'Draf',
                 'actor_id' => $user->id,
-                'notes' => $isSubmit ? 'Laporan dikirim langsung dari formulir.' : 'Draf baru dibuat.',
+                'notes' => 'Draf baru dibuat.',
             ]);
 
             return $report->load(['pestDetail.opt', 'irrigationDetail', 'district', 'village']);
@@ -202,12 +198,21 @@ class ReportService
 
     /**
      * Submit laporan dari status Draf atau Ditolak.
+     * PRD: minimal 1 foto bukti lapangan; PostGIS re-check saat transisi ke Submitted.
      */
     public function submitReport(Report $report, User $actor): Report
     {
         if (! in_array($report->status, ['Draf', 'Ditolak'], true)) {
             throw ValidationException::withMessages([
                 'status' => ["Hanya laporan berstatus 'Draf' atau 'Ditolak' yang dapat dikirim."],
+            ]);
+        }
+
+        // Penegakan PRD: minimal 1 foto bukti lapangan sebelum Submitted
+        $photoCount = ReportPhoto::where('report_id', $report->id)->count();
+        if ($photoCount < 1) {
+            throw ValidationException::withMessages([
+                'photos' => ['Minimal 1 foto bukti lapangan wajib diunggah sebelum laporan dikirim.'],
             ]);
         }
 
@@ -221,9 +226,21 @@ class ReportService
                 $reportNumber = $this->generateReportNumber($report->report_type, $dateYmd);
             }
 
+            // PostGIS re-check pada transisi ke Submitted (PRD §4)
+            $mismatch = $report->is_coordinate_mismatch;
+            if ($report->latitude !== null && $report->longitude !== null) {
+                $mismatch = $this->checkCoordinateMismatch(
+                    (float) $report->longitude,
+                    (float) $report->latitude,
+                    (int) $report->district_id,
+                    $report->village_id !== null ? (int) $report->village_id : null
+                );
+            }
+
             $report->update([
                 'status' => 'Submitted',
                 'report_number' => $reportNumber,
+                'is_coordinate_mismatch' => $mismatch,
             ]);
 
             ReportStatusHistory::create([
@@ -304,5 +321,132 @@ class ReportService
 
             return $report->fresh();
         });
+    }
+
+    /**
+     * Memperbarui laporan berstatus Draf atau Ditolak (milik sendiri / admin).
+     * Jenis laporan (report_type) dikunci; detail domain diganti utuh bila dikirim.
+     */
+    public function updateReport(Report $report, array $data, User $actor): Report
+    {
+        if (! in_array($report->status, ['Draf', 'Ditolak'], true)) {
+            throw ValidationException::withMessages([
+                'status' => ["Hanya laporan berstatus 'Draf' atau 'Ditolak' yang dapat diedit."],
+            ]);
+        }
+
+        if (array_key_exists('report_type', $data) && $data['report_type'] !== $report->report_type) {
+            throw ValidationException::withMessages([
+                'report_type' => ['Jenis laporan tidak dapat diubah; buat draf laporan baru.'],
+            ]);
+        }
+
+        return DB::transaction(function () use ($report, $data): Report {
+            $update = [];
+            foreach (['report_date', 'district_id', 'village_id', 'location_name', 'address_detail', 'latitude', 'longitude', 'notes'] as $field) {
+                if (array_key_exists($field, $data)) {
+                    $update[$field] = $data[$field];
+                }
+            }
+
+            // Koordinat berubah → update geom & re-check mismatch
+            $coordsChanged = array_key_exists('latitude', $data) || array_key_exists('longitude', $data) || array_key_exists('village_id', $data) || array_key_exists('district_id', $data);
+            if ($coordsChanged) {
+                $lat = $update['latitude'] ?? $report->latitude;
+                $lng = $update['longitude'] ?? $report->longitude;
+                $districtId = (int) ($update['district_id'] ?? $report->district_id);
+                $villageIdRaw = $update['village_id'] ?? $report->village_id;
+                $villageId = $villageIdRaw !== null ? (int) $villageIdRaw : null;
+
+                if ($lat !== null && $lng !== null) {
+                    $update['is_coordinate_mismatch'] = $this->checkCoordinateMismatch((float) $lng, (float) $lat, $districtId, $villageId);
+                }
+            }
+
+            if ($update !== []) {
+                $report->update($update);
+            }
+
+            if ($update !== [] && (isset($update['latitude']) || isset($update['longitude'])) && $report->latitude !== null && $report->longitude !== null) {
+                DB::statement(
+                    'UPDATE reports SET geom = ST_SetSRID(ST_Point(?, ?), 4326) WHERE id = ?',
+                    [(float) $report->longitude, (float) $report->latitude, $report->id]
+                );
+            }
+
+            // Detail domain: ganti utuh bila dikirim
+            if ($report->report_type === 'pest' && array_key_exists('pest_detail', $data) && is_array($data['pest_detail'])) {
+                $p = $data['pest_detail'];
+                $report->pestDetail()->delete();
+                ReportPestDetail::create([
+                    'report_id' => $report->id,
+                    'opt_id' => $p['opt_id'],
+                    'crop_type' => $p['crop_type'] ?? 'padi',
+                    'crop_age_days' => $p['crop_age_days'] ?? null,
+                    'crop_phase' => $p['crop_phase'] ?? null,
+                    'intensity_level' => $p['intensity_level'],
+                    'affected_area_ha' => $p['affected_area_ha'],
+                    'threatened_area_ha' => $p['threatened_area_ha'] ?? null,
+                    'control_recommendation' => $p['control_recommendation'] ?? null,
+                ]);
+            } elseif ($report->report_type === 'irrigation' && array_key_exists('irrigation_detail', $data) && is_array($data['irrigation_detail'])) {
+                $i = $data['irrigation_detail'];
+                $report->irrigationDetail()->delete();
+                ReportIrrigationDetail::create([
+                    'report_id' => $report->id,
+                    'irrigation_area_name' => $i['irrigation_area_name'] ?? null,
+                    'channel_type' => $i['channel_type'],
+                    'physical_condition' => $i['physical_condition'],
+                    'water_discharge_status' => $i['water_discharge_status'],
+                    'service_area_ha' => $i['service_area_ha'] ?? null,
+                    'repair_status' => $i['repair_status'] ?? 'Normal',
+                    'action_taken' => $i['action_taken'] ?? null,
+                ]);
+            }
+
+            return $report->fresh(['pestDetail.opt', 'irrigationDetail', 'district', 'village']);
+        });
+    }
+
+    /**
+     * Arsipkan laporan Diverifikasi → Diarsipkan (Admin / Operator).
+     */
+    public function archiveReport(Report $report, User $actor): Report
+    {
+        if ($report->status !== 'Diverifikasi') {
+            throw ValidationException::withMessages([
+                'status' => ["Hanya laporan berstatus 'Diverifikasi' yang dapat diarsipkan."],
+            ]);
+        }
+
+        return DB::transaction(function () use ($report, $actor): Report {
+            $report->update(['status' => 'Diarsipkan']);
+
+            ReportStatusHistory::create([
+                'report_id' => $report->id,
+                'from_status' => 'Diverifikasi',
+                'to_status' => 'Diarsipkan',
+                'actor_id' => $actor->id,
+                'notes' => 'Laporan diarsipkan.',
+            ]);
+
+            return $report->fresh();
+        });
+    }
+
+    /**
+     * Soft delete laporan (Admin: semua status; Petugas: hanya Draf miliknya).
+     */
+    public function deleteReport(Report $report, User $actor): void
+    {
+        if (! $actor->hasRole('admin')) {
+            if (! ($actor->hasRole('petugas') && $report->user_id === $actor->id && $report->status === 'Draf')) {
+                throw ValidationException::withMessages([
+                    'report' => ['Anda tidak memiliki hak menghapus laporan ini.'],
+                ]);
+            }
+        }
+
+        $report->delete();
     }
 }

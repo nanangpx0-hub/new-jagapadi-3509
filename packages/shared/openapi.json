@@ -86,6 +86,9 @@
                                                 "must_change_password": {
                                                     "type": "boolean"
                                                 },
+                                                "theme_preference": {
+                                                    "type": "string"
+                                                },
                                                 "roles": {
                                                     "type": "array",
                                                     "items": {
@@ -120,6 +123,7 @@
                                                 "phone",
                                                 "nip",
                                                 "must_change_password",
+                                                "theme_preference",
                                                 "roles",
                                                 "permissions"
                                             ]
@@ -224,6 +228,9 @@
                                                 "must_change_password": {
                                                     "type": "boolean"
                                                 },
+                                                "theme_preference": {
+                                                    "type": "string"
+                                                },
                                                 "roles": {
                                                     "type": "array",
                                                     "items": {
@@ -258,6 +265,7 @@
                                                 "phone",
                                                 "nip",
                                                 "must_change_password",
+                                                "theme_preference",
                                                 "roles",
                                                 "permissions"
                                             ]
@@ -370,6 +378,82 @@
                                     "required": [
                                         "status",
                                         "message"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/auth/theme": {
+            "put": {
+                "operationId": "auth.theme",
+                "summary": "Simpan preferensi tema pengguna yang sedang login (dark | white | sawah)",
+                "tags": [
+                    "Auth"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "theme_preference": {
+                                        "type": "string",
+                                        "enum": [
+                                            "dark",
+                                            "white",
+                                            "sawah"
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "theme_preference"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "ok"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "const": "Preferensi tema tersimpan."
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "theme_preference": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "theme_preference"
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message",
+                                        "data"
                                     ]
                                 }
                             }
@@ -1181,14 +1265,14 @@
             },
             "post": {
                 "operationId": "reports.store",
-                "summary": "Membuat laporan baru (Draf atau Langsung Submit)",
+                "summary": "Membuat laporan baru (selalu Draf; sertakan `action=submit` + `photos[]`\nuntuk langsung mengirim sesuai PRD \u2014 minimal 1 foto wajib)",
                 "tags": [
                     "Report"
                 ],
                 "requestBody": {
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
                                 "type": "object",
                                 "properties": {
@@ -1198,6 +1282,12 @@
                                             "null"
                                         ],
                                         "format": "uuid"
+                                    },
+                                    "payload": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ]
                                     },
                                     "report_type": {
                                         "type": "string",
@@ -1274,9 +1364,20 @@
                                         ],
                                         "maxLength": 5000
                                     },
+                                    "photos": {
+                                        "type": "array",
+                                        "description": "Foto lampiran (opsional untuk draf; wajib minimal 1 saat submit)",
+                                        "items": {
+                                            "type": "string",
+                                            "format": "binary",
+                                            "contentMediaType": "application/octet-stream",
+                                            "description": "Maximum file size: 5120 kilobytes."
+                                        },
+                                        "maxItems": 5
+                                    },
                                     "pest_detail": {
                                         "type": "object",
-                                        "description": "Validasi Domain Pest",
+                                        "description": "Detail Pest \u2014 wajib hanya saat submit (sesuai PRD \u00a75; draf boleh parsial)",
                                         "properties": {
                                             "opt_id": {
                                                 "type": "integer"
@@ -1285,7 +1386,8 @@
                                                 "type": [
                                                     "string",
                                                     "null"
-                                                ]
+                                                ],
+                                                "maxLength": 100
                                             },
                                             "crop_age_days": {
                                                 "type": [
@@ -1298,7 +1400,8 @@
                                                 "type": [
                                                     "string",
                                                     "null"
-                                                ]
+                                                ],
+                                                "maxLength": 50
                                             },
                                             "intensity_level": {
                                                 "type": "string",
@@ -1330,7 +1433,7 @@
                                     },
                                     "irrigation_detail": {
                                         "type": "object",
-                                        "description": "Validasi Domain Irrigation",
+                                        "description": "Detail Irrigation \u2014 wajib hanya saat submit",
                                         "properties": {
                                             "irrigation_area_name": {
                                                 "type": [
@@ -1433,8 +1536,124 @@
                             }
                         }
                     },
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "ok"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "const": "Laporan sudah tersinkron sebelumnya."
+                                        },
+                                        "data": {
+                                            "anyOf": [
+                                                {
+                                                    "$ref": "#/components/schemas/Report"
+                                                },
+                                                {
+                                                    "type": "null"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
                     "422": {
                         "$ref": "#/components/responses/ValidationException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/reports/metrics": {
+            "get": {
+                "operationId": "reports.metrics",
+                "summary": "Metrik ringkas untuk kartu KPI halaman Laporan (menghormati filter aktif).\nLuas terdampak: SUM affected_area_ha laporan non-Draf/Ditolak",
+                "tags": [
+                    "Report"
+                ],
+                "parameters": [
+                    {
+                        "name": "report_type",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "district_id",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "ok"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "total": {
+                                                    "type": "integer"
+                                                },
+                                                "submitted": {
+                                                    "type": "integer"
+                                                },
+                                                "diverifikasi": {
+                                                    "type": "integer"
+                                                },
+                                                "ditolak": {
+                                                    "type": "integer"
+                                                },
+                                                "draf": {
+                                                    "type": "integer"
+                                                },
+                                                "affected_area_ha": {
+                                                    "type": "number"
+                                                }
+                                            },
+                                            "required": [
+                                                "total",
+                                                "submitted",
+                                                "diverifikasi",
+                                                "ditolak",
+                                                "draf",
+                                                "affected_area_ha"
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "$ref": "#/components/responses/AuthenticationException"
@@ -1497,6 +1716,322 @@
                                         }
                                     },
                                     "required": [
+                                        "message"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/ModelNotFoundException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            },
+            "put": {
+                "operationId": "reports.update",
+                "summary": "Memperbarui laporan berstatus Draf atau Ditolak.\nPetugas: hanya laporan miliknya; Admin: semua. Operator/Statistisi/Viewer: tidak boleh",
+                "tags": [
+                    "Report"
+                ],
+                "parameters": [
+                    {
+                        "name": "report",
+                        "in": "path",
+                        "required": true,
+                        "description": "The report ID",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "report_type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "pest",
+                                            "irrigation",
+                                            "fertilizer",
+                                            "harvest",
+                                            "weather",
+                                            "equipment"
+                                        ]
+                                    },
+                                    "report_date": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "district_id": {
+                                        "type": "integer"
+                                    },
+                                    "village_id": {
+                                        "type": [
+                                            "integer",
+                                            "null"
+                                        ]
+                                    },
+                                    "location_name": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "maxLength": 255
+                                    },
+                                    "address_detail": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "maxLength": 300
+                                    },
+                                    "latitude": {
+                                        "type": [
+                                            "number",
+                                            "null"
+                                        ],
+                                        "minimum": -90,
+                                        "maximum": 90
+                                    },
+                                    "longitude": {
+                                        "type": [
+                                            "number",
+                                            "null"
+                                        ],
+                                        "minimum": -180,
+                                        "maximum": 180
+                                    },
+                                    "notes": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "maxLength": 5000
+                                    },
+                                    "pest_detail": {
+                                        "type": "object",
+                                        "properties": {
+                                            "opt_id": {
+                                                "type": "integer"
+                                            },
+                                            "crop_type": {
+                                                "type": [
+                                                    "string",
+                                                    "null"
+                                                ],
+                                                "maxLength": 100
+                                            },
+                                            "crop_age_days": {
+                                                "type": [
+                                                    "integer",
+                                                    "null"
+                                                ],
+                                                "minimum": 1
+                                            },
+                                            "crop_phase": {
+                                                "type": [
+                                                    "string",
+                                                    "null"
+                                                ],
+                                                "maxLength": 50
+                                            },
+                                            "intensity_level": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "Ringan",
+                                                    "Sedang",
+                                                    "Berat",
+                                                    "Puso"
+                                                ]
+                                            },
+                                            "affected_area_ha": {
+                                                "type": "number",
+                                                "minimum": 0
+                                            },
+                                            "threatened_area_ha": {
+                                                "type": [
+                                                    "number",
+                                                    "null"
+                                                ],
+                                                "minimum": 0
+                                            },
+                                            "control_recommendation": {
+                                                "type": [
+                                                    "string",
+                                                    "null"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "irrigation_detail": {
+                                        "type": "object",
+                                        "properties": {
+                                            "irrigation_area_name": {
+                                                "type": [
+                                                    "string",
+                                                    "null"
+                                                ],
+                                                "maxLength": 200
+                                            },
+                                            "channel_type": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "Primer",
+                                                    "Sekunder",
+                                                    "Tersier"
+                                                ]
+                                            },
+                                            "physical_condition": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "Bagus",
+                                                    "Sedang",
+                                                    "Tidak Bagus",
+                                                    "Rusak"
+                                                ]
+                                            },
+                                            "water_discharge_status": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "Cukup",
+                                                    "Kurang",
+                                                    "Kering"
+                                                ]
+                                            },
+                                            "service_area_ha": {
+                                                "type": [
+                                                    "number",
+                                                    "null"
+                                                ],
+                                                "minimum": 0
+                                            },
+                                            "repair_status": {
+                                                "type": [
+                                                    "string",
+                                                    "null"
+                                                ],
+                                                "enum": [
+                                                    "Normal",
+                                                    "Belum Ditangani",
+                                                    "Dalam Perbaikan",
+                                                    "Selesai Diperbaiki",
+                                                    null
+                                                ]
+                                            },
+                                            "action_taken": {
+                                                "type": [
+                                                    "string",
+                                                    "null"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "ok"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "const": "Laporan berhasil diperbarui."
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Report"
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "const": "Anda tidak memiliki hak mengedit laporan ini."
+                                        }
+                                    },
+                                    "required": [
+                                        "message"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/ModelNotFoundException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "reports.destroy",
+                "summary": "Hapus laporan (soft delete). Admin: semua status; Petugas: hanya Draf miliknya",
+                "tags": [
+                    "Report"
+                ],
+                "parameters": [
+                    {
+                        "name": "report",
+                        "in": "path",
+                        "required": true,
+                        "description": "The report ID",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "ok"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "const": "Laporan berhasil dihapus (soft delete)."
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
                                         "message"
                                     ]
                                 }
@@ -1590,7 +2125,7 @@
         "/reports/{report}/photos": {
             "post": {
                 "operationId": "reports.photos",
-                "summary": "Unggah foto lampiran laporan lapangan",
+                "summary": "Unggah foto lampiran laporan lapangan (maks 5 per laporan, re-encode WebP 1280px q80)",
                 "tags": [
                     "Report"
                 ],
@@ -1623,7 +2158,6 @@
                                             "string",
                                             "null"
                                         ],
-                                        "description": "Max 5MB",
                                         "maxLength": 255
                                     }
                                 },
@@ -1849,6 +2383,1006 @@
                     }
                 }
             }
+        },
+        "/reports/{report}/archive": {
+            "post": {
+                "operationId": "reports.archive",
+                "summary": "Arsipkan laporan Diverifikasi \u2192 Diarsipkan (Admin / Operator)",
+                "tags": [
+                    "Report"
+                ],
+                "parameters": [
+                    {
+                        "name": "report",
+                        "in": "path",
+                        "required": true,
+                        "description": "The report ID",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "ok"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "const": "Laporan berhasil diarsipkan."
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Report"
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/ModelNotFoundException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/districts/{district}/sls-stats": {
+            "get": {
+                "operationId": "districts.sls-stats",
+                "summary": "Statistik agregat SLS per kecamatan",
+                "tags": [
+                    "Sls"
+                ],
+                "parameters": [
+                    {
+                        "name": "district",
+                        "in": "path",
+                        "required": true,
+                        "description": "The district ID",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "ok"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "district_id": {
+                                                    "type": "string"
+                                                },
+                                                "code": {
+                                                    "type": "string"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "total_sls": {
+                                                    "type": "integer"
+                                                },
+                                                "total_villages": {
+                                                    "type": "integer"
+                                                },
+                                                "total_kk": {
+                                                    "type": "integer"
+                                                },
+                                                "total_muatan": {
+                                                    "type": "integer"
+                                                },
+                                                "total_luas_ha": {
+                                                    "type": "number"
+                                                }
+                                            },
+                                            "required": [
+                                                "district_id",
+                                                "code",
+                                                "name",
+                                                "total_sls",
+                                                "total_villages",
+                                                "total_kk",
+                                                "total_muatan",
+                                                "total_luas_ha"
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/ModelNotFoundException"
+                    }
+                }
+            }
+        },
+        "/villages/{village}/sls": {
+            "get": {
+                "operationId": "villages.sls",
+                "summary": "Daftar SLS (RT/RW/Dusun) di bawah satu desa/kelurahan.\nMendukung ?search=<nama/kode> dan ?per_page= (default 500, maks 1000)",
+                "tags": [
+                    "Sls"
+                ],
+                "parameters": [
+                    {
+                        "name": "village",
+                        "in": "path",
+                        "required": true,
+                        "description": "The village ID",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "ok"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Sls"
+                                            }
+                                        },
+                                        "summary": {
+                                            "type": "object",
+                                            "properties": {
+                                                "total_sls": {
+                                                    "type": "integer"
+                                                },
+                                                "total_kk": {
+                                                    "type": "integer"
+                                                },
+                                                "total_muatan": {
+                                                    "type": "integer"
+                                                },
+                                                "total_luas_ha": {
+                                                    "type": "number"
+                                                }
+                                            },
+                                            "required": [
+                                                "total_sls",
+                                                "total_kk",
+                                                "total_muatan",
+                                                "total_luas_ha"
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "data",
+                                        "summary"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/ModelNotFoundException"
+                    }
+                }
+            }
+        },
+        "/users": {
+            "get": {
+                "operationId": "users.index",
+                "summary": "Daftar pengguna (paginasi + filter role + pencarian nama/email/NIP)",
+                "tags": [
+                    "User"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "ok"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/User"
+                                            }
+                                        },
+                                        "meta": {
+                                            "type": "object",
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer"
+                                                },
+                                                "last_page": {
+                                                    "type": "integer"
+                                                },
+                                                "per_page": {
+                                                    "type": "integer"
+                                                },
+                                                "total": {
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "required": [
+                                                "current_page",
+                                                "last_page",
+                                                "per_page",
+                                                "total"
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "data",
+                                        "meta"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            },
+            "post": {
+                "operationId": "users.store",
+                "summary": "Tambah pengguna baru",
+                "tags": [
+                    "User"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "maxLength": 255
+                                    },
+                                    "phone": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "maxLength": 30
+                                    },
+                                    "nip": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "maxLength": 30
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "minLength": 8
+                                    },
+                                    "role": {
+                                        "type": "string",
+                                        "enum": [
+                                            "admin",
+                                            "operator",
+                                            "statistisi",
+                                            "petugas",
+                                            "viewer"
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password",
+                                    "role"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "ok"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "const": "Pengguna berhasil ditambahkan."
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "email": {
+                                                    "type": "string"
+                                                },
+                                                "phone": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "nip": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "is_active": {
+                                                    "type": "boolean"
+                                                },
+                                                "must_change_password": {
+                                                    "type": "boolean"
+                                                },
+                                                "roles": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "relations": {
+                                                                "type": "array",
+                                                                "prefixItems": [
+                                                                    {
+                                                                        "type": "string",
+                                                                        "const": "roles"
+                                                                    }
+                                                                ],
+                                                                "minItems": 1,
+                                                                "maxItems": 1
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "relations"
+                                                        ]
+                                                    }
+                                                },
+                                                "created_at": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                }
+                                            },
+                                            "required": [
+                                                "id",
+                                                "name",
+                                                "email",
+                                                "phone",
+                                                "nip",
+                                                "is_active",
+                                                "must_change_password",
+                                                "roles",
+                                                "created_at"
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/users/{user}": {
+            "get": {
+                "operationId": "users.show",
+                "summary": "Detail satu pengguna",
+                "tags": [
+                    "User"
+                ],
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "required": true,
+                        "description": "The user ID",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "ok"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "email": {
+                                                    "type": "string"
+                                                },
+                                                "phone": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "nip": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "is_active": {
+                                                    "type": "boolean"
+                                                },
+                                                "must_change_password": {
+                                                    "type": "boolean"
+                                                },
+                                                "roles": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "relations": {
+                                                                "type": "array",
+                                                                "prefixItems": [
+                                                                    {
+                                                                        "type": "string",
+                                                                        "const": "roles"
+                                                                    }
+                                                                ],
+                                                                "minItems": 1,
+                                                                "maxItems": 1
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "relations"
+                                                        ]
+                                                    }
+                                                },
+                                                "created_at": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                }
+                                            },
+                                            "required": [
+                                                "id",
+                                                "name",
+                                                "email",
+                                                "phone",
+                                                "nip",
+                                                "is_active",
+                                                "must_change_password",
+                                                "roles",
+                                                "created_at"
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/ModelNotFoundException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            },
+            "put": {
+                "operationId": "users.update",
+                "summary": "Perbarui data profil & role pengguna",
+                "tags": [
+                    "User"
+                ],
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "required": true,
+                        "description": "The user ID",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "maxLength": 255
+                                    },
+                                    "phone": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "maxLength": 30
+                                    },
+                                    "nip": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "maxLength": 30
+                                    },
+                                    "role": {
+                                        "type": "string",
+                                        "enum": [
+                                            "admin",
+                                            "operator",
+                                            "statistisi",
+                                            "petugas",
+                                            "viewer"
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "ok"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "const": "Pengguna berhasil diperbarui."
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "email": {
+                                                    "type": "string"
+                                                },
+                                                "phone": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "nip": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "is_active": {
+                                                    "type": "boolean"
+                                                },
+                                                "must_change_password": {
+                                                    "type": "boolean"
+                                                },
+                                                "roles": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "relations": {
+                                                                "type": "array",
+                                                                "prefixItems": [
+                                                                    {
+                                                                        "type": "string",
+                                                                        "const": "roles"
+                                                                    }
+                                                                ],
+                                                                "minItems": 1,
+                                                                "maxItems": 1
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "relations"
+                                                        ]
+                                                    }
+                                                },
+                                                "created_at": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                }
+                                            },
+                                            "required": [
+                                                "id",
+                                                "name",
+                                                "email",
+                                                "phone",
+                                                "nip",
+                                                "is_active",
+                                                "must_change_password",
+                                                "roles",
+                                                "created_at"
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/ModelNotFoundException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "users.destroy",
+                "summary": "Hapus akun (soft delete)",
+                "tags": [
+                    "User"
+                ],
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "required": true,
+                        "description": "The user ID",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "ok"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "const": "Akun berhasil dihapus (soft delete)."
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "const": "Anda tidak dapat menghapus akun Anda sendiri."
+                                        }
+                                    },
+                                    "required": [
+                                        "message"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/ModelNotFoundException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/users/{user}/toggle-active": {
+            "patch": {
+                "operationId": "users.toggle-active",
+                "summary": "Aktifkan / nonaktifkan akun",
+                "tags": [
+                    "User"
+                ],
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "required": true,
+                        "description": "The user ID",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "ok"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "enum": [
+                                                "Akun diaktifkan.",
+                                                "Akun dinonaktifkan."
+                                            ]
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "email": {
+                                                    "type": "string"
+                                                },
+                                                "phone": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "nip": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "is_active": {
+                                                    "type": "boolean"
+                                                },
+                                                "must_change_password": {
+                                                    "type": "boolean"
+                                                },
+                                                "roles": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "relations": {
+                                                                "type": "array",
+                                                                "prefixItems": [
+                                                                    {
+                                                                        "type": "string",
+                                                                        "const": "roles"
+                                                                    }
+                                                                ],
+                                                                "minItems": 1,
+                                                                "maxItems": 1
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "relations"
+                                                        ]
+                                                    }
+                                                },
+                                                "created_at": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                }
+                                            },
+                                            "required": [
+                                                "id",
+                                                "name",
+                                                "email",
+                                                "phone",
+                                                "nip",
+                                                "is_active",
+                                                "must_change_password",
+                                                "roles",
+                                                "created_at"
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "const": "Anda tidak dapat mengubah status akun Anda sendiri."
+                                        }
+                                    },
+                                    "required": [
+                                        "message"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/ModelNotFoundException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/users/{user}/reset-password": {
+            "post": {
+                "operationId": "users.reset-password",
+                "summary": "Reset kata sandi ke default (wajib ganti saat login berikutnya)",
+                "tags": [
+                    "User"
+                ],
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "required": true,
+                        "description": "The user ID",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "ok"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "const": "Kata sandi direset ke \"password\". Pengguna wajib mengganti saat login berikutnya."
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/ModelNotFoundException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -2030,6 +3564,18 @@
                             "null"
                         ],
                         "format": "date-time"
+                    },
+                    "attack_signs": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "management": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
                     }
                 },
                 "required": [
@@ -2050,7 +3596,9 @@
                     "is_active",
                     "created_at",
                     "updated_at",
-                    "deleted_at"
+                    "deleted_at",
+                    "attack_signs",
+                    "management"
                 ],
                 "title": "Opt"
             },
@@ -2278,6 +3826,167 @@
                     "updated_at"
                 ],
                 "title": "ReportPhoto"
+            },
+            "Sls": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "district_id": {
+                        "type": "integer"
+                    },
+                    "village_id": {
+                        "type": "integer"
+                    },
+                    "idsls": {
+                        "type": "string"
+                    },
+                    "code": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "kk": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ]
+                    },
+                    "muatan": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ]
+                    },
+                    "luas": {
+                        "type": [
+                            "number",
+                            "null"
+                        ]
+                    },
+                    "created_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    }
+                },
+                "required": [
+                    "id",
+                    "district_id",
+                    "village_id",
+                    "idsls",
+                    "code",
+                    "name",
+                    "kk",
+                    "muatan",
+                    "luas",
+                    "created_at",
+                    "updated_at"
+                ],
+                "title": "Sls"
+            },
+            "User": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "email_verified_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "created_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "phone": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "nip": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "is_active": {
+                        "type": "boolean"
+                    },
+                    "must_change_password": {
+                        "type": "boolean"
+                    },
+                    "created_by": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ]
+                    },
+                    "deleted_by": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ]
+                    },
+                    "deleted_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "theme_preference": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "email",
+                    "email_verified_at",
+                    "created_at",
+                    "updated_at",
+                    "phone",
+                    "nip",
+                    "is_active",
+                    "must_change_password",
+                    "created_by",
+                    "deleted_by",
+                    "deleted_at",
+                    "theme_preference"
+                ],
+                "title": "User"
             },
             "Village": {
                 "type": "object",

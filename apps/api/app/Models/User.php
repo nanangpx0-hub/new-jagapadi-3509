@@ -30,6 +30,7 @@ class User extends Authenticatable
         'password',
         'is_active',
         'must_change_password',
+        'theme_preference',
         'created_by',
         'deleted_by',
     ];

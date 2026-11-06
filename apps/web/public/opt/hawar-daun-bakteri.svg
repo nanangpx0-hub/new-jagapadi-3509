@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220" role="img" aria-label="Ilustrasi skematis OPT">
+  <rect width="320" height="220" rx="16" fill="#F7FAF5" stroke="#DDE5DC"/>
+  <circle cx="288" cy="32" r="14" fill="#B91C1C" opacity="0.15"/>
+  <circle cx="288" cy="32" r="5" fill="#B91C1C"/>
+  <g stroke="#1B2A21" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="#133D2B">
+    <rect x="96.0" y="118.0" width="16.0" height="32.0" rx="8.0" transform="rotate(-30 104.0 134.0)" fill="#133D2B" fill-opacity="0.88"/>
+    <rect x="124.0" y="80.0" width="16.0" height="32.0" rx="8.0" transform="rotate(20 132.0 96.0)" fill="#133D2B" fill-opacity="0.88"/>
+    <rect x="152.0" y="124.0" width="16.0" height="32.0" rx="8.0" transform="rotate(-15 160.0 140.0)" fill="#133D2B" fill-opacity="0.88"/>
+    <rect x="180.0" y="90.0" width="16.0" height="32.0" rx="8.0" transform="rotate(35 188.0 106.0)" fill="#133D2B" fill-opacity="0.88"/>
+    <rect x="208.0" y="120.0" width="16.0" height="32.0" rx="8.0" transform="rotate(-25 216.0 136.0)" fill="#133D2B" fill-opacity="0.88"/>
+    <rect x="144.0" y="64.0" width="16.0" height="32.0" rx="8.0" transform="rotate(10 152.0 80.0)" fill="#133D2B" fill-opacity="0.88"/>
+    <rect x="188.0" y="148.0" width="16.0" height="32.0" rx="8.0" transform="rotate(5 196.0 164.0)" fill="#133D2B" fill-opacity="0.88"/>
+  </g>
+</svg>

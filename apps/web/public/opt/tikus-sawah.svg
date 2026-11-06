@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220" role="img" aria-label="Ilustrasi skematis OPT">
+  <rect width="320" height="220" rx="16" fill="#F7FAF5" stroke="#DDE5DC"/>
+  <circle cx="288" cy="32" r="14" fill="#B91C1C" opacity="0.15"/>
+  <circle cx="288" cy="32" r="5" fill="#B91C1C"/>
+  <g stroke="#1B2A21" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="#133D2B">
+    <path d="M 96.0 160.0 Q 82.0 132.0 114.0 118.0" fill="none"/>
+    <ellipse cx="154.0" cy="142.0" rx="58.0" ry="34.0" fill="#133D2B" fill-opacity="0.9"/>
+    <circle cx="212.0" cy="128.0" r="22.0"/>
+    <path d="M 204.0 110.0 L 206.0 96.0 L 218.0 108.0 Z"/>
+    <path d="M 222.0 110.0 L 224.0 96.0 L 234.0 110.0 Z"/>
+    <circle cx="218.0" cy="128.0" r="2.6" fill="#F7FAF5" stroke="none"/>
+  </g>
+</svg>
