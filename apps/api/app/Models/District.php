@@ -12,6 +12,8 @@ class District extends Model
 {
     use HasFactory;
 
+    protected $hidden = ['geom', 'centroid'];
+
     protected $fillable = [
         'code',
         'regency_bps_code',

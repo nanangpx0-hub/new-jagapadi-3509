@@ -544,4 +544,97 @@ final class ReportLifecycleTest extends TestCase
         $reportNumber = $response->json('data.report_number');
         $this->assertStringStartsWith('LI-', (string) $reportNumber);
     }
+
+    public function test_admin_can_create_and_edit_any_report(): void
+    {
+        $admin = User::where('email', 'admin@jagapadi.test')->firstOrFail();
+        $petugas = User::where('email', 'petugas@jagapadi.test')->firstOrFail();
+        $district = District::firstOrFail();
+        $opt = Opt::firstOrFail();
+
+        $create = $this->actingAs($admin)
+            ->postJson('/api/reports', [
+                'report_type' => 'pest',
+                'action' => 'draft',
+                'district_id' => $district->id,
+                'pest_detail' => [
+                    'opt_id' => $opt->id,
+                    'intensity_level' => 'Ringan',
+                    'affected_area_ha' => 0.5,
+                ],
+            ]);
+        $create->assertStatus(201)->assertJsonPath('data.user_id', $admin->id);
+        $reportId = $create->json('data.id');
+
+        $this->actingAs($admin)
+            ->putJson("/api/reports/{$reportId}", ['notes' => 'Diedit admin.'])
+            ->assertStatus(200)
+            ->assertJsonPath('data.notes', 'Diedit admin.');
+
+        $this->actingAs($petugas)
+            ->postJson('/api/reports', [
+                'report_type' => 'pest',
+                'action' => 'draft',
+                'district_id' => $district->id,
+                'pest_detail' => [
+                    'opt_id' => $opt->id,
+                    'intensity_level' => 'Sedang',
+                    'affected_area_ha' => 1.0,
+                ],
+            ])
+            ->assertStatus(201);
+    }
+
+    public function test_viewer_and_statistisi_cannot_create_report(): void
+    {
+        $district = District::firstOrFail();
+        $opt = Opt::firstOrFail();
+
+        foreach (['viewer@jagapadi.test', 'statistisi@jagapadi.test'] as $email) {
+            $user = User::where('email', $email)->firstOrFail();
+            $this->actingAs($user)
+                ->postJson('/api/reports', [
+                    'report_type' => 'pest',
+                    'action' => 'draft',
+                    'district_id' => $district->id,
+                    'pest_detail' => [
+                        'opt_id' => $opt->id,
+                        'intensity_level' => 'Ringan',
+                        'affected_area_ha' => 0.5,
+                    ],
+                ])
+                ->assertForbidden();
+        }
+    }
+
+    public function test_partial_draft_keeps_data_and_photos(): void
+    {
+        Storage::fake('public');
+        $petugas = User::where('email', 'petugas@jagapadi.test')->firstOrFail();
+        $district = District::firstOrFail();
+        $opt = Opt::firstOrFail();
+
+        // Draft parsial: OPT sudah dipilih tetapi intensitas belum diisi.
+        $response = $this->actingAs($petugas)->post('/api/reports', [
+            'report_type' => 'pest',
+            'action' => 'draft',
+            'district_id' => $district->id,
+            'location_name' => 'Draft Parsial',
+            'pest_detail' => [
+                'opt_id' => $opt->id,
+                'crop_type' => 'padi',
+            ],
+            'photos' => [UploadedFile::fake()->image('bukti.jpg', 800, 600)],
+        ]);
+
+        $response->assertCreated()
+            ->assertJsonPath('data.location_name', 'Draft Parsial')
+            ->assertJsonCount(1, 'data.photos');
+
+        $report = Report::findOrFail($response->json('data.id'));
+        $this->assertSame($opt->id, $report->pestDetail->opt_id);
+        $this->assertSame('', $report->pestDetail->intensity_level);
+        $this->assertSame(0.0, (float) $report->pestDetail->affected_area_ha);
+        $this->assertCount(1, $report->photos);
+    }
 }

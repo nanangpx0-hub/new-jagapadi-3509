@@ -11,8 +11,11 @@ return new class extends Migration
 {
     public function up(): void
     {
-        // Pastikan extension postgis aktif
-        DB::statement('CREATE EXTENSION IF NOT EXISTS postgis');
+        $driver = Schema::getConnection()->getDriverName();
+
+        if ($driver === 'pgsql') {
+            DB::statement('CREATE EXTENSION IF NOT EXISTS postgis');
+        }
 
         Schema::create('districts', function (Blueprint $table) {
             $table->id();
@@ -26,11 +29,15 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        // Add PostGIS geometry columns & spatial GiST index
-        DB::statement('ALTER TABLE districts ADD COLUMN geom geometry(MultiPolygon, 4326)');
-        DB::statement('ALTER TABLE districts ADD COLUMN centroid geometry(Point, 4326)');
-        DB::statement('CREATE INDEX IF NOT EXISTS districts_geom_gist ON districts USING gist (geom)');
-        DB::statement('CREATE INDEX IF NOT EXISTS districts_centroid_gist ON districts USING gist (centroid)');
+        if ($driver === 'pgsql') {
+            DB::statement('ALTER TABLE districts ADD COLUMN geom geometry(MultiPolygon, 4326)');
+            DB::statement('ALTER TABLE districts ADD COLUMN centroid geometry(Point, 4326)');
+            DB::statement('CREATE INDEX IF NOT EXISTS districts_geom_gist ON districts USING gist (geom)');
+            DB::statement('CREATE INDEX IF NOT EXISTS districts_centroid_gist ON districts USING gist (centroid)');
+        } else {
+            DB::statement('ALTER TABLE districts ADD COLUMN geom GEOMETRY NULL');
+            DB::statement('ALTER TABLE districts ADD COLUMN centroid POINT NULL');
+        }
 
         Schema::create('villages', function (Blueprint $table) {
             $table->id();
@@ -43,11 +50,19 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        DB::statement('ALTER TABLE villages ADD COLUMN geom geometry(MultiPolygon, 4326)');
-        DB::statement('ALTER TABLE villages ADD COLUMN centroid geometry(Point, 4326)');
-        DB::statement('CREATE INDEX IF NOT EXISTS villages_district_id_idx ON villages (district_id)');
-        DB::statement('CREATE INDEX IF NOT EXISTS villages_geom_gist ON villages USING gist (geom)');
-        DB::statement('CREATE INDEX IF NOT EXISTS villages_centroid_gist ON villages USING gist (centroid)');
+        if ($driver === 'pgsql') {
+            DB::statement('ALTER TABLE villages ADD COLUMN geom geometry(MultiPolygon, 4326)');
+            DB::statement('ALTER TABLE villages ADD COLUMN centroid geometry(Point, 4326)');
+            DB::statement('CREATE INDEX IF NOT EXISTS villages_district_id_idx ON villages (district_id)');
+            DB::statement('CREATE INDEX IF NOT EXISTS villages_geom_gist ON villages USING gist (geom)');
+            DB::statement('CREATE INDEX IF NOT EXISTS villages_centroid_gist ON villages USING gist (centroid)');
+        } else {
+            DB::statement('ALTER TABLE villages ADD COLUMN geom GEOMETRY NULL');
+            DB::statement('ALTER TABLE villages ADD COLUMN centroid POINT NULL');
+            Schema::table('villages', function (Blueprint $table) {
+                $table->index('district_id', 'villages_district_id_idx');
+            });
+        }
     }
 
     public function down(): void

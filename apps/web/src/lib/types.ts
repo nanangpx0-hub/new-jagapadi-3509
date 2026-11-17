@@ -17,6 +17,18 @@ export interface VillageItem {
   fallback_radius_m: number | null;
 }
 
+export interface SlsItem {
+  id: number;
+  district_id: number;
+  village_id: number;
+  idsls: string;
+  code: string;
+  name: string;
+  kk: number | null;
+  muatan: number | null;
+  luas: number | null;
+}
+
 export interface OptItem {
   id: number;
   code: string;
@@ -26,6 +38,8 @@ export interface OptItem {
   category: string;
   danger_level: string;
   target_crop: string;
+  etl_reference?: number | string | null;
+  etl_unit?: string | null;
   description: string | null;
   attack_signs?: string | null;
   management?: string | null;
@@ -62,6 +76,9 @@ export interface PestDetail {
   intensity_level: string;
   affected_area_ha: number | string;
   threatened_area_ha: number | string | null;
+  population_intensity?: number | string | null;
+  etl_unit?: string | null;
+  is_above_etl?: boolean | null;
   control_recommendation: string | null;
   opt?: OptItem | null;
 }
@@ -75,6 +92,64 @@ export interface IrrigationDetail {
   service_area_ha: number | string | null;
   repair_status: string;
   action_taken: string | null;
+}
+
+export interface FertilizerDetail {
+  report_id?: number;
+  fertilizer_type: string;
+  dosage_amount: number | string;
+  dosage_unit: string;
+  application_method?: string | null;
+  availability_status?: string | null;
+  related_opt_id?: number | null;
+}
+
+export interface HarvestDetail {
+  report_id?: number;
+  commodity: string;
+  variety?: string | null;
+  harvest_area_ha: number | string;
+  harvest_volume: number | string;
+  volume_unit: string;
+  productivity_ton_ha?: number | string | null;
+  farmer_price_per_kg?: number | string | null;
+}
+
+export interface WeatherDetail {
+  report_id?: number;
+  weather_condition: string;
+  temperature_c?: number | string | null;
+  humidity_pct?: number | string | null;
+  rainfall_mm?: number | string | null;
+  wind_speed_kmh?: number | string | null;
+  wind_direction?: string | null;
+  impacted_area_ha?: number | string | null;
+}
+
+export interface EquipmentDetail {
+  report_id?: number;
+  equipment_category: string;
+  equipment_name: string;
+  unit_count: number | string;
+  condition_status: string;
+  ownership_group?: string | null;
+}
+
+export type PestFollowupControlMethod = 'Mekanis' | 'Hayati' | 'Kimiawi';
+export type PestFollowupOutcome = 'Terkendali' | 'Menurun' | 'Tetap' | 'Meluas';
+
+export interface PestFollowup {
+  id: number;
+  report_id: number;
+  user_id: number;
+  action_date: string;
+  control_method: PestFollowupControlMethod | string;
+  controlled_area_ha: number | string | null;
+  chemicals_or_agents_used: string | null;
+  outcome_status: PestFollowupOutcome | string;
+  notes: string | null;
+  created_at?: string | null;
+  user?: ReportUser | null;
 }
 
 export interface StatusHistory {
@@ -92,8 +167,15 @@ export interface Report {
   report_type: ReportType;
   status: ReportStatus;
   report_date: string;
+  commodity?: string | null;
+  ksa_segment_code?: string | null;
+  ksa_phase?: string | null;
+  statistical_impacts?: string[] | null;
+  subround?: number;
+  quarter?: number;
   district_id: number;
   village_id: number | null;
+  sls_id: number | null;
   location_name: string | null;
   address_detail: string | null;
   latitude: number | null;
@@ -107,8 +189,14 @@ export interface Report {
   user?: ReportUser | null;
   district?: DistrictItem | null;
   village?: VillageItem | null;
+  sls?: SlsItem | null;
+  followups?: PestFollowup[];
   pestDetail?: PestDetail | null;
   irrigationDetail?: IrrigationDetail | null;
+  fertilizerDetail?: FertilizerDetail | null;
+  harvestDetail?: HarvestDetail | null;
+  weatherDetail?: WeatherDetail | null;
+  equipmentDetail?: EquipmentDetail | null;
   photos?: ReportPhoto[];
   statusHistories?: StatusHistory[];
   verifiedByUser?: ReportUser | null;

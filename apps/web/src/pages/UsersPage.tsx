@@ -12,6 +12,7 @@ import { EmptyState } from '../components/EmptyState';
 import {
   createUser,
   deleteUser,
+  listDistricts,
   listUsers,
   resetUserPassword,
   toggleUserStatus,
@@ -20,7 +21,7 @@ import {
 } from '../lib/api';
 import { useAuth } from '../lib/auth';
 
-const ROLES = ['admin', 'operator', 'statistisi', 'petugas', 'viewer'];
+const ROLES = ['superadmin', 'admin', 'operator', 'statistisi', 'petugas', 'viewer'];
 
 function formatDateId(value: string | null): string {
   if (!value) return '—';
@@ -28,7 +29,8 @@ function formatDateId(value: string | null): string {
 }
 
 export function UsersPage() {
-  const { hasPermission } = useAuth();
+  const { hasPermission, hasRole } = useAuth();
+  const isSuperAdmin = hasRole('superadmin');
   const queryClient = useQueryClient();
 
   const [roleFilter, setRoleFilter] = useState<string>('all');
@@ -51,6 +53,8 @@ export function UsersPage() {
   });
   const users = query.data?.data ?? [];
   const meta = query.data?.meta;
+  const districtsQuery = useQuery({ queryKey: ['districts'], queryFn: listDistricts });
+  const districts = districtsQuery.data ?? [];
 
   const toggleMutation = useMutation({
     mutationFn: (id: number) => toggleUserStatus(id),
@@ -74,6 +78,7 @@ export function UsersPage() {
     nip: string | null;
     password: string;
     role: string;
+    assigned_district_id: number | null;
     editId?: number;
   }) => {
     setFormError(null);
@@ -86,6 +91,7 @@ export function UsersPage() {
           phone: payload.phone,
           nip: payload.nip,
           role: payload.role,
+          assigned_district_id: payload.assigned_district_id,
         });
       } else {
         await createUser({
@@ -95,6 +101,7 @@ export function UsersPage() {
           nip: payload.nip,
           password: payload.password,
           role: payload.role,
+          assigned_district_id: payload.assigned_district_id,
         });
       }
       setModal(null);
@@ -199,6 +206,7 @@ export function UsersPage() {
                   <th className="px-4 py-3 font-semibold">Nama &amp; NIP</th>
                   <th className="px-4 py-3 font-semibold">Kontak</th>
                   <th className="px-4 py-3 font-semibold">Peran</th>
+                  <th className="px-4 py-3 font-semibold">Kecamatan Tugas</th>
                   <th className="px-4 py-3 font-semibold">Status</th>
                   <th className="px-4 py-3 font-semibold">Dibuat</th>
                   <th className="px-4 py-3 font-semibold">Aksi</th>
@@ -225,6 +233,9 @@ export function UsersPage() {
                         </span>
                       ))}
                     </td>
+                    <td className="px-4 py-3 text-xs text-tinta2">
+                      {user.assigned_district?.name ?? 'Semua / Kabupaten'}
+                    </td>
                     <td className="px-4 py-3">
                       <span
                         className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold ${
@@ -236,55 +247,61 @@ export function UsersPage() {
                     </td>
                     <td className="px-4 py-3 text-xs text-tinta2">{formatDateId(user.created_at)}</td>
                     <td className="px-4 py-3">
-                      <div className="flex items-center gap-1">
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setFormError(null);
-                            setModal({ mode: 'edit', user });
-                          }}
-                          aria-label="Edit"
-                          className="flex h-9 w-9 items-center justify-center rounded-md text-tinta2 transition-colors hover:bg-panel2 hover:text-tinta"
-                        >
-                          <PencilIcon />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            if (window.confirm('Reset kata sandi ke "password"?')) {
-                              void resetMutation.mutateAsync(user.id).catch(() => undefined);
-                            }
-                          }}
-                          aria-label="Reset password"
-                          className="flex h-9 w-9 items-center justify-center rounded-md text-tinta2 transition-colors hover:bg-panel2 hover:text-tinta"
-                        >
-                          <KeyIcon />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            if (window.confirm(user.is_active ? 'Nonaktifkan akun ini?' : 'Aktifkan kembali akun ini?')) {
-                              void toggleMutation.mutateAsync(user.id).catch(() => undefined);
-                            }
-                          }}
-                          aria-label={user.is_active ? 'Nonaktifkan' : 'Aktifkan'}
-                          className="flex h-9 w-9 items-center justify-center rounded-md text-tinta2 transition-colors hover:bg-panel2 hover:text-tinta"
-                        >
-                          <PowerIcon />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            if (window.confirm('Hapus akun (soft delete)?')) {
-                              void deleteMutation.mutateAsync(user.id).catch(() => undefined);
-                            }
-                          }}
-                          aria-label="Hapus"
-                          className="flex h-9 w-9 items-center justify-center rounded-md text-tinta3 transition-colors hover:text-err"
-                        >
-                          <Trash2 size={16} aria-hidden="true" />
-                        </button>
-                      </div>
+                      {user.roles.includes('superadmin') && !isSuperAdmin ? (
+                        <span className="inline-flex rounded-full bg-chip-draf-bg px-2.5 py-0.5 text-[10px] font-bold text-chip-draf-fg">
+                          Terlindungi
+                        </span>
+                      ) : (
+                        <div className="flex items-center gap-1">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setFormError(null);
+                              setModal({ mode: 'edit', user });
+                            }}
+                            aria-label="Edit"
+                            className="flex h-9 w-9 items-center justify-center rounded-md text-tinta2 transition-colors hover:bg-panel2 hover:text-tinta"
+                          >
+                            <PencilIcon />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (window.confirm('Reset kata sandi ke "password"?')) {
+                                void resetMutation.mutateAsync(user.id).catch(() => undefined);
+                              }
+                            }}
+                            aria-label="Reset password"
+                            className="flex h-9 w-9 items-center justify-center rounded-md text-tinta2 transition-colors hover:bg-panel2 hover:text-tinta"
+                          >
+                            <KeyIcon />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (window.confirm(user.is_active ? 'Nonaktifkan akun ini?' : 'Aktifkan kembali akun ini?')) {
+                                void toggleMutation.mutateAsync(user.id).catch(() => undefined);
+                              }
+                            }}
+                            aria-label={user.is_active ? 'Nonaktifkan' : 'Aktifkan'}
+                            className="flex h-9 w-9 items-center justify-center rounded-md text-tinta2 transition-colors hover:bg-panel2 hover:text-tinta"
+                          >
+                            <PowerIcon />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (window.confirm('Hapus akun (soft delete)?')) {
+                                void deleteMutation.mutateAsync(user.id).catch(() => undefined);
+                              }
+                            }}
+                            aria-label="Hapus"
+                            className="flex h-9 w-9 items-center justify-center rounded-md text-tinta3 transition-colors hover:text-err"
+                          >
+                            <Trash2 size={16} aria-hidden="true" />
+                          </button>
+                        </div>
+                      )}
                     </td>
                   </tr>
                 ))}
@@ -300,6 +317,9 @@ export function UsersPage() {
                   <div className="min-w-0">
                     <p className="font-semibold text-tinta">{user.name}</p>
                     <p className="text-[11px] text-tinta2">{user.email}</p>
+                    <p className="mt-0.5 text-[11px] text-tinta3">
+                      Kecamatan tugas: {user.assigned_district?.name ?? 'Semua / Kabupaten'}
+                    </p>
                     <div className="mt-1.5 flex flex-wrap gap-1">
                       {user.roles.map((role) => (
                         <span
@@ -320,49 +340,57 @@ export function UsersPage() {
                   </div>
                 </div>
                 <div className="mt-3 flex flex-wrap gap-2">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setFormError(null);
-                      setModal({ mode: 'edit', user });
-                    }}
-                    className="min-h-10 rounded-md border border-garis px-3 text-xs font-bold text-tinta2"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      if (window.confirm('Reset kata sandi ke "password"?')) {
-                        void resetMutation.mutateAsync(user.id).catch(() => undefined);
-                      }
-                    }}
-                    className="min-h-10 rounded-md border border-garis px-3 text-xs font-bold text-tinta2"
-                  >
-                    Reset sandi
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      if (window.confirm(user.is_active ? 'Nonaktifkan?' : 'Aktifkan?')) {
-                        void toggleMutation.mutateAsync(user.id).catch(() => undefined);
-                      }
-                    }}
-                    className="min-h-10 rounded-md border border-garis px-3 text-xs font-bold text-tinta2"
-                  >
-                    {user.is_active ? 'Nonaktifkan' : 'Aktifkan'}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      if (window.confirm('Hapus akun?')) {
-                        void deleteMutation.mutateAsync(user.id).catch(() => undefined);
-                      }
-                    }}
-                    className="min-h-10 rounded-md border border-garis px-3 text-xs font-bold text-err"
-                  >
-                    Hapus
-                  </button>
+                  {user.roles.includes('superadmin') && !isSuperAdmin ? (
+                    <span className="inline-flex rounded-full bg-chip-draf-bg px-2.5 py-1 text-[11px] font-bold text-chip-draf-fg">
+                      Terlindungi
+                    </span>
+                  ) : (
+                    <>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setFormError(null);
+                          setModal({ mode: 'edit', user });
+                        }}
+                        className="min-h-10 rounded-md border border-garis px-3 text-xs font-bold text-tinta2"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (window.confirm('Reset kata sandi ke "password"?')) {
+                            void resetMutation.mutateAsync(user.id).catch(() => undefined);
+                          }
+                        }}
+                        className="min-h-10 rounded-md border border-garis px-3 text-xs font-bold text-tinta2"
+                      >
+                        Reset sandi
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (window.confirm(user.is_active ? 'Nonaktifkan?' : 'Aktifkan?')) {
+                            void toggleMutation.mutateAsync(user.id).catch(() => undefined);
+                          }
+                        }}
+                        className="min-h-10 rounded-md border border-garis px-3 text-xs font-bold text-tinta2"
+                      >
+                        {user.is_active ? 'Nonaktifkan' : 'Aktifkan'}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (window.confirm('Hapus akun?')) {
+                            void deleteMutation.mutateAsync(user.id).catch(() => undefined);
+                          }
+                        }}
+                        className="min-h-10 rounded-md border border-garis px-3 text-xs font-bold text-err"
+                      >
+                        Hapus
+                      </button>
+                    </>
+                  )}
                 </div>
               </li>
             ))}
@@ -398,6 +426,8 @@ export function UsersPage() {
         <UserFormModal
           mode={modal.mode}
           user={modal.user}
+          districts={districts}
+          isSuperAdmin={isSuperAdmin}
           busy={busy}
           error={formError}
           onClose={() => {
@@ -413,6 +443,8 @@ export function UsersPage() {
 function UserFormModal({
   mode,
   user,
+  districts,
+  isSuperAdmin,
   busy,
   error,
   onClose,
@@ -420,6 +452,8 @@ function UserFormModal({
 }: {
   mode: 'create' | 'edit';
   user?: UserItem;
+  districts: Array<{ id: number; code: string; name: string }>;
+  isSuperAdmin: boolean;
   busy: boolean;
   error: string | null;
   onClose: () => void;
@@ -430,9 +464,13 @@ function UserFormModal({
     nip: string | null;
     password: string;
     role: string;
+    assigned_district_id: number | null;
     editId?: number;
   }) => void;
 }) {
+  const [assignedDistrictId, setAssignedDistrictId] = useState(
+    user?.assigned_district_id ? String(user.assigned_district_id) : '',
+  );
   const [name, setName] = useState(user?.name ?? '');
   const [email, setEmail] = useState(user?.email ?? '');
   const [phone, setPhone] = useState(user?.phone ?? '');
@@ -449,6 +487,7 @@ function UserFormModal({
       nip: nip.trim() || null,
       password,
       role,
+      assigned_district_id: assignedDistrictId ? Number(assignedDistrictId) : null,
       editId: mode === 'edit' ? user?.id : undefined,
     });
   };
@@ -528,9 +567,24 @@ function UserFormModal({
               onChange={(e) => setRole(e.target.value)}
               className="w-full rounded-md border border-garis bg-panel2 px-3 py-2.5 text-sm text-tinta focus:outline-none focus:ring-2 focus:ring-cta"
             >
-              {ROLES.map((r) => (
+              {ROLES.filter((r) => isSuperAdmin || r !== 'superadmin').map((r) => (
                 <option key={r} value={r}>
                   {r}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="block sm:col-span-2">
+            <span className="mb-1 block text-xs font-semibold text-tinta2">Kecamatan Tugas (Petugas/Mitra)</span>
+            <select
+              value={assignedDistrictId}
+              onChange={(e) => setAssignedDistrictId(e.target.value)}
+              className="w-full rounded-md border border-garis bg-panel2 px-3 py-2.5 text-sm text-tinta focus:outline-none focus:ring-2 focus:ring-cta"
+            >
+              <option value="">-- Semua / Tingkat Kabupaten --</option>
+              {districts.map((district) => (
+                <option key={district.id} value={district.id}>
+                  {district.code} — {district.name}
                 </option>
               ))}
             </select>

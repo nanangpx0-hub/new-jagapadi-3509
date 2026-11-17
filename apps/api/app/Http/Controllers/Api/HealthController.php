@@ -32,6 +32,8 @@ final class HealthController extends Controller
     public function __invoke(): JsonResponse
     {
         $healthy = true;
+        $driver = (string) config('database.default');
+        $isPostgres = $driver === 'pgsql';
 
         // 1. Check PostgreSQL connection
         try {
@@ -50,31 +52,39 @@ final class HealthController extends Controller
             ];
         }
 
-        // 2. Check PostGIS extension
-        try {
-            /** @var object{version?: string}|null $row */
-            $row = DB::selectOne('SELECT PostGIS_Lib_Version() AS version');
-            $version = isset($row->version) ? (string) $row->version : null;
-            if ($version === null || $version === '') {
+        // 2. Check PostGIS extension (hanya relevan untuk PostgreSQL)
+        if (! $isPostgres) {
+            $postgisCheck = [
+                'status' => 'ok',
+                'version' => null,
+                'message' => 'PostGIS tidak berlaku untuk driver '.$driver,
+            ];
+        } else {
+            try {
+                /** @var object{version?: string}|null $row */
+                $row = DB::selectOne('SELECT PostGIS_Lib_Version() AS version');
+                $version = isset($row->version) ? (string) $row->version : null;
+                if ($version === null || $version === '') {
+                    $healthy = false;
+                    $postgisCheck = [
+                        'status' => 'error',
+                        'version' => null,
+                        'message' => 'PostGIS version returned empty',
+                    ];
+                } else {
+                    $postgisCheck = [
+                        'status' => 'ok',
+                        'version' => $version,
+                    ];
+                }
+            } catch (Throwable $e) {
                 $healthy = false;
                 $postgisCheck = [
                     'status' => 'error',
                     'version' => null,
-                    'message' => 'PostGIS version returned empty',
-                ];
-            } else {
-                $postgisCheck = [
-                    'status' => 'ok',
-                    'version' => $version,
+                    'message' => $e->getMessage(),
                 ];
             }
-        } catch (Throwable $e) {
-            $healthy = false;
-            $postgisCheck = [
-                'status' => 'error',
-                'version' => null,
-                'message' => $e->getMessage(),
-            ];
         }
 
         // 3. Check Redis connectivity

@@ -9,6 +9,7 @@ const DEMO_ACCOUNTS = [
   { email: 'operator@jagapadi.test', label: 'Operator data', hint: 'dinas kabupaten' },
   { email: 'statistisi@jagapadi.test', label: 'Statistisi', hint: 'verifikator laporan' },
   { email: 'admin@jagapadi.test', label: 'Admin', hint: 'kelola sistem & master' },
+  { email: 'superadmin@jagapadi.test', label: 'Super Admin', hint: 'akses tertinggi sistem BPS 3509' },
   { email: 'viewer@jagapadi.test', label: 'Pimpinan', hint: 'baca dashboard & laporan resmi' },
 ];
 

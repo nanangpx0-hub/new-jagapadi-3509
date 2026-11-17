@@ -65,4 +65,45 @@ final class UserManagementTest extends TestCase
 
         $this->actingAs($admin)->deleteJson("/api/users/{$admin->id}")->assertStatus(422);
     }
+
+    public function test_admin_biasa_tidak_bisa_membuat_atau_mengubah_superadmin_tetapi_superadmin_bisa(): void
+    {
+        $admin = User::where('email', 'admin@jagapadi.test')->firstOrFail();
+        $superadmin = User::where('email', 'superadmin@jagapadi.test')->firstOrFail();
+        $petugas = User::where('email', 'petugas@jagapadi.test')->firstOrFail();
+
+        // Admin biasa tidak bisa membuat akun superadmin
+        $this->actingAs($admin)->postJson('/api/users', [
+            'name' => 'Calon Superadmin',
+            'email' => 'illegal.sa.'.uniqid().'@jagapadi.test',
+            'password' => 'rahasia123',
+            'role' => 'superadmin',
+        ])->assertStatus(403);
+
+        // Admin biasa tidak bisa memodifikasi/menonaktifkan/reset/hapus akun superadmin
+        $this->actingAs($admin)->putJson("/api/users/{$superadmin->id}", ['name' => 'Diubah Admin'])->assertStatus(403);
+        $this->actingAs($admin)->patchJson("/api/users/{$superadmin->id}/toggle-active")->assertStatus(403);
+        $this->actingAs($admin)->postJson("/api/users/{$superadmin->id}/reset-password")->assertStatus(403);
+        $this->actingAs($admin)->deleteJson("/api/users/{$superadmin->id}")->assertStatus(403);
+
+        // Admin biasa tidak bisa mempromosikan akun lain menjadi superadmin
+        $this->actingAs($admin)->putJson("/api/users/{$petugas->id}", ['role' => 'superadmin'])->assertStatus(403);
+
+        // Superadmin dapat membuat, mengubah, menonaktifkan, dan menghapus sesama akun superadmin baru
+        $email = 'sa.'.uniqid().'@jagapadi.test';
+        $created = $this->actingAs($superadmin)->postJson('/api/users', [
+            'name' => 'Superadmin Baru',
+            'email' => $email,
+            'password' => 'rahasia123',
+            'role' => 'superadmin',
+        ])->assertStatus(201);
+
+        $createdId = (int) $created->json('data.id');
+        $this->actingAs($superadmin)->putJson("/api/users/{$createdId}", ['name' => 'Superadmin Diperbarui'])->assertStatus(200);
+        $this->actingAs($superadmin)->patchJson("/api/users/{$createdId}/toggle-active")->assertStatus(200);
+        $this->actingAs($superadmin)->deleteJson("/api/users/{$createdId}")->assertStatus(200);
+
+        $this->assertTrue($superadmin->can('system.manage'));
+        $this->assertFalse($admin->can('system.manage'));
+    }
 }

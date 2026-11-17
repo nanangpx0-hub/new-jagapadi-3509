@@ -1,8 +1,18 @@
-import { Bug, Loader2, Search, X, ExternalLink } from 'lucide-react';
+import { Bug, Check, Loader2, Plus, Search, X, XCircle, ExternalLink } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { EmptyState } from '../components/EmptyState';
-import { listOpts } from '../lib/api';
+import { Panel } from '../components/Panel';
+import {
+  approveOptProposal,
+  createOpt,
+  createOptProposal,
+  listOptProposals,
+  listOpts,
+  rejectOptProposal,
+  type OptProposal,
+} from '../lib/api';
+import { useAuth } from '../lib/auth';
 import type { OptItem } from '../lib/types';
 
 type CommodityTab = 'all' | 'padi' | 'jagung' | 'kedelai' | 'umbi';
@@ -26,13 +36,102 @@ const CROP_LABEL: Record<string, string> = {
 const isUmbi = (crop: string) => crop === 'ubi_kayu' || crop === 'ubi_jalar';
 
 export function OptsPage() {
+  const { hasPermission } = useAuth();
+  const queryClient = useQueryClient();
   const [tab, setTab] = useState<CommodityTab>('all');
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState<'all' | 'hama' | 'penyakit'>('all');
   const [selected, setSelected] = useState<OptItem | null>(null);
 
+  const [masterOpen, setMasterOpen] = useState(false);
+  const [proposalOpen, setProposalOpen] = useState(false);
+  const [rejectTarget, setRejectTarget] = useState<OptProposal | null>(null);
+  const [rejectNotes, setRejectNotes] = useState('');
+  const [formError, setFormError] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
+
+  // Form Master OPT
+  const [optForm, setOptForm] = useState({
+    code: '', name: '', scientific_name: '', local_name: '', category: 'hama', target_crop: 'padi',
+    danger_level: 'Sedang', description: '', attack_signs: '',
+  });
+  // Form Usulan OPT
+  const [proposalForm, setProposalForm] = useState({
+    name: '', scientific_name: '', local_name: '', category: 'hama', target_crop: 'padi',
+    attack_signs: '', description: '',
+  });
+
   const query = useQuery({ queryKey: ['opts'], queryFn: () => listOpts() });
   const allOpts = query.data ?? [];
+  const proposalsQuery = useQuery({
+    queryKey: ['opt-proposals'],
+    queryFn: listOptProposals,
+    enabled: hasPermission('opt-proposals.create') || hasPermission('opt-proposals.review'),
+  });
+  const proposals = proposalsQuery.data ?? [];
+
+  const refresh = () => {
+    void queryClient.invalidateQueries({ queryKey: ['opts'] });
+    void queryClient.invalidateQueries({ queryKey: ['opt-proposals'] });
+  };
+
+  const approveMutation = useMutation({
+    mutationFn: (id: number) => approveOptProposal(id),
+    onSuccess: refresh,
+  });
+  const rejectMutation = useMutation({
+    mutationFn: ({ id, notes }: { id: number; notes: string }) => rejectOptProposal(id, notes),
+    onSuccess: () => { setRejectTarget(null); setRejectNotes(''); refresh(); },
+  });
+
+  const submitMaster = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setFormError(null);
+    setSaving(true);
+    try {
+      await createOpt({
+        code: optForm.code.trim(),
+        name: optForm.name.trim(),
+        scientific_name: optForm.scientific_name.trim() || null,
+        local_name: optForm.local_name.trim() || null,
+        category: optForm.category,
+        target_crop: optForm.target_crop,
+        danger_level: optForm.danger_level,
+        description: optForm.description.trim() || null,
+        attack_signs: optForm.attack_signs.trim() || null,
+        is_active: true,
+      });
+      setMasterOpen(false);
+      refresh();
+    } catch (err) {
+      setFormError(err instanceof Error ? err.message : 'Gagal menambah OPT.');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const submitProposal = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setFormError(null);
+    setSaving(true);
+    try {
+      await createOptProposal({
+        name: proposalForm.name.trim(),
+        scientific_name: proposalForm.scientific_name.trim() || null,
+        local_name: proposalForm.local_name.trim() || null,
+        category: proposalForm.category,
+        target_crop: proposalForm.target_crop,
+        attack_signs: proposalForm.attack_signs.trim() || null,
+        description: proposalForm.description.trim() || null,
+      });
+      setProposalOpen(false);
+      refresh();
+    } catch (err) {
+      setFormError(err instanceof Error ? err.message : 'Gagal mengirim usulan.');
+    } finally {
+      setSaving(false);
+    }
+  };
 
   const filtered = allOpts.filter((opt) => {
     const matchTab =
@@ -77,6 +176,26 @@ export function OptsPage() {
             className="min-h-11 w-64 rounded-md border border-garis bg-panel py-2 pl-9 pr-3 text-sm text-tinta placeholder:text-tinta3 focus:outline-none focus:ring-2 focus:ring-cta"
           />
         </label>
+        <div className="flex flex-wrap gap-2">
+          {hasPermission('opts.manage') && (
+            <button
+              type="button"
+              onClick={() => { setFormError(null); setMasterOpen(true); }}
+              className="inline-flex min-h-11 items-center gap-1.5 rounded-md bg-cta px-3 py-2 text-xs font-bold text-ctafg transition-colors hover:bg-sawah800"
+            >
+              <Plus size={15} aria-hidden="true" /> Tambah OPT
+            </button>
+          )}
+          {hasPermission('opt-proposals.create') && (
+            <button
+              type="button"
+              onClick={() => { setFormError(null); setProposalOpen(true); }}
+              className="inline-flex min-h-11 items-center gap-1.5 rounded-md border border-garis bg-panel px-3 py-2 text-xs font-bold text-tinta2 transition-colors hover:border-cta hover:text-cta"
+            >
+              <Plus size={15} aria-hidden="true" /> Usulkan OPT Baru
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Tab komoditas pangan */}
@@ -188,6 +307,181 @@ export function OptsPage() {
       <p className="text-center text-[10px] text-tinta3">
         Ilustrasi skematis oleh JAGAPADI — bukan foto identifikasi lapangan. Gunakan sebagai panduan awal, konfirmasi di lapangan.
       </p>
+
+      {/* Usulan OPT Lapangan */}
+      {(hasPermission('opt-proposals.create') || hasPermission('opt-proposals.review')) && (
+        <Panel title="Usulan OPT Lapangan" subtitle="Usulan dari petugas untuk ditinjau admin/operator" bodyClassName="p-0">
+          {proposals.length === 0 ? (
+            <div className="p-4">
+              <EmptyState icon={Bug} title="Belum ada usulan" description="Usulan OPT dari lapangan akan tampil di sini." />
+            </div>
+          ) : (
+            <ul className="divide-y divide-garis">
+              {proposals.map((proposal) => (
+                <li key={proposal.id} className="flex flex-wrap items-start justify-between gap-3 p-4">
+                  <div className="min-w-0">
+                    <p className="text-sm font-bold text-tinta">{proposal.name}</p>
+                    <p className="text-[11px] text-tinta2">
+                      {proposal.scientific_name || '—'} · {proposal.category} · {proposal.target_crop}
+                    </p>
+                    <p className="mt-0.5 text-[11px] text-tinta3">
+                      Diajukan oleh {proposal.user?.name ?? `#${proposal.user_id}`} · Status: {proposal.status}
+                      {proposal.review_notes ? ` · Catatan: ${proposal.review_notes}` : ''}
+                    </p>
+                  </div>
+                  {hasPermission('opt-proposals.review') && proposal.status === 'Menunggu' && (
+                    <div className="flex flex-wrap gap-2">
+                      <button
+                        type="button"
+                        disabled={approveMutation.isPending}
+                        onClick={() => approveMutation.mutate(proposal.id)}
+                        className="inline-flex min-h-10 items-center gap-1 rounded-md bg-cta px-3 py-2 text-xs font-bold text-ctafg disabled:opacity-60"
+                      >
+                        <Check size={14} aria-hidden="true" /> Setujui
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => { setRejectTarget(proposal); setRejectNotes(''); }}
+                        className="inline-flex min-h-10 items-center gap-1 rounded-md border border-chip-ditolak-fg/40 px-3 py-2 text-xs font-bold text-chip-ditolak-fg"
+                      >
+                        <XCircle size={14} aria-hidden="true" /> Tolak
+                      </button>
+                    </div>
+                  )}
+                </li>
+              ))}
+            </ul>
+          )}
+        </Panel>
+      )}
+
+      {/* Modal Tambah Master OPT */}
+      {masterOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/55 p-4" onClick={() => setMasterOpen(false)}>
+          <form
+            onSubmit={(e) => void submitMaster(e)}
+            onClick={(e) => e.stopPropagation()}
+            className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-lg bg-panel p-6 shadow-pop"
+          >
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="font-display text-lg font-bold text-tinta">Tambah Master OPT</h2>
+              <button type="button" onClick={() => setMasterOpen(false)} aria-label="Tutup">
+                <X size={20} aria-hidden="true" />
+              </button>
+            </div>
+            {formError && <p role="alert" className="mb-3 rounded-md border border-chip-ditolak-bg bg-chip-ditolak-bg/40 px-3 py-2 text-xs font-semibold text-chip-ditolak-fg">{formError}</p>}
+            <div className="grid gap-3 sm:grid-cols-2">
+              <label className="block">
+                <span className="mb-1 block text-xs font-semibold text-tinta2">Kode OPT *</span>
+                <input required value={optForm.code} onChange={(e) => setOptForm({ ...optForm, code: e.target.value })} placeholder="OPT-PADI-XXX" className="w-full rounded-md border border-garis bg-panel2 px-3 py-2.5 text-sm text-tinta" />
+              </label>
+              <label className="block">
+                <span className="mb-1 block text-xs font-semibold text-tinta2">Nama OPT *</span>
+                <input required value={optForm.name} onChange={(e) => setOptForm({ ...optForm, name: e.target.value })} className="w-full rounded-md border border-garis bg-panel2 px-3 py-2.5 text-sm text-tinta" />
+              </label>
+              <label className="block sm:col-span-2">
+                <span className="mb-1 block text-xs font-semibold text-tinta2">Nama ilmiah</span>
+                <input value={optForm.scientific_name} onChange={(e) => setOptForm({ ...optForm, scientific_name: e.target.value })} className="w-full rounded-md border border-garis bg-panel2 px-3 py-2.5 text-sm text-tinta" />
+              </label>
+              <label className="block">
+                <span className="mb-1 block text-xs font-semibold text-tinta2">Kategori</span>
+                <select value={optForm.category} onChange={(e) => setOptForm({ ...optForm, category: e.target.value })} className="w-full rounded-md border border-garis bg-panel2 px-3 py-2.5 text-sm text-tinta">
+                  <option value="hama">Hama</option><option value="penyakit">Penyakit</option><option value="gulma">Gulma</option>
+                </select>
+              </label>
+              <label className="block">
+                <span className="mb-1 block text-xs font-semibold text-tinta2">Komoditas sasaran</span>
+                <input value={optForm.target_crop} onChange={(e) => setOptForm({ ...optForm, target_crop: e.target.value })} className="w-full rounded-md border border-garis bg-panel2 px-3 py-2.5 text-sm text-tinta" />
+              </label>
+              <label className="block sm:col-span-2">
+                <span className="mb-1 block text-xs font-semibold text-tinta2">Deskripsi</span>
+                <textarea value={optForm.description} onChange={(e) => setOptForm({ ...optForm, description: e.target.value })} className="w-full rounded-md border border-garis bg-panel2 px-3 py-2.5 text-sm text-tinta" />
+              </label>
+              <button type="submit" disabled={saving} className="sm:col-span-2 inline-flex min-h-11 items-center justify-center rounded-md bg-cta px-4 text-sm font-bold text-ctafg disabled:opacity-60">
+                {saving ? <Loader2 size={17} className="animate-spin" aria-hidden="true" /> : 'Simpan Master OPT'}
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+
+      {/* Modal Usulan OPT */}
+      {proposalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/55 p-4" onClick={() => setProposalOpen(false)}>
+          <form
+            onSubmit={(e) => void submitProposal(e)}
+            onClick={(e) => e.stopPropagation()}
+            className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-lg bg-panel p-6 shadow-pop"
+          >
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="font-display text-lg font-bold text-tinta">Usulkan OPT Baru</h2>
+              <button type="button" onClick={() => setProposalOpen(false)} aria-label="Tutup">
+                <X size={20} aria-hidden="true" />
+              </button>
+            </div>
+            {formError && <p role="alert" className="mb-3 rounded-md border border-chip-ditolak-bg bg-chip-ditolak-bg/40 px-3 py-2 text-xs font-semibold text-chip-ditolak-fg">{formError}</p>}
+            <div className="grid gap-3 sm:grid-cols-2">
+              <label className="block sm:col-span-2">
+                <span className="mb-1 block text-xs font-semibold text-tinta2">Nama OPT yang ditemukan *</span>
+                <input required value={proposalForm.name} onChange={(e) => setProposalForm({ ...proposalForm, name: e.target.value })} className="w-full rounded-md border border-garis bg-panel2 px-3 py-2.5 text-sm text-tinta" />
+              </label>
+              <label className="block sm:col-span-2">
+                <span className="mb-1 block text-xs font-semibold text-tinta2">Nama ilmiah / nama lokal</span>
+                <input value={proposalForm.scientific_name} onChange={(e) => setProposalForm({ ...proposalForm, scientific_name: e.target.value })} placeholder="Nama ilmiah" className="w-full rounded-md border border-garis bg-panel2 px-3 py-2.5 text-sm text-tinta" />
+              </label>
+              <label className="block">
+                <span className="mb-1 block text-xs font-semibold text-tinta2">Kategori</span>
+                <select value={proposalForm.category} onChange={(e) => setProposalForm({ ...proposalForm, category: e.target.value })} className="w-full rounded-md border border-garis bg-panel2 px-3 py-2.5 text-sm text-tinta">
+                  <option value="hama">Hama</option><option value="penyakit">Penyakit</option><option value="gulma">Gulma</option>
+                </select>
+              </label>
+              <label className="block">
+                <span className="mb-1 block text-xs font-semibold text-tinta2">Komoditas sasaran</span>
+                <input value={proposalForm.target_crop} onChange={(e) => setProposalForm({ ...proposalForm, target_crop: e.target.value })} className="w-full rounded-md border border-garis bg-panel2 px-3 py-2.5 text-sm text-tinta" />
+              </label>
+              <label className="block sm:col-span-2">
+                <span className="mb-1 block text-xs font-semibold text-tinta2">Gejala serangan</span>
+                <textarea value={proposalForm.attack_signs} onChange={(e) => setProposalForm({ ...proposalForm, attack_signs: e.target.value })} className="w-full rounded-md border border-garis bg-panel2 px-3 py-2.5 text-sm text-tinta" />
+              </label>
+              <label className="block sm:col-span-2">
+                <span className="mb-1 block text-xs font-semibold text-tinta2">Deskripsi</span>
+                <textarea value={proposalForm.description} onChange={(e) => setProposalForm({ ...proposalForm, description: e.target.value })} className="w-full rounded-md border border-garis bg-panel2 px-3 py-2.5 text-sm text-tinta" />
+              </label>
+              <button type="submit" disabled={saving} className="sm:col-span-2 inline-flex min-h-11 items-center justify-center rounded-md bg-cta px-4 text-sm font-bold text-ctafg disabled:opacity-60">
+                {saving ? <Loader2 size={17} className="animate-spin" aria-hidden="true" /> : 'Kirim Usulan'}
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+
+      {/* Modal Tolak Usulan */}
+      {rejectTarget && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/55 p-4" onClick={() => setRejectTarget(null)}>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              rejectMutation.mutate({ id: rejectTarget.id, notes: rejectNotes });
+            }}
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-md rounded-lg bg-panel p-6 shadow-pop"
+          >
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="font-display text-lg font-bold text-tinta">Tolak Usulan OPT</h2>
+              <button type="button" onClick={() => setRejectTarget(null)} aria-label="Tutup">
+                <X size={20} aria-hidden="true" />
+              </button>
+            </div>
+            <label className="block">
+              <span className="mb-1 block text-xs font-semibold text-tinta2">Catatan penolakan *</span>
+              <textarea required minLength={5} value={rejectNotes} onChange={(e) => setRejectNotes(e.target.value)} className="w-full rounded-md border border-garis bg-panel2 px-3 py-2.5 text-sm text-tinta" placeholder="Alasan penolakan (minimal 5 karakter)" />
+            </label>
+            <button type="submit" disabled={rejectMutation.isPending} className="mt-4 inline-flex min-h-11 w-full items-center justify-center rounded-md bg-chip-ditolak-fg px-4 text-sm font-bold text-white disabled:opacity-60">
+              Kirim Penolakan
+            </button>
+          </form>
+        </div>
+      )}
 
       {/* Modal detail PHT */}
       {selected && (

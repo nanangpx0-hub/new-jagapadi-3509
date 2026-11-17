@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             DistrictVillageSeeder::class,
             OptSeeder::class,
+            KsaMonthlySeeder::class,
         ]);
     }
 }

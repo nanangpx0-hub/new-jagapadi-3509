@@ -12,10 +12,14 @@ class Village extends Model
 {
     use HasFactory;
 
+    protected $hidden = ['geom', 'centroid'];
+
     protected $fillable = [
         'district_id',
         'code',
         'name',
+        'latitude',
+        'longitude',
         'fallback_radius_m',
         'source',
         'source_feature_id',
@@ -25,6 +29,8 @@ class Village extends Model
     {
         return [
             'fallback_radius_m' => 'float',
+            'latitude' => 'float',
+            'longitude' => 'float',
         ];
     }
 

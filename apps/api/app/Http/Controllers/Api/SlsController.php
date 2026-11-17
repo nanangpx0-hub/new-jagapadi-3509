@@ -24,15 +24,54 @@ final class SlsController extends Controller
 
         $query = Sls::where('village_id', $village->id)->orderBy('idsls');
 
-        if ($search !== '') {
-            $query->where(function ($q) use ($search): void {
-                $q->where('name', 'ilike', "%{$search}%")
-                    ->orWhere('code', 'ilike', "%{$search}%")
-                    ->orWhere('idsls', 'ilike', "%{$search}%");
-            });
-        }
+        if ($search === '') {
+            $items = $query->limit($perPage)->get();
+        } else {
+            // Pencarian RT/RW/Dusun harus toleran terhadap variasi penulisan:
+            // "RT 01", "RT 001", "RT01", "rw 2", dll. tetap cocok dengan nama
+            // SLS seperti "RT 001 RW 001 DUSUN Bulurejo".
+            $numericOnly = preg_match('/^\d+$/', $search) === 1;
+            // Angka murni "001" dan "1" harus diperlakukan sama.
+            $numericNeedle = ltrim($search, '0') ?: '0';
+            $needle = self::normalizeSearch($search);
+            $rawNeedle = mb_strtolower($search);
+            $items = $query->get()
+                ->filter(function (Sls $item) use ($numericOnly, $search, $numericNeedle, $needle, $rawNeedle): bool {
+                    if ($numericOnly) {
+                        // "001" harus mengarah ke RT 001 / RW 001. Pencocokan terhadap
+                        // idsls akan mengembalikan hampir semua baris karena awalan kode
+                        // wilayah identik, jadi angka murni hanya cocok ke nomor RT/RW
+                        // pada nama dan kode SLS (plus idsls lengkap/awalan panjang).
+                        preg_match_all('/\d+/', (string) $item->name, $matches);
+                        foreach ($matches[0] as $number) {
+                            if ((ltrim($number, '0') ?: '0') === $numericNeedle) {
+                                return true;
+                            }
+                        }
+                        if ((ltrim((string) $item->code, '0') ?: '0') === $numericNeedle) {
+                            return true;
+                        }
+                        if (strlen($search) >= 8 && str_starts_with((string) $item->idsls, $search)) {
+                            return true;
+                        }
 
-        $items = $query->limit($perPage)->get();
+                        return false;
+                    }
+                    foreach (['name', 'code', 'idsls'] as $field) {
+                        $value = (string) ($item->{$field} ?? '');
+                        if ($needle !== '' && str_contains(self::normalizeSearch($value), $needle)) {
+                            return true;
+                        }
+                        if (str_contains(mb_strtolower($value), $rawNeedle)) {
+                            return true;
+                        }
+                    }
+
+                    return false;
+                })
+                ->take($perPage)
+                ->values();
+        }
 
         return response()->json([
             'status' => 'ok',
@@ -44,6 +83,20 @@ final class SlsController extends Controller
                 'total_luas_ha' => round((float) $items->sum('luas'), 6),
             ],
         ]);
+    }
+
+    /**
+     * Normalisasi teks pencarian SLS: huruf kecil, leading zero pada nomor
+     * RT/RW dihapus, dan pemisah diseragamkan menjadi spasi.
+     * Contoh: "RT. 01/RW 002" -> "rt 1 rw 2".
+     */
+    private static function normalizeSearch(string $value): string
+    {
+        $value = mb_strtolower($value);
+        $value = preg_replace('/([a-z]+)\s*0*(\d+)/', '$1 $2', $value) ?? $value;
+        $value = preg_replace('/[^a-z0-9]+/', ' ', $value) ?? $value;
+
+        return trim((string) $value);
     }
 
     /**

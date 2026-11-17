@@ -41,9 +41,14 @@ return new class extends Migration
             $table->index('user_id');
         });
 
-        // Add PostGIS Point column & GiST index
-        DB::statement('ALTER TABLE reports ADD COLUMN geom geometry(Point, 4326)');
-        DB::statement('CREATE INDEX IF NOT EXISTS reports_geom_gist ON reports USING gist (geom)');
+        // Add geometry column & spatial index (driver-aware)
+        $driver = Schema::getConnection()->getDriverName();
+        if ($driver === 'pgsql') {
+            DB::statement('ALTER TABLE reports ADD COLUMN geom geometry(Point, 4326)');
+            DB::statement('CREATE INDEX IF NOT EXISTS reports_geom_gist ON reports USING gist (geom)');
+        } else {
+            DB::statement('ALTER TABLE reports ADD COLUMN geom POINT NULL');
+        }
 
         // 2. Detail Laporan Hama (Pest)
         Schema::create('report_pest_details', function (Blueprint $table) {

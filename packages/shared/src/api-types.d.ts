@@ -4,6 +4,23 @@
  */
 
 export interface paths {
+    "/audit-logs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Riwayat aktivitas sistem (login, kelola pengguna, siklus laporan) */
+        get: operations["audit-logs.index"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/auth/login": {
         parameters: {
             query?: never;
@@ -123,6 +140,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/regions/locate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Reverse-locate wilayah (kecamatan, desa, SLS) terdekat dari titik GPS.
+         *     Publik/referensi form — tidak memerlukan autentikasi
+         */
+        get: operations["regions.locate"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/health": {
         parameters: {
             query?: never;
@@ -134,6 +171,57 @@ export interface paths {
         get: operations["health"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/notifications": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 15 notifikasi terbaru milik pengguna beserta jumlah yang belum dibaca */
+        get: operations["notifications.index"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/notifications/read-all": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Tandai semua notifikasi milik pengguna sebagai terbaca */
+        post: operations["notifications.read-all"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/notifications/{notification}/read": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Tandai satu notifikasi milik pengguna sebagai terbaca */
+        post: operations["notifications.read"];
         delete?: never;
         options?: never;
         head?: never;
@@ -172,6 +260,113 @@ export interface paths {
         post?: never;
         /** Hapus OPT (soft delete, khusus admin) */
         delete: operations["opts.destroy"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/opt-proposals": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Daftar usulan; petugas hanya melihat usulannya sendiri */
+        get: operations["opt-proposals.index"];
+        put?: never;
+        /** Ajukan OPT baru yang ditemukan di lapangan */
+        post: operations["opt-proposals.store"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/opt-proposals/{optProposal}/approve": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Setujui usulan dan otomatis membuat Master OPT baru */
+        post: operations["opt-proposals.approve"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/opt-proposals/{optProposal}/reject": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Tolak usulan dengan catatan wajib */
+        post: operations["opt-proposals.reject"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/reports/pest-clusters": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Deteksi kluster serangan hama (GeoJSON FeatureCollection)
+         * @description Mengelompokkan laporan hama berstatus Submitted/Diverifikasi dengan
+         *     intensitas Sedang/Berat/Puso yang berdekatan (DBSCAN eps 0.02° ≈ 2 km,
+         *     minpoints 2) dalam rentang hari terakhir, lalu mengembalikan poligon
+         *     buffer 2.000 m di sekitar centroid tiap kluster untuk Leaflet.
+         */
+        get: operations["reports.pest-clusters"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/phenomena/summary": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["phenomena.summary"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/phenomena/export": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["phenomena.export"];
+        put?: never;
+        post?: never;
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -268,6 +463,27 @@ export interface paths {
         put?: never;
         /** Unggah foto lampiran laporan lapangan (maks 5 per laporan, re-encode WebP 1280px q80) */
         post: operations["reports.photos"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/reports/{report}/followups": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Daftar tindak lanjut pengendalian (Gerdal) sebuah laporan */
+        get: operations["reports.followups.index"];
+        put?: never;
+        /**
+         * Catat tindak lanjut pengendalian (Gerdal) pada laporan hama terverifikasi.
+         *     Diizinkan bagi Admin dan petugas pemilik (pemegang reports.update)
+         */
+        post: operations["reports.followups.store"];
         delete?: never;
         options?: never;
         head?: never;
@@ -437,6 +653,38 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** Activity */
+        Activity: {
+            id: number;
+            log_name: string | null;
+            description: string;
+            subject_type: string | null;
+            subject_id: number | null;
+            causer_type: string | null;
+            causer_id: number | null;
+            properties: Record<string, never> | null;
+            /** Format: date-time */
+            created_at: string | null;
+            /** Format: date-time */
+            updated_at: string | null;
+            event: string | null;
+            batch_uuid: string | null;
+        };
+        /** AppNotification */
+        AppNotification: {
+            id: number;
+            user_id: number;
+            type: string;
+            title: string;
+            body: string;
+            report_id: number | null;
+            /** Format: date-time */
+            read_at: string | null;
+            /** Format: date-time */
+            created_at: string | null;
+            /** Format: date-time */
+            updated_at: string | null;
+        };
         /** District */
         District: {
             id: number;
@@ -451,8 +699,6 @@ export interface components {
             created_at: string | null;
             /** Format: date-time */
             updated_at: string | null;
-            geom: string | null;
-            centroid: string | null;
         };
         /** Opt */
         Opt: {
@@ -479,6 +725,28 @@ export interface components {
             deleted_at: string | null;
             attack_signs: string | null;
             management: string | null;
+        };
+        /** OptProposal */
+        OptProposal: {
+            id: number;
+            user_id: number;
+            name: string;
+            scientific_name: string | null;
+            local_name: string | null;
+            category: string;
+            target_crop: string;
+            attack_signs: string | null;
+            description: string | null;
+            status: string;
+            reviewed_by: number | null;
+            /** Format: date-time */
+            reviewed_at: string | null;
+            review_notes: string | null;
+            created_opt_id: number | null;
+            /** Format: date-time */
+            created_at: string | null;
+            /** Format: date-time */
+            updated_at: string | null;
         };
         /** Report */
         Report: {
@@ -510,7 +778,28 @@ export interface components {
             updated_at: string | null;
             /** Format: date-time */
             deleted_at: string | null;
-            geom: string | null;
+            sls_id: number | null;
+            commodity: string | null;
+            ksa_segment_code: string | null;
+            ksa_phase: string | null;
+            statistical_impacts: string[] | null;
+            subround: number;
+            quarter: number;
+        };
+        /** ReportPestFollowup */
+        ReportPestFollowup: {
+            id: number;
+            report_id: number;
+            user_id: number;
+            /** Format: date */
+            action_date: string;
+            control_method: string;
+            controlled_area_ha: number | null;
+            chemicals_or_agents_used: string | null;
+            outcome_status: string;
+            notes: string | null;
+            /** Format: date-time */
+            created_at: string | null;
         };
         /** ReportPhoto */
         ReportPhoto: {
@@ -542,27 +831,8 @@ export interface components {
             created_at: string | null;
             /** Format: date-time */
             updated_at: string | null;
-        };
-        /** User */
-        User: {
-            id: number;
-            name: string;
-            email: string;
-            /** Format: date-time */
-            email_verified_at: string | null;
-            /** Format: date-time */
-            created_at: string | null;
-            /** Format: date-time */
-            updated_at: string | null;
-            phone: string | null;
-            nip: string | null;
-            is_active: boolean;
-            must_change_password: boolean;
-            created_by: number | null;
-            deleted_by: number | null;
-            /** Format: date-time */
-            deleted_at: string | null;
-            theme_preference: string;
+            latitude: number | null;
+            longitude: number | null;
         };
         /** Village */
         Village: {
@@ -577,8 +847,8 @@ export interface components {
             created_at: string | null;
             /** Format: date-time */
             updated_at: string | null;
-            geom: string | null;
-            centroid: string | null;
+            latitude: number | null;
+            longitude: number | null;
         };
     };
     responses: {
@@ -630,6 +900,36 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    "audit-logs.index": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        status: "ok";
+                        data: components["schemas"]["Activity"][];
+                        meta: {
+                            current_page: number;
+                            last_page: number;
+                            per_page: number;
+                            total: number;
+                        };
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+        };
+    };
     "auth.login": {
         parameters: {
             query?: never;
@@ -666,6 +966,12 @@ export interface operations {
                             nip: string | null;
                             must_change_password: boolean;
                             theme_preference: string;
+                            assigned_district_id: number | null;
+                            assigned_district: {
+                                id: number;
+                                code: string;
+                                name: string;
+                            } | null;
                             roles: {
                                 relations: [
                                     "roles"
@@ -725,6 +1031,12 @@ export interface operations {
                             nip: string | null;
                             must_change_password: boolean;
                             theme_preference: string;
+                            assigned_district_id: number | null;
+                            assigned_district: {
+                                id: number;
+                                code: string;
+                                name: string;
+                            } | null;
                             roles: {
                                 relations: [
                                     "roles"
@@ -888,6 +1200,47 @@ export interface operations {
             404: components["responses"]["ModelNotFoundException"];
         };
     };
+    "regions.locate": {
+        parameters: {
+            query: {
+                latitude: number;
+                longitude: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        status: "ok";
+                        data: {
+                            district: components["schemas"]["District"] | null;
+                            village: string;
+                            sls: string;
+                            distance_m: number;
+                        };
+                    } | {
+                        /** @constant */
+                        status: "ok";
+                        data: {
+                            district: null;
+                            village: null;
+                            sls: null;
+                            distance_m: null;
+                        };
+                    };
+                };
+            };
+            422: components["responses"]["ValidationException"];
+        };
+    };
     health: {
         parameters: {
             query?: never;
@@ -937,6 +1290,86 @@ export interface operations {
                     };
                 };
             };
+        };
+    };
+    "notifications.index": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        status: "ok";
+                        data: components["schemas"]["AppNotification"][];
+                        unread_count: number;
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+        };
+    };
+    "notifications.read-all": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        status: "ok";
+                        /** @constant */
+                        message: "Semua notifikasi ditandai sudah dibaca.";
+                        /** @constant */
+                        unread_count: 0;
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+        };
+    };
+    "notifications.read": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The notification ID */
+                notification: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        status: "ok";
+                        data: components["schemas"]["AppNotification"] | null;
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            404: components["responses"]["ModelNotFoundException"];
         };
     };
     "opts.index": {
@@ -1118,6 +1551,307 @@ export interface operations {
             404: components["responses"]["ModelNotFoundException"];
         };
     };
+    "opt-proposals.index": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        status: "ok";
+                        data: components["schemas"]["OptProposal"][];
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+        };
+    };
+    "opt-proposals.store": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    name: string;
+                    scientific_name?: string | null;
+                    local_name?: string | null;
+                    /** @enum {string} */
+                    category?: "hama" | "penyakit" | "gulma";
+                    target_crop?: string;
+                    attack_signs?: string | null;
+                    description?: string | null;
+                };
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        status: "ok";
+                        /** @constant */
+                        message: "Usulan OPT berhasil dikirim untuk ditinjau.";
+                        data: components["schemas"]["OptProposal"];
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            422: components["responses"]["ValidationException"];
+        };
+    };
+    "opt-proposals.approve": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The opt proposal ID */
+                optProposal: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        status: "ok";
+                        /** @constant */
+                        message: "Usulan OPT disetujui dan Master OPT dibuat.";
+                        data: components["schemas"]["OptProposal"];
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            404: components["responses"]["ModelNotFoundException"];
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        message: "Usulan ini sudah disetujui.";
+                    };
+                };
+            };
+        };
+    };
+    "opt-proposals.reject": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The opt proposal ID */
+                optProposal: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    review_notes: string;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        status: "ok";
+                        /** @constant */
+                        message: "Usulan OPT ditolak.";
+                        data: components["schemas"]["OptProposal"];
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            404: components["responses"]["ModelNotFoundException"];
+            422: components["responses"]["ValidationException"];
+        };
+    };
+    "reports.pest-clusters": {
+        parameters: {
+            query?: {
+                days?: number;
+                opt_id?: number | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        type: "FeatureCollection";
+                        features: {
+                            /** @constant */
+                            type: "Feature";
+                            properties: {
+                                cluster_id: string;
+                                opt_id: number;
+                                opt_name: string;
+                                point_count: number;
+                                total_affected_ha: number;
+                                centroid: {
+                                    latitude: number;
+                                    longitude: number;
+                                };
+                                /** @constant */
+                                buffer_radius_m: 2000;
+                                days: number;
+                            };
+                            geometry: unknown;
+                        }[];
+                        meta: {
+                            days: number;
+                            opt_id: number | null;
+                            cluster_count: number;
+                            /** @constant */
+                            total_points: 0;
+                            /** @constant */
+                            buffer_radius_m: 2000;
+                            /** @constant */
+                            eps_degrees: 0.02;
+                        };
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            422: components["responses"]["ValidationException"];
+        };
+    };
+    "phenomena.summary": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        status: "ok";
+                        data: {
+                            period_label: string;
+                            coverage: {
+                                total_districts: number;
+                                reporting_districts: number;
+                                blank_spot_districts: unknown[];
+                            };
+                            matrix: {
+                                district_id: number;
+                                district_code: string;
+                                district_name: string;
+                                total_reports: number;
+                                verified_reports: number;
+                                pest_count: number;
+                                irrigation_count: number;
+                                fertilizer_count: number;
+                                harvest_count: number;
+                                weather_count: number;
+                                equipment_count: number;
+                                affected_pest_ha: number;
+                                impacted_weather_ha: number;
+                                harvest_area_ha: number;
+                                avg_productivity_ton_ha: number | null;
+                                avg_farmer_price_rp: number | null;
+                                above_etl_count: number;
+                                narrative: string;
+                                ksa_harvest_ha: number;
+                                ksa_puso_ha: number;
+                                ksa_production_ton: number;
+                            }[];
+                            regency: {
+                                /** @constant */
+                                district_id: 0;
+                                /** @constant */
+                                district_code: "3509";
+                                /** @constant */
+                                district_name: "Kabupaten Jember";
+                                total_reports: number;
+                                verified_reports: number;
+                                pest_count: number;
+                                irrigation_count: number;
+                                fertilizer_count: number;
+                                harvest_count: number;
+                                weather_count: number;
+                                equipment_count: number;
+                                affected_pest_ha: number;
+                                impacted_weather_ha: number;
+                                harvest_area_ha: number;
+                                avg_productivity_ton_ha: number | null;
+                                avg_farmer_price_rp: number | null;
+                                above_etl_count: number;
+                                ksa_harvest_ha: number;
+                                ksa_puso_ha: number;
+                                ksa_production_ton: number;
+                            };
+                            ksa_anomalies: unknown[];
+                            narratives: unknown[];
+                        };
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+        };
+    };
+    "phenomena.export": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    "Transfer-Encoding": "chunked";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "text/csv; charset=UTF-8": string;
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+        };
+    };
     "reports.index": {
         parameters: {
             query?: {
@@ -1174,11 +1908,21 @@ export interface operations {
                     report_date?: string | null;
                     district_id: number;
                     village_id?: number | null;
+                    sls_id?: number | null;
                     location_name?: string | null;
                     address_detail?: string | null;
                     latitude?: number | null;
                     longitude?: number | null;
                     notes?: string | null;
+                    /**
+                     * @description Konteks Statistik BPS (KSA / Ubinan / PDRB)
+                     * @enum {string|null}
+                     */
+                    commodity?: "padi" | "jagung" | "kedelai" | "tembakau" | "tebu" | "edamame" | "cabai" | "hortikultura" | "lainnya" | "non_komoditas" | null;
+                    ksa_segment_code?: string | null;
+                    /** @enum {string|null} */
+                    ksa_phase?: "Vegetatif 1" | "Vegetatif 2" | "Generatif" | "Panen" | "Persiapan Lahan" | "Bera" | "Puso" | "Bukan Sawah" | null;
+                    statistical_impacts?: ("luas_panen" | "produktivitas" | "jadwal_tanam" | "harga_petani" | "alih_fungsi_lahan")[] | null;
                     /** @description Foto lampiran (opsional untuk draf; wajib minimal 1 saat submit) */
                     photos?: string[];
                     /** @description Detail Pest — wajib hanya saat submit (sesuai PRD §5; draf boleh parsial) */
@@ -1191,6 +1935,8 @@ export interface operations {
                         intensity_level?: "Ringan" | "Sedang" | "Berat" | "Puso";
                         affected_area_ha?: number;
                         threatened_area_ha?: number | null;
+                        population_intensity?: number | null;
+                        etl_unit?: string | null;
                         control_recommendation?: string | null;
                     };
                     /** @description Detail Irrigation — wajib hanya saat submit */
@@ -1206,6 +1952,50 @@ export interface operations {
                         /** @enum {string|null} */
                         repair_status?: "Normal" | "Belum Ditangani" | "Dalam Perbaikan" | "Selesai Diperbaiki" | null;
                         action_taken?: string | null;
+                    };
+                    /** @description §5.4 Pupuk */
+                    fertilizer_detail?: {
+                        /** @enum {string} */
+                        fertilizer_type?: "Urea" | "NPK Phonska" | "ZA" | "SP-36" | "Organik" | "Lainnya";
+                        dosage_amount?: number;
+                        /** @enum {string} */
+                        dosage_unit?: "kg/ha" | "liter/ha" | "kuintal/ha" | "kg";
+                        /** @enum {string|null} */
+                        application_method?: "Tebar" | "Kocor" | "Semprot" | "Benam" | null;
+                        /** @enum {string|null} */
+                        availability_status?: "Tersedia" | "Langka" | "Terlambat" | "Harga Tinggi" | null;
+                        related_opt_id?: number | null;
+                    };
+                    /** @description §5.5 Panen */
+                    harvest_detail?: {
+                        commodity?: string;
+                        variety?: string | null;
+                        harvest_area_ha?: number;
+                        harvest_volume?: number;
+                        /** @enum {string} */
+                        volume_unit?: "ton" | "kuintal" | "kg";
+                        farmer_price_per_kg?: number | null;
+                    };
+                    /** @description §5.6 Cuaca */
+                    weather_detail?: {
+                        /** @enum {string} */
+                        weather_condition?: "Cerah" | "Berawan" | "Hujan Ringan" | "Hujan Lebat" | "Angin Kencang" | "Banjir" | "Kekeringan";
+                        temperature_c?: number | null;
+                        humidity_pct?: number | null;
+                        rainfall_mm?: number | null;
+                        wind_speed_kmh?: number | null;
+                        wind_direction?: string | null;
+                        impacted_area_ha?: number | null;
+                    };
+                    /** @description §5.7 Alsintan */
+                    equipment_detail?: {
+                        /** @enum {string} */
+                        equipment_category?: "Traktor Roda 2" | "Traktor Roda 4" | "Pompa Air" | "Combine Harvester" | "Transplanter" | "Sprayer" | "Lainnya";
+                        equipment_name?: string;
+                        unit_count?: number;
+                        /** @enum {string} */
+                        condition_status?: "Baik" | "Rusak Ringan" | "Rusak Berat" | "Hilang/Tidak Aktif";
+                        ownership_group?: string | null;
                     };
                 };
             };
@@ -1335,11 +2125,18 @@ export interface operations {
                     report_date?: string;
                     district_id?: number;
                     village_id?: number | null;
+                    sls_id?: number | null;
                     location_name?: string | null;
                     address_detail?: string | null;
                     latitude?: number | null;
                     longitude?: number | null;
                     notes?: string | null;
+                    /** @enum {string|null} */
+                    commodity?: "padi" | "jagung" | "kedelai" | "tembakau" | "tebu" | "edamame" | "cabai" | "hortikultura" | "lainnya" | "non_komoditas" | null;
+                    ksa_segment_code?: string | null;
+                    /** @enum {string|null} */
+                    ksa_phase?: "Vegetatif 1" | "Vegetatif 2" | "Generatif" | "Panen" | "Persiapan Lahan" | "Bera" | "Puso" | "Bukan Sawah" | null;
+                    statistical_impacts?: ("luas_panen" | "produktivitas" | "jadwal_tanam" | "harga_petani" | "alih_fungsi_lahan")[] | null;
                     pest_detail?: {
                         opt_id?: number;
                         crop_type?: string | null;
@@ -1349,6 +2146,8 @@ export interface operations {
                         intensity_level?: "Ringan" | "Sedang" | "Berat" | "Puso";
                         affected_area_ha?: number;
                         threatened_area_ha?: number | null;
+                        population_intensity?: number | null;
+                        etl_unit?: string | null;
                         control_recommendation?: string | null;
                     };
                     irrigation_detail?: {
@@ -1363,6 +2162,38 @@ export interface operations {
                         /** @enum {string|null} */
                         repair_status?: "Normal" | "Belum Ditangani" | "Dalam Perbaikan" | "Selesai Diperbaiki" | null;
                         action_taken?: string | null;
+                    };
+                    fertilizer_detail?: {
+                        fertilizer_type?: string | null;
+                        dosage_amount?: number | null;
+                        dosage_unit?: string | null;
+                        application_method?: string | null;
+                        availability_status?: string | null;
+                        related_opt_id?: number | null;
+                    };
+                    harvest_detail?: {
+                        commodity?: string | null;
+                        variety?: string | null;
+                        harvest_area_ha?: number | null;
+                        harvest_volume?: number | null;
+                        volume_unit?: string | null;
+                        farmer_price_per_kg?: number | null;
+                    };
+                    weather_detail?: {
+                        weather_condition?: string | null;
+                        temperature_c?: number | null;
+                        humidity_pct?: number | null;
+                        rainfall_mm?: number | null;
+                        wind_speed_kmh?: number | null;
+                        wind_direction?: string | null;
+                        impacted_area_ha?: number | null;
+                    };
+                    equipment_detail?: {
+                        equipment_category?: string | null;
+                        equipment_name?: string | null;
+                        unit_count?: number | null;
+                        condition_status?: string | null;
+                        ownership_group?: string | null;
                     };
                 };
             };
@@ -1514,6 +2345,101 @@ export interface operations {
                     "application/json": {
                         /** @constant */
                         message: "Anda tidak memiliki hak mengunggah foto ke laporan ini.";
+                    };
+                };
+            };
+            404: components["responses"]["ModelNotFoundException"];
+            422: components["responses"]["ValidationException"];
+        };
+    };
+    "reports.followups.index": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The report ID */
+                report: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        status: "ok";
+                        data: components["schemas"]["ReportPestFollowup"][];
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        message: "Anda tidak memiliki akses ke laporan ini.";
+                    };
+                };
+            };
+            404: components["responses"]["ModelNotFoundException"];
+        };
+    };
+    "reports.followups.store": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The report ID */
+                report: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** Format: date-time */
+                    action_date: string;
+                    /** @enum {string} */
+                    control_method: "Mekanis" | "Hayati" | "Kimiawi";
+                    controlled_area_ha?: number | null;
+                    chemicals_or_agents_used?: string | null;
+                    /** @enum {string} */
+                    outcome_status: "Terkendali" | "Menurun" | "Tetap" | "Meluas";
+                    notes?: string | null;
+                };
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        status: "ok";
+                        /** @constant */
+                        message: "Tindak lanjut Gerdal berhasil dicatat.";
+                        data: components["schemas"]["ReportPestFollowup"];
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        message: "Anda tidak memiliki hak mencatat tindak lanjut laporan ini.";
                     };
                 };
             };
@@ -1711,7 +2637,7 @@ export interface operations {
                     "application/json": {
                         /** @constant */
                         status: "ok";
-                        data: components["schemas"]["User"][];
+                        data: unknown[];
                         meta: {
                             current_page: number;
                             last_page: number;
@@ -1741,7 +2667,8 @@ export interface operations {
                     nip?: string | null;
                     password: string;
                     /** @enum {string} */
-                    role: "admin" | "operator" | "statistisi" | "petugas" | "viewer";
+                    role: "superadmin" | "admin" | "operator" | "statistisi" | "petugas" | "viewer";
+                    assigned_district_id?: number | null;
                 };
             };
         };
@@ -1764,6 +2691,12 @@ export interface operations {
                             nip: string | null;
                             is_active: boolean;
                             must_change_password: boolean;
+                            assigned_district_id: number | null;
+                            assigned_district: {
+                                id: number;
+                                code: string;
+                                name: string;
+                            } | null;
                             roles: {
                                 relations: [
                                     "roles"
@@ -1775,6 +2708,17 @@ export interface operations {
                 };
             };
             401: components["responses"]["AuthenticationException"];
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        message: "Hanya Superadmin yang dapat membuat akun Superadmin.";
+                    };
+                };
+            };
             422: components["responses"]["ValidationException"];
         };
     };
@@ -1806,6 +2750,12 @@ export interface operations {
                             nip: string | null;
                             is_active: boolean;
                             must_change_password: boolean;
+                            assigned_district_id: number | null;
+                            assigned_district: {
+                                id: number;
+                                code: string;
+                                name: string;
+                            } | null;
                             roles: {
                                 relations: [
                                     "roles"
@@ -1839,7 +2789,8 @@ export interface operations {
                     phone?: string | null;
                     nip?: string | null;
                     /** @enum {string} */
-                    role?: "admin" | "operator" | "statistisi" | "petugas" | "viewer";
+                    role?: "superadmin" | "admin" | "operator" | "statistisi" | "petugas" | "viewer";
+                    assigned_district_id?: number | null;
                 };
             };
         };
@@ -1849,27 +2800,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        /** @constant */
-                        status: "ok";
-                        /** @constant */
-                        message: "Pengguna berhasil diperbarui.";
-                        data: {
-                            id: number;
-                            name: string;
-                            email: string;
-                            phone: string | null;
-                            nip: string | null;
-                            is_active: boolean;
-                            must_change_password: boolean;
-                            roles: {
-                                relations: [
-                                    "roles"
-                                ];
-                            }[];
-                            created_at: string | null;
-                        };
-                    };
+                    "application/json": Record<string, never>;
                 };
             };
             401: components["responses"]["AuthenticationException"];
@@ -1894,27 +2825,11 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        /** @constant */
-                        status: "ok";
-                        /** @constant */
-                        message: "Akun berhasil dihapus (soft delete).";
-                    };
+                    "application/json": Record<string, never>;
                 };
             };
             401: components["responses"]["AuthenticationException"];
             404: components["responses"]["ModelNotFoundException"];
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /** @constant */
-                        message: "Anda tidak dapat menghapus akun Anda sendiri.";
-                    };
-                };
-            };
         };
     };
     "users.toggle-active": {
@@ -1934,42 +2849,11 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        /** @constant */
-                        status: "ok";
-                        /** @enum {string} */
-                        message: "Akun diaktifkan." | "Akun dinonaktifkan.";
-                        data: {
-                            id: number;
-                            name: string;
-                            email: string;
-                            phone: string | null;
-                            nip: string | null;
-                            is_active: boolean;
-                            must_change_password: boolean;
-                            roles: {
-                                relations: [
-                                    "roles"
-                                ];
-                            }[];
-                            created_at: string | null;
-                        };
-                    };
+                    "application/json": Record<string, never>;
                 };
             };
             401: components["responses"]["AuthenticationException"];
             404: components["responses"]["ModelNotFoundException"];
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /** @constant */
-                        message: "Anda tidak dapat mengubah status akun Anda sendiri.";
-                    };
-                };
-            };
         };
     };
     "users.reset-password": {
@@ -1989,12 +2873,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        /** @constant */
-                        status: "ok";
-                        /** @constant */
-                        message: "Kata sandi direset ke \"password\". Pengguna wajib mengganti saat login berikutnya.";
-                    };
+                    "application/json": Record<string, never>;
                 };
             };
             401: components["responses"]["AuthenticationException"];

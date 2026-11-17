@@ -27,6 +27,9 @@ class ReportPestDetail extends Model
         'intensity_level',
         'affected_area_ha',
         'threatened_area_ha',
+        'population_intensity',
+        'etl_unit',
+        'is_above_etl',
         'control_recommendation',
     ];
 
@@ -36,6 +39,8 @@ class ReportPestDetail extends Model
             'crop_age_days' => 'integer',
             'affected_area_ha' => 'float',
             'threatened_area_ha' => 'float',
+            'population_intensity' => 'float',
+            'is_above_etl' => 'boolean',
         ];
     }
 
@@ -44,6 +49,7 @@ class ReportPestDetail extends Model
         return $this->belongsTo(Report::class, 'report_id');
     }
 
+    /** @return BelongsTo<Opt, $this> */
     public function opt(): BelongsTo
     {
         return $this->belongsTo(Opt::class, 'opt_id');

@@ -69,6 +69,8 @@ final class AuthController extends Controller
         // 2) Token tetap diterbitkan untuk klien eksternal (opsional, BLUEPRINT §2 & §7)
         $token = $user->createToken('jagapadi-auth-token')->plainTextToken;
 
+        activity('auth')->causedBy($user)->event('login')->log('Pengguna masuk ke sistem.');
+
         return response()->json([
             'status' => 'ok',
             'message' => 'Login berhasil.',
@@ -81,6 +83,12 @@ final class AuthController extends Controller
                 'nip' => $user->nip,
                 'must_change_password' => $user->must_change_password,
                 'theme_preference' => $user->theme_preference,
+                'assigned_district_id' => $user->assigned_district_id,
+                'assigned_district' => $user->assignedDistrict ? [
+                    'id' => $user->assignedDistrict->id,
+                    'code' => $user->assignedDistrict->code,
+                    'name' => $user->assignedDistrict->name,
+                ] : null,
                 'roles' => $user->getRoleNames(),
                 'permissions' => $user->getAllPermissions()->pluck('name'),
             ],
@@ -126,6 +134,12 @@ final class AuthController extends Controller
                 'nip' => $user->nip,
                 'must_change_password' => $user->must_change_password,
                 'theme_preference' => $user->theme_preference,
+                'assigned_district_id' => $user->assigned_district_id,
+                'assigned_district' => $user->assignedDistrict ? [
+                    'id' => $user->assignedDistrict->id,
+                    'code' => $user->assignedDistrict->code,
+                    'name' => $user->assignedDistrict->name,
+                ] : null,
                 'roles' => $user->getRoleNames(),
                 'permissions' => $user->getAllPermissions()->pluck('name'),
             ],
@@ -179,6 +193,9 @@ final class AuthController extends Controller
             'password' => Hash::make($validated['password']),
             'must_change_password' => false,
         ]);
+
+        activity('auth')->causedBy($user)->performedOn($user)->event('change_password')
+            ->log('Kata sandi pengguna diubah.');
 
         return response()->json([
             'status' => 'ok',

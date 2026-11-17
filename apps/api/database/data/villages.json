@@ -2,1241 +2,1985 @@
     {
         "district_code": "3509010",
         "code": "3509010001",
-        "name": "Paseban"
+        "name": "Paseban",
+        "latitude": -8.312516,
+        "longitude": 113.328018,
+        "fallback_radius_m": 3998.9
     },
     {
         "district_code": "3509010",
         "code": "3509010002",
-        "name": "Cakru"
+        "name": "Cakru",
+        "latitude": -8.282791,
+        "longitude": 113.329351,
+        "fallback_radius_m": 3654.4
     },
     {
         "district_code": "3509010",
         "code": "3509010003",
-        "name": "Kraton"
+        "name": "Kraton",
+        "latitude": -8.299283,
+        "longitude": 113.362093,
+        "fallback_radius_m": 5033.2
     },
     {
         "district_code": "3509010",
         "code": "3509010004",
-        "name": "Wonorejo"
+        "name": "Wonorejo",
+        "latitude": -8.28392,
+        "longitude": 113.382089,
+        "fallback_radius_m": 4933.6
     },
     {
         "district_code": "3509010",
         "code": "3509010005",
-        "name": "Kencong"
+        "name": "Kencong",
+        "latitude": -8.265669,
+        "longitude": 113.36862,
+        "fallback_radius_m": 4715.1
     },
     {
         "district_code": "3509020",
         "code": "3509020001",
-        "name": "Kepanjen"
+        "name": "Kepanjen",
+        "latitude": -8.339835,
+        "longitude": 113.392686,
+        "fallback_radius_m": 8000.0
     },
     {
         "district_code": "3509020",
         "code": "3509020002",
-        "name": "Mayangan"
+        "name": "Mayangan",
+        "latitude": -8.358621,
+        "longitude": 113.393969,
+        "fallback_radius_m": 4733.1
     },
     {
         "district_code": "3509020",
         "code": "3509020003",
-        "name": "Menampu"
+        "name": "Menampu",
+        "latitude": -8.333439,
+        "longitude": 113.413087,
+        "fallback_radius_m": 4424.5
     },
     {
         "district_code": "3509020",
         "code": "3509020004",
-        "name": "Bagorejo"
+        "name": "Bagorejo",
+        "latitude": -8.309383,
+        "longitude": 113.434315,
+        "fallback_radius_m": 3120.3
     },
     {
         "district_code": "3509020",
         "code": "3509020005",
-        "name": "Gumukmas"
+        "name": "Gumukmas",
+        "latitude": -8.3133,
+        "longitude": 113.393841,
+        "fallback_radius_m": 4330.6
     },
     {
         "district_code": "3509020",
         "code": "3509020006",
-        "name": "Purwoasri"
+        "name": "Purwoasri",
+        "latitude": -8.292739,
+        "longitude": 113.414101,
+        "fallback_radius_m": 3589.2
     },
     {
         "district_code": "3509020",
         "code": "3509020007",
-        "name": "Tembokrejo"
+        "name": "Tembokrejo",
+        "latitude": -8.282175,
+        "longitude": 113.433996,
+        "fallback_radius_m": 3923.7
     },
     {
         "district_code": "3509020",
         "code": "3509020008",
-        "name": "Karangrejo"
+        "name": "Karangrejo",
+        "latitude": -8.332116,
+        "longitude": 113.431252,
+        "fallback_radius_m": 2989.5
     },
     {
         "district_code": "3509030",
         "code": "3509030001",
-        "name": "Mojomulyo"
+        "name": "Mojomulyo",
+        "latitude": -8.365859,
+        "longitude": 113.428469,
+        "fallback_radius_m": 4002.9
     },
     {
         "district_code": "3509030",
         "code": "3509030002",
-        "name": "Mojosari"
+        "name": "Mojosari",
+        "latitude": -8.36366,
+        "longitude": 113.447393,
+        "fallback_radius_m": 3188.6
     },
     {
         "district_code": "3509030",
         "code": "3509030003",
-        "name": "Puger Kulon"
+        "name": "Puger Kulon",
+        "latitude": -8.431019,
+        "longitude": 113.372202,
+        "fallback_radius_m": 8000.0
     },
     {
         "district_code": "3509030",
         "code": "3509030004",
-        "name": "Puger Wetan"
+        "name": "Puger Wetan",
+        "latitude": -8.35411,
+        "longitude": 113.488552,
+        "fallback_radius_m": 3523.0
     },
     {
         "district_code": "3509030",
         "code": "3509030005",
-        "name": "Grenden"
+        "name": "Grenden",
+        "latitude": -8.343388,
+        "longitude": 113.468125,
+        "fallback_radius_m": 3765.5
     },
     {
         "district_code": "3509030",
         "code": "3509030006",
-        "name": "Mlokorejo"
+        "name": "Mlokorejo",
+        "latitude": -8.307012,
+        "longitude": 113.457181,
+        "fallback_radius_m": 3206.9
     },
     {
         "district_code": "3509030",
         "code": "3509030007",
-        "name": "Kasiyan"
+        "name": "Kasiyan",
+        "latitude": -8.314788,
+        "longitude": 113.464877,
+        "fallback_radius_m": 2569.6
     },
     {
         "district_code": "3509030",
         "code": "3509030008",
-        "name": "Kasiyan Timur"
+        "name": "Kasiyan Timur",
+        "latitude": -8.316991,
+        "longitude": 113.483667,
+        "fallback_radius_m": 2715.1
     },
     {
         "district_code": "3509030",
         "code": "3509030009",
-        "name": "Wonosari"
+        "name": "Wonosari",
+        "latitude": -8.318192,
+        "longitude": 113.505582,
+        "fallback_radius_m": 3043.4
     },
     {
         "district_code": "3509030",
         "code": "3509030010",
-        "name": "Jambearum"
+        "name": "Jambearum",
+        "latitude": -8.298863,
+        "longitude": 113.50063,
+        "fallback_radius_m": 2662.2
     },
     {
         "district_code": "3509030",
         "code": "3509030011",
-        "name": "Bagon"
+        "name": "Bagon",
+        "latitude": -8.292268,
+        "longitude": 113.484505,
+        "fallback_radius_m": 2601.7
     },
     {
         "district_code": "3509030",
         "code": "3509030012",
-        "name": "Wringin Telu"
+        "name": "Wringin Telu",
+        "latitude": -8.283656,
+        "longitude": 113.471604,
+        "fallback_radius_m": 3014.3
     },
     {
         "district_code": "3509040",
         "code": "3509040001",
-        "name": "Lojejer"
+        "name": "Lojejer",
+        "latitude": -8.388533,
+        "longitude": 113.527834,
+        "fallback_radius_m": 8000.0
     },
     {
         "district_code": "3509040",
         "code": "3509040002",
-        "name": "Ampel"
+        "name": "Ampel",
+        "latitude": -8.358968,
+        "longitude": 113.532897,
+        "fallback_radius_m": 3865.5
     },
     {
         "district_code": "3509040",
         "code": "3509040003",
-        "name": "Tanjung Rejo"
+        "name": "Tanjung Rejo",
+        "latitude": -8.345376,
+        "longitude": 113.572915,
+        "fallback_radius_m": 5412.5
     },
     {
         "district_code": "3509040",
         "code": "3509040004",
-        "name": "Kesilir"
+        "name": "Kesilir",
+        "latitude": -8.339436,
+        "longitude": 113.585194,
+        "fallback_radius_m": 4895.8
     },
     {
         "district_code": "3509040",
         "code": "3509040005",
-        "name": "Dukuh Dempok"
+        "name": "Dukuh Dempok",
+        "latitude": -8.331654,
+        "longitude": 113.540398,
+        "fallback_radius_m": 3713.3
     },
     {
         "district_code": "3509040",
         "code": "3509040006",
-        "name": "Tamansari"
+        "name": "Tamansari",
+        "latitude": -8.321074,
+        "longitude": 113.531321,
+        "fallback_radius_m": 4892.3
     },
     {
         "district_code": "3509040",
         "code": "3509040007",
-        "name": "Glundengan"
+        "name": "Glundengan",
+        "latitude": -8.293101,
+        "longitude": 113.566775,
+        "fallback_radius_m": 3970.5
     },
     {
         "district_code": "3509050",
         "code": "3509050001",
-        "name": "Sumberrejo"
+        "name": "Sumberrejo",
+        "latitude": -8.414891,
+        "longitude": 113.575744,
+        "fallback_radius_m": 5214.1
     },
     {
         "district_code": "3509050",
         "code": "3509050002",
-        "name": "Andongsari"
+        "name": "Andongsari",
+        "latitude": -8.368739,
+        "longitude": 113.638174,
+        "fallback_radius_m": 4614.9
     },
     {
         "district_code": "3509050",
         "code": "3509050003",
-        "name": "Sabrang"
+        "name": "Sabrang",
+        "latitude": -8.405418,
+        "longitude": 113.595343,
+        "fallback_radius_m": 7863.2
     },
     {
         "district_code": "3509050",
         "code": "3509050004",
-        "name": "Ambulu"
+        "name": "Ambulu",
+        "latitude": -8.345304,
+        "longitude": 113.620528,
+        "fallback_radius_m": 2745.5
     },
     {
         "district_code": "3509050",
         "code": "3509050005",
-        "name": "Pontang"
+        "name": "Pontang",
+        "latitude": -8.348304,
+        "longitude": 113.644466,
+        "fallback_radius_m": 3311.1
     },
     {
         "district_code": "3509050",
         "code": "3509050006",
-        "name": "Karang Anyar"
+        "name": "Karang Anyar",
+        "latitude": -8.322453,
+        "longitude": 113.612492,
+        "fallback_radius_m": 4203.5
     },
     {
         "district_code": "3509050",
         "code": "3509050007",
-        "name": "Tegalsari"
+        "name": "Tegalsari",
+        "latitude": -8.347642,
+        "longitude": 113.6001,
+        "fallback_radius_m": 2518.4
     },
     {
         "district_code": "3509060",
         "code": "3509060001",
-        "name": "Andongrejo"
+        "name": "Andongrejo",
+        "latitude": -8.452527,
+        "longitude": 113.78054,
+        "fallback_radius_m": 8000.0
     },
     {
         "district_code": "3509060",
         "code": "3509060002",
-        "name": "Curahnongko"
+        "name": "Curahnongko",
+        "latitude": -8.430112,
+        "longitude": 113.681951,
+        "fallback_radius_m": 8000.0
     },
     {
         "district_code": "3509060",
         "code": "3509060003",
-        "name": "Sanenrejo"
+        "name": "Sanenrejo",
+        "latitude": -8.37898,
+        "longitude": 113.784918,
+        "fallback_radius_m": 7775.7
     },
     {
         "district_code": "3509060",
         "code": "3509060004",
-        "name": "Wonoasri"
+        "name": "Wonoasri",
+        "latitude": -8.379993,
+        "longitude": 113.695683,
+        "fallback_radius_m": 3941.6
     },
     {
         "district_code": "3509060",
         "code": "3509060005",
-        "name": "Sidodadi"
+        "name": "Sidodadi",
+        "latitude": -8.356682,
+        "longitude": 113.680469,
+        "fallback_radius_m": 5316.2
     },
     {
         "district_code": "3509060",
         "code": "3509060006",
-        "name": "Pondokrejo"
+        "name": "Pondokrejo",
+        "latitude": -8.337308,
+        "longitude": 113.690894,
+        "fallback_radius_m": 4339.7
     },
     {
         "district_code": "3509060",
         "code": "3509060007",
-        "name": "Curahtakir"
+        "name": "Curahtakir",
+        "latitude": -8.333091,
+        "longitude": 113.752693,
+        "fallback_radius_m": 8000.0
     },
     {
         "district_code": "3509060",
         "code": "3509060008",
-        "name": "Tempurejo"
+        "name": "Tempurejo",
+        "latitude": -8.305101,
+        "longitude": 113.696629,
+        "fallback_radius_m": 4161.2
     },
     {
         "district_code": "3509070",
         "code": "3509070001",
-        "name": "Mulyorejo"
+        "name": "Mulyorejo",
+        "latitude": -8.300229,
+        "longitude": 113.859163,
+        "fallback_radius_m": 8000.0
     },
     {
         "district_code": "3509070",
         "code": "3509070002",
-        "name": "Pace"
+        "name": "Pace",
+        "latitude": -8.27353,
+        "longitude": 113.857415,
+        "fallback_radius_m": 5810.5
     },
     {
         "district_code": "3509070",
         "code": "3509070003",
-        "name": "Harjomulyo"
+        "name": "Harjomulyo",
+        "latitude": -8.283849,
+        "longitude": 113.806833,
+        "fallback_radius_m": 6762.4
     },
     {
         "district_code": "3509070",
         "code": "3509070004",
-        "name": "Karangharjo"
+        "name": "Karangharjo",
+        "latitude": -8.23891,
+        "longitude": 113.828775,
+        "fallback_radius_m": 3194.1
     },
     {
         "district_code": "3509070",
         "code": "3509070005",
-        "name": "Silo"
+        "name": "Silo",
+        "latitude": -8.228269,
+        "longitude": 113.86628,
+        "fallback_radius_m": 5244.9
     },
     {
         "district_code": "3509070",
         "code": "3509070006",
-        "name": "Sempolan"
+        "name": "Sempolan",
+        "latitude": -8.19499,
+        "longitude": 113.858561,
+        "fallback_radius_m": 3069.9
     },
     {
         "district_code": "3509070",
         "code": "3509070007",
-        "name": "Sumberjati"
+        "name": "Sumberjati",
+        "latitude": -8.172146,
+        "longitude": 113.944504,
+        "fallback_radius_m": 8000.0
     },
     {
         "district_code": "3509070",
         "code": "3509070008",
-        "name": "Garahan"
+        "name": "Garahan",
+        "latitude": -8.220415,
+        "longitude": 113.899503,
+        "fallback_radius_m": 4416.4
     },
     {
         "district_code": "3509070",
         "code": "3509070009",
-        "name": "Sidomulyo"
+        "name": "Sidomulyo",
+        "latitude": -8.241075,
+        "longitude": 113.927398,
+        "fallback_radius_m": 8000.0
     },
     {
         "district_code": "3509080",
         "code": "3509080001",
-        "name": "Seputih"
+        "name": "Seputih",
+        "latitude": -8.22011,
+        "longitude": 113.805322,
+        "fallback_radius_m": 4859.1
     },
     {
         "district_code": "3509080",
         "code": "3509080002",
-        "name": "Sidomukti"
+        "name": "Sidomukti",
+        "latitude": -8.203322,
+        "longitude": 113.834296,
+        "fallback_radius_m": 2838.0
     },
     {
         "district_code": "3509080",
         "code": "3509080003",
-        "name": "Sumber Kejayan"
+        "name": "Sumber Kejayan",
+        "latitude": -8.180788,
+        "longitude": 113.835183,
+        "fallback_radius_m": 2608.6
     },
     {
         "district_code": "3509080",
         "code": "3509080004",
-        "name": "Tegalrejo"
+        "name": "Tegalrejo",
+        "latitude": -8.176795,
+        "longitude": 113.810046,
+        "fallback_radius_m": 2464.1
     },
     {
         "district_code": "3509080",
         "code": "3509080005",
-        "name": "Tegalwaru"
+        "name": "Tegalwaru",
+        "latitude": -8.193034,
+        "longitude": 113.809182,
+        "fallback_radius_m": 2802.0
     },
     {
         "district_code": "3509080",
         "code": "3509080006",
-        "name": "Mayang"
+        "name": "Mayang",
+        "latitude": -8.18892,
+        "longitude": 113.784383,
+        "fallback_radius_m": 2974.8
     },
     {
         "district_code": "3509080",
         "code": "3509080007",
-        "name": "Mrawan"
+        "name": "Mrawan",
+        "latitude": -8.209023,
+        "longitude": 113.747537,
+        "fallback_radius_m": 3985.1
     },
     {
         "district_code": "3509090",
         "code": "3509090001",
-        "name": "Kawangrejo"
+        "name": "Kawangrejo",
+        "latitude": -8.278269,
+        "longitude": 113.697264,
+        "fallback_radius_m": 3481.7
     },
     {
         "district_code": "3509090",
         "code": "3509090002",
-        "name": "Tamansari"
+        "name": "Tamansari",
+        "latitude": -8.281668,
+        "longitude": 113.723407,
+        "fallback_radius_m": 2739.0
     },
     {
         "district_code": "3509090",
         "code": "3509090003",
-        "name": "Suco"
+        "name": "Suco",
+        "latitude": -8.282028,
+        "longitude": 113.759755,
+        "fallback_radius_m": 4564.4
     },
     {
         "district_code": "3509090",
         "code": "3509090004",
-        "name": "Lampeji"
+        "name": "Lampeji",
+        "latitude": -8.251096,
+        "longitude": 113.765455,
+        "fallback_radius_m": 3560.4
     },
     {
         "district_code": "3509090",
         "code": "3509090005",
-        "name": "Mumbulsari"
+        "name": "Mumbulsari",
+        "latitude": -8.253906,
+        "longitude": 113.731898,
+        "fallback_radius_m": 4268.7
     },
     {
         "district_code": "3509090",
         "code": "3509090006",
-        "name": "Lengkong"
+        "name": "Lengkong",
+        "latitude": -8.240715,
+        "longitude": 113.720496,
+        "fallback_radius_m": 4315.7
     },
     {
         "district_code": "3509090",
         "code": "3509090007",
-        "name": "Karangkedawung"
+        "name": "Karangkedawung",
+        "latitude": -8.218666,
+        "longitude": 113.763369,
+        "fallback_radius_m": 3509.6
     },
     {
         "district_code": "3509100",
         "code": "3509100001",
-        "name": "Kemuning Sari Kidul"
+        "name": "Kemuning Sari Kidul",
+        "latitude": -8.293508,
+        "longitude": 113.604359,
+        "fallback_radius_m": 3773.8
     },
     {
         "district_code": "3509100",
         "code": "3509100002",
-        "name": "Kertonegoro"
+        "name": "Kertonegoro",
+        "latitude": -8.30065,
+        "longitude": 113.61268,
+        "fallback_radius_m": 3389.9
     },
     {
         "district_code": "3509100",
         "code": "3509100003",
-        "name": "Jatisari"
+        "name": "Jatisari",
+        "latitude": -8.319685,
+        "longitude": 113.637525,
+        "fallback_radius_m": 2823.9
     },
     {
         "district_code": "3509100",
         "code": "3509100004",
-        "name": "Sruni"
+        "name": "Sruni",
+        "latitude": -8.307636,
+        "longitude": 113.650733,
+        "fallback_radius_m": 3509.9
     },
     {
         "district_code": "3509100",
         "code": "3509100005",
-        "name": "Cangkring"
+        "name": "Cangkring",
+        "latitude": -8.287816,
+        "longitude": 113.661556,
+        "fallback_radius_m": 3467.6
     },
     {
         "district_code": "3509100",
         "code": "3509100006",
-        "name": "Wonojati"
+        "name": "Wonojati",
+        "latitude": -8.279062,
+        "longitude": 113.647834,
+        "fallback_radius_m": 3019.3
     },
     {
         "district_code": "3509100",
         "code": "3509100007",
-        "name": "Jenggawah"
+        "name": "Jenggawah",
+        "latitude": -8.262994,
+        "longitude": 113.668695,
+        "fallback_radius_m": 4147.5
     },
     {
         "district_code": "3509100",
         "code": "3509100008",
-        "name": "Jatimulyo"
+        "name": "Jatimulyo",
+        "latitude": -8.324981,
+        "longitude": 113.658896,
+        "fallback_radius_m": 2601.8
     },
     {
         "district_code": "3509110",
         "code": "3509110001",
-        "name": "Mangaran"
+        "name": "Mangaran",
+        "latitude": -8.262602,
+        "longitude": 113.621468,
+        "fallback_radius_m": 4609.6
     },
     {
         "district_code": "3509110",
         "code": "3509110002",
-        "name": "Sukamakmur"
+        "name": "Sukamakmur",
+        "latitude": -8.241264,
+        "longitude": 113.645171,
+        "fallback_radius_m": 3594.8
     },
     {
         "district_code": "3509110",
         "code": "3509110003",
-        "name": "Klompangan"
+        "name": "Klompangan",
+        "latitude": -8.236789,
+        "longitude": 113.664597,
+        "fallback_radius_m": 3351.2
     },
     {
         "district_code": "3509110",
         "code": "3509110004",
-        "name": "Pancakarya"
+        "name": "Pancakarya",
+        "latitude": -8.21537,
+        "longitude": 113.643223,
+        "fallback_radius_m": 3308.2
     },
     {
         "district_code": "3509110",
         "code": "3509110005",
-        "name": "Ajung"
+        "name": "Ajung",
+        "latitude": -8.21477,
+        "longitude": 113.668577,
+        "fallback_radius_m": 3432.3
     },
     {
         "district_code": "3509110",
         "code": "3509110006",
-        "name": "Wirowongso"
+        "name": "Wirowongso",
+        "latitude": -8.230604,
+        "longitude": 113.69375,
+        "fallback_radius_m": 3301.2
     },
     {
         "district_code": "3509110",
         "code": "3509110007",
-        "name": "Rowo Indah"
+        "name": "Rowo Indah",
+        "latitude": -8.215499,
+        "longitude": 113.718506,
+        "fallback_radius_m": 2316.8
     },
     {
         "district_code": "3509120",
         "code": "3509120001",
-        "name": "Curahmalang"
+        "name": "Curahmalang",
+        "latitude": -8.240375,
+        "longitude": 113.569458,
+        "fallback_radius_m": 2427.3
     },
     {
         "district_code": "3509120",
         "code": "3509120002",
-        "name": "Nogosari"
+        "name": "Nogosari",
+        "latitude": -8.256878,
+        "longitude": 113.58561,
+        "fallback_radius_m": 4989.3
     },
     {
         "district_code": "3509120",
         "code": "3509120003",
-        "name": "Rowotamtu"
+        "name": "Rowotamtu",
+        "latitude": -8.227493,
+        "longitude": 113.584596,
+        "fallback_radius_m": 2603.6
     },
     {
         "district_code": "3509120",
         "code": "3509120004",
-        "name": "Pecoro"
+        "name": "Pecoro",
+        "latitude": -8.20168,
+        "longitude": 113.593312,
+        "fallback_radius_m": 2332.6
     },
     {
         "district_code": "3509120",
         "code": "3509120005",
-        "name": "Rambipuji"
+        "name": "Rambipuji",
+        "latitude": -8.210973,
+        "longitude": 113.604051,
+        "fallback_radius_m": 2411.1
     },
     {
         "district_code": "3509120",
         "code": "3509120006",
-        "name": "Kaliwining"
+        "name": "Kaliwining",
+        "latitude": -8.222848,
+        "longitude": 113.613434,
+        "fallback_radius_m": 4131.8
     },
     {
         "district_code": "3509120",
         "code": "3509120007",
-        "name": "Rambigundam"
+        "name": "Rambigundam",
+        "latitude": -8.19428,
+        "longitude": 113.616077,
+        "fallback_radius_m": 2608.5
     },
     {
         "district_code": "3509120",
         "code": "3509120008",
-        "name": "Gugut"
+        "name": "Gugut",
+        "latitude": -8.183266,
+        "longitude": 113.605213,
+        "fallback_radius_m": 2180.8
     },
     {
         "district_code": "3509130",
         "code": "3509130001",
-        "name": "Karang Duren"
+        "name": "Karang Duren",
+        "latitude": -8.265526,
+        "longitude": 113.487637,
+        "fallback_radius_m": 2381.3
     },
     {
         "district_code": "3509130",
         "code": "3509130002",
-        "name": "Karang Semanding"
+        "name": "Karang Semanding",
+        "latitude": -8.261089,
+        "longitude": 113.512694,
+        "fallback_radius_m": 2884.9
     },
     {
         "district_code": "3509130",
         "code": "3509130003",
-        "name": "Tutul"
+        "name": "Tutul",
+        "latitude": -8.28201,
+        "longitude": 113.508544,
+        "fallback_radius_m": 3236.5
     },
     {
         "district_code": "3509130",
         "code": "3509130004",
-        "name": "Balung Kulon"
+        "name": "Balung Kulon",
+        "latitude": -8.298991,
+        "longitude": 113.521844,
+        "fallback_radius_m": 3420.0
     },
     {
         "district_code": "3509130",
         "code": "3509130005",
-        "name": "Balung Kidul"
+        "name": "Balung Kidul",
+        "latitude": -8.295075,
+        "longitude": 113.541037,
+        "fallback_radius_m": 1744.7
     },
     {
         "district_code": "3509130",
         "code": "3509130006",
-        "name": "Balung Lor"
+        "name": "Balung Lor",
+        "latitude": -8.268875,
+        "longitude": 113.542058,
+        "fallback_radius_m": 3464.9
     },
     {
         "district_code": "3509130",
         "code": "3509130007",
-        "name": "Gumelar"
+        "name": "Gumelar",
+        "latitude": -8.249276,
+        "longitude": 113.551699,
+        "fallback_radius_m": 3383.4
     },
     {
         "district_code": "3509130",
         "code": "3509130008",
-        "name": "Curahlele"
+        "name": "Curahlele",
+        "latitude": -8.241347,
+        "longitude": 113.54501,
+        "fallback_radius_m": 3164.1
     },
     {
         "district_code": "3509140",
         "code": "3509140001",
-        "name": "Sukoreno"
+        "name": "Sukoreno",
+        "latitude": -8.251211,
+        "longitude": 113.397717,
+        "fallback_radius_m": 3462.4
     },
     {
         "district_code": "3509140",
         "code": "3509140002",
-        "name": "Gunungsari"
+        "name": "Gunungsari",
+        "latitude": -8.255383,
+        "longitude": 113.421124,
+        "fallback_radius_m": 2807.8
     },
     {
         "district_code": "3509140",
         "code": "3509140003",
-        "name": "Umbulsari"
+        "name": "Umbulsari",
+        "latitude": -8.24808,
+        "longitude": 113.446273,
+        "fallback_radius_m": 2709.2
     },
     {
         "district_code": "3509140",
         "code": "3509140004",
-        "name": "Tanjungsari"
+        "name": "Tanjungsari",
+        "latitude": -8.272966,
+        "longitude": 113.452463,
+        "fallback_radius_m": 3150.2
     },
     {
         "district_code": "3509140",
         "code": "3509140005",
-        "name": "Paleran"
+        "name": "Paleran",
+        "latitude": -8.229828,
+        "longitude": 113.487609,
+        "fallback_radius_m": 3810.4
     },
     {
         "district_code": "3509140",
         "code": "3509140006",
-        "name": "Umbulrejo"
+        "name": "Umbulrejo",
+        "latitude": -8.226276,
+        "longitude": 113.441571,
+        "fallback_radius_m": 2236.3
     },
     {
         "district_code": "3509140",
         "code": "3509140007",
-        "name": "Gadingrejo"
+        "name": "Gadingrejo",
+        "latitude": -8.223485,
+        "longitude": 113.416794,
+        "fallback_radius_m": 3557.6
     },
     {
         "district_code": "3509140",
         "code": "3509140008",
-        "name": "Sidorejo"
+        "name": "Sidorejo",
+        "latitude": -8.219139,
+        "longitude": 113.413155,
+        "fallback_radius_m": 3394.0
     },
     {
         "district_code": "3509140",
         "code": "3509140009",
-        "name": "Tegalwangi"
+        "name": "Tegalwangi",
+        "latitude": -8.250566,
+        "longitude": 113.475019,
+        "fallback_radius_m": 3445.6
     },
     {
         "district_code": "3509140",
         "code": "3509140010",
-        "name": "Mundurejo"
+        "name": "Mundurejo",
+        "latitude": -8.231883,
+        "longitude": 113.402617,
+        "fallback_radius_m": 3309.2
     },
     {
         "district_code": "3509150",
         "code": "3509150001",
-        "name": "Rejo Agung"
+        "name": "Rejo Agung",
+        "latitude": -8.19647,
+        "longitude": 113.4169,
+        "fallback_radius_m": 2689.2
     },
     {
         "district_code": "3509150",
         "code": "3509150002",
-        "name": "Semboro"
+        "name": "Semboro",
+        "latitude": -8.197973,
+        "longitude": 113.441997,
+        "fallback_radius_m": 3683.2
     },
     {
         "district_code": "3509150",
         "code": "3509150003",
-        "name": "Sidomekar"
+        "name": "Sidomekar",
+        "latitude": -8.222306,
+        "longitude": 113.464493,
+        "fallback_radius_m": 4592.3
     },
     {
         "district_code": "3509150",
         "code": "3509150004",
-        "name": "Sidomulyo"
+        "name": "Sidomulyo",
+        "latitude": -8.171192,
+        "longitude": 113.42637,
+        "fallback_radius_m": 3230.9
     },
     {
         "district_code": "3509150",
         "code": "3509150005",
-        "name": "Pondok Joyo"
+        "name": "Pondok Joyo",
+        "latitude": -8.161792,
+        "longitude": 113.415003,
+        "fallback_radius_m": 3593.0
     },
     {
         "district_code": "3509150",
         "code": "3509150006",
-        "name": "Pondok Dalem"
+        "name": "Pondok Dalem",
+        "latitude": -8.12764,
+        "longitude": 113.43498,
+        "fallback_radius_m": 3723.7
     },
     {
         "district_code": "3509160",
         "code": "3509160001",
-        "name": "Keting"
+        "name": "Keting",
+        "latitude": -8.258742,
+        "longitude": 113.332305,
+        "fallback_radius_m": 3112.6
     },
     {
         "district_code": "3509160",
         "code": "3509160002",
-        "name": "Jombang"
+        "name": "Jombang",
+        "latitude": -8.2485,
+        "longitude": 113.35397,
+        "fallback_radius_m": 3766.6
     },
     {
         "district_code": "3509160",
         "code": "3509160003",
-        "name": "Padomasan"
+        "name": "Padomasan",
+        "latitude": -8.22955,
+        "longitude": 113.335944,
+        "fallback_radius_m": 4244.8
     },
     {
         "district_code": "3509160",
         "code": "3509160004",
-        "name": "Ngampelrejo"
+        "name": "Ngampelrejo",
+        "latitude": -8.207534,
+        "longitude": 113.370829,
+        "fallback_radius_m": 3821.5
     },
     {
         "district_code": "3509160",
         "code": "3509160005",
-        "name": "Wringin Agung"
+        "name": "Wringin Agung",
+        "latitude": -8.203698,
+        "longitude": 113.390531,
+        "fallback_radius_m": 4680.4
     },
     {
         "district_code": "3509160",
         "code": "3509160006",
-        "name": "Sarimulyo"
+        "name": "Sarimulyo",
+        "latitude": -8.197041,
+        "longitude": 113.363946,
+        "fallback_radius_m": 2989.9
     },
     {
         "district_code": "3509170",
         "code": "3509170001",
-        "name": "Sumber Agung"
+        "name": "Sumber Agung",
+        "latitude": -8.171483,
+        "longitude": 113.38915,
+        "fallback_radius_m": 3459.4
     },
     {
         "district_code": "3509170",
         "code": "3509170002",
-        "name": "Rowo Tengah"
+        "name": "Rowo Tengah",
+        "latitude": -8.14349,
+        "longitude": 113.400399,
+        "fallback_radius_m": 3750.9
     },
     {
         "district_code": "3509170",
         "code": "3509170003",
-        "name": "Yosorati"
+        "name": "Yosorati",
+        "latitude": -8.122212,
+        "longitude": 113.383085,
+        "fallback_radius_m": 4605.2
     },
     {
         "district_code": "3509170",
         "code": "3509170004",
-        "name": "Pringgowirawan"
+        "name": "Pringgowirawan",
+        "latitude": -8.12088,
+        "longitude": 113.416941,
+        "fallback_radius_m": 3830.9
     },
     {
         "district_code": "3509170",
         "code": "3509170005",
-        "name": "Karang Bayat"
+        "name": "Karang Bayat",
+        "latitude": -8.067588,
+        "longitude": 113.433179,
+        "fallback_radius_m": 7155.6
     },
     {
         "district_code": "3509170",
         "code": "3509170006",
-        "name": "Gelang"
+        "name": "Gelang",
+        "latitude": -8.054348,
+        "longitude": 113.421827,
+        "fallback_radius_m": 7169.4
     },
     {
         "district_code": "3509170",
         "code": "3509170007",
-        "name": "Jatiroto"
+        "name": "Jatiroto",
+        "latitude": -8.087552,
+        "longitude": 113.377612,
+        "fallback_radius_m": 4668.6
     },
     {
         "district_code": "3509170",
         "code": "3509170008",
-        "name": "Jamintoro"
+        "name": "Jamintoro",
+        "latitude": -8.063085,
+        "longitude": 113.369438,
+        "fallback_radius_m": 3557.1
     },
     {
         "district_code": "3509170",
         "code": "3509170009",
-        "name": "Kaliglagah"
+        "name": "Kaliglagah",
+        "latitude": -8.039058,
+        "longitude": 113.381082,
+        "fallback_radius_m": 4296.8
     },
     {
         "district_code": "3509170",
         "code": "3509170010",
-        "name": "Jambesari"
+        "name": "Jambesari",
+        "latitude": -8.020227,
+        "longitude": 113.397463,
+        "fallback_radius_m": 3791.3
     },
     {
         "district_code": "3509180",
         "code": "3509180001",
-        "name": "Tanggul Kulon"
+        "name": "Tanggul Kulon",
+        "latitude": -8.162441,
+        "longitude": 113.441299,
+        "fallback_radius_m": 2431.3
     },
     {
         "district_code": "3509180",
         "code": "3509180002",
-        "name": "Tanggul Wetan"
+        "name": "Tanggul Wetan",
+        "latitude": -8.176046,
+        "longitude": 113.464594,
+        "fallback_radius_m": 2995.0
     },
     {
         "district_code": "3509180",
         "code": "3509180003",
-        "name": "Klatakan"
+        "name": "Klatakan",
+        "latitude": -8.193037,
+        "longitude": 113.481064,
+        "fallback_radius_m": 3516.0
     },
     {
         "district_code": "3509180",
         "code": "3509180004",
-        "name": "Selodakon"
+        "name": "Selodakon",
+        "latitude": -8.143037,
+        "longitude": 113.51931,
+        "fallback_radius_m": 5948.9
     },
     {
         "district_code": "3509180",
         "code": "3509180005",
-        "name": "Darungan"
+        "name": "Darungan",
+        "latitude": -8.082197,
+        "longitude": 113.518524,
+        "fallback_radius_m": 8000.0
     },
     {
         "district_code": "3509180",
         "code": "3509180006",
-        "name": "Manggisan"
+        "name": "Manggisan",
+        "latitude": -8.078066,
+        "longitude": 113.493544,
+        "fallback_radius_m": 8000.0
     },
     {
         "district_code": "3509180",
         "code": "3509180007",
-        "name": "Patemon"
+        "name": "Patemon",
+        "latitude": -8.143061,
+        "longitude": 113.45691,
+        "fallback_radius_m": 4097.1
     },
     {
         "district_code": "3509180",
         "code": "3509180008",
-        "name": "Kramat Sukoharjo"
+        "name": "Kramat Sukoharjo",
+        "latitude": -8.078427,
+        "longitude": 113.467917,
+        "fallback_radius_m": 7704.4
     },
     {
         "district_code": "3509190",
         "code": "3509190001",
-        "name": "Karangsono"
+        "name": "Karangsono",
+        "latitude": -8.237761,
+        "longitude": 113.509489,
+        "fallback_radius_m": 3203.6
     },
     {
         "district_code": "3509190",
         "code": "3509190002",
-        "name": "Sukorejo"
+        "name": "Sukorejo",
+        "latitude": -8.237131,
+        "longitude": 113.525027,
+        "fallback_radius_m": 4150.3
     },
     {
         "district_code": "3509190",
         "code": "3509190003",
-        "name": "Petung"
+        "name": "Petung",
+        "latitude": -8.203748,
+        "longitude": 113.577088,
+        "fallback_radius_m": 4077.9
     },
     {
         "district_code": "3509190",
         "code": "3509190004",
-        "name": "Tisnogambar"
+        "name": "Tisnogambar",
+        "latitude": -8.200768,
+        "longitude": 113.561594,
+        "fallback_radius_m": 4189.5
     },
     {
         "district_code": "3509190",
         "code": "3509190005",
-        "name": "Langkap"
+        "name": "Langkap",
+        "latitude": -8.207136,
+        "longitude": 113.54887,
+        "fallback_radius_m": 3016.8
     },
     {
         "district_code": "3509190",
         "code": "3509190006",
-        "name": "Bangsalsari"
+        "name": "Bangsalsari",
+        "latitude": -8.203435,
+        "longitude": 113.528381,
+        "fallback_radius_m": 3245.4
     },
     {
         "district_code": "3509190",
         "code": "3509190007",
-        "name": "Gambirono"
+        "name": "Gambirono",
+        "latitude": -8.202884,
+        "longitude": 113.504796,
+        "fallback_radius_m": 3514.8
     },
     {
         "district_code": "3509190",
         "code": "3509190008",
-        "name": "Curah Kalong"
+        "name": "Curah Kalong",
+        "latitude": -8.128495,
+        "longitude": 113.52983,
+        "fallback_radius_m": 8000.0
     },
     {
         "district_code": "3509190",
         "code": "3509190009",
-        "name": "Tugusari"
+        "name": "Tugusari",
+        "latitude": -8.151671,
+        "longitude": 113.548711,
+        "fallback_radius_m": 5889.8
     },
     {
         "district_code": "3509190",
         "code": "3509190010",
-        "name": "Banjarsari"
+        "name": "Banjarsari",
+        "latitude": -8.166536,
+        "longitude": 113.573229,
+        "fallback_radius_m": 3769.3
     },
     {
         "district_code": "3509190",
         "code": "3509190011",
-        "name": "Badean"
+        "name": "Badean",
+        "latitude": -8.069979,
+        "longitude": 113.577177,
+        "fallback_radius_m": 8000.0
     },
     {
         "district_code": "3509200",
         "code": "3509200001",
-        "name": "Kemuningsari Lor"
+        "name": "Kemuningsari Lor",
+        "latitude": -8.162855,
+        "longitude": 113.60051,
+        "fallback_radius_m": 2601.3
     },
     {
         "district_code": "3509200",
         "code": "3509200002",
-        "name": "Glagahwero"
+        "name": "Glagahwero",
+        "latitude": -8.181272,
+        "longitude": 113.621174,
+        "fallback_radius_m": 2455.6
     },
     {
         "district_code": "3509200",
         "code": "3509200003",
-        "name": "Serut"
+        "name": "Serut",
+        "latitude": -8.146864,
+        "longitude": 113.641095,
+        "fallback_radius_m": 3255.1
     },
     {
         "district_code": "3509200",
         "code": "3509200004",
-        "name": "Panti"
+        "name": "Panti",
+        "latitude": -8.136308,
+        "longitude": 113.614966,
+        "fallback_radius_m": 5556.3
     },
     {
         "district_code": "3509200",
         "code": "3509200005",
-        "name": "Pakis"
+        "name": "Pakis",
+        "latitude": -8.072389,
+        "longitude": 113.591508,
+        "fallback_radius_m": 8000.0
     },
     {
         "district_code": "3509200",
         "code": "3509200006",
-        "name": "Suci"
+        "name": "Suci",
+        "latitude": -8.062461,
+        "longitude": 113.619385,
+        "fallback_radius_m": 8000.0
     },
     {
         "district_code": "3509200",
         "code": "3509200007",
-        "name": "Kemiri"
+        "name": "Kemiri",
+        "latitude": -8.048439,
+        "longitude": 113.652472,
+        "fallback_radius_m": 8000.0
     },
     {
         "district_code": "3509210",
         "code": "3509210001",
-        "name": "Jubung"
+        "name": "Jubung",
+        "latitude": -8.199645,
+        "longitude": 113.637122,
+        "fallback_radius_m": 3016.2
     },
     {
         "district_code": "3509210",
         "code": "3509210002",
-        "name": "Dukuh Mencek"
+        "name": "Dukuh Mencek",
+        "latitude": -8.164505,
+        "longitude": 113.649878,
+        "fallback_radius_m": 3150.9
     },
     {
         "district_code": "3509210",
         "code": "3509210003",
-        "name": "Sukorambi"
+        "name": "Sukorambi",
+        "latitude": -8.134444,
+        "longitude": 113.657809,
+        "fallback_radius_m": 5172.9
     },
     {
         "district_code": "3509210",
         "code": "3509210004",
-        "name": "Karangpring"
+        "name": "Karangpring",
+        "latitude": -8.11125,
+        "longitude": 113.658741,
+        "fallback_radius_m": 4063.3
     },
     {
         "district_code": "3509210",
         "code": "3509210005",
-        "name": "Kelungkung"
+        "name": "Kelungkung",
+        "latitude": -8.079508,
+        "longitude": 113.673967,
+        "fallback_radius_m": 5873.5
     },
     {
         "district_code": "3509220",
         "code": "3509220001",
-        "name": "Kemuningllor"
+        "name": "Kemuningllor",
+        "latitude": -8.102156,
+        "longitude": 113.708806,
+        "fallback_radius_m": 4624.9
     },
     {
         "district_code": "3509220",
         "code": "3509220002",
-        "name": "Darsono"
+        "name": "Darsono",
+        "latitude": -8.099965,
+        "longitude": 113.71783,
+        "fallback_radius_m": 3872.3
     },
     {
         "district_code": "3509220",
         "code": "3509220003",
-        "name": "Arjasa"
+        "name": "Arjasa",
+        "latitude": -8.108494,
+        "longitude": 113.738293,
+        "fallback_radius_m": 3136.7
     },
     {
         "district_code": "3509220",
         "code": "3509220004",
-        "name": "Biting"
+        "name": "Biting",
+        "latitude": -8.113254,
+        "longitude": 113.763546,
+        "fallback_radius_m": 2702.0
     },
     {
         "district_code": "3509220",
         "code": "3509220005",
-        "name": "Candijati"
+        "name": "Candijati",
+        "latitude": -8.098682,
+        "longitude": 113.761481,
+        "fallback_radius_m": 2203.9
     },
     {
         "district_code": "3509220",
         "code": "3509220006",
-        "name": "Kamal"
+        "name": "Kamal",
+        "latitude": -8.091824,
+        "longitude": 113.733232,
+        "fallback_radius_m": 3373.6
     },
     {
         "district_code": "3509230",
         "code": "3509230001",
-        "name": "Kertosari"
+        "name": "Kertosari",
+        "latitude": -8.177394,
+        "longitude": 113.761204,
+        "fallback_radius_m": 2736.9
     },
     {
         "district_code": "3509230",
         "code": "3509230002",
-        "name": "Pakusari"
+        "name": "Pakusari",
+        "latitude": -8.175123,
+        "longitude": 113.783892,
+        "fallback_radius_m": 2934.1
     },
     {
         "district_code": "3509230",
         "code": "3509230003",
-        "name": "Jatian"
+        "name": "Jatian",
+        "latitude": -8.153891,
+        "longitude": 113.790371,
+        "fallback_radius_m": 2379.1
     },
     {
         "district_code": "3509230",
         "code": "3509230004",
-        "name": "Subo"
+        "name": "Subo",
+        "latitude": -8.14818,
+        "longitude": 113.77304,
+        "fallback_radius_m": 2431.2
     },
     {
         "district_code": "3509230",
         "code": "3509230005",
-        "name": "Sumber Pinang"
+        "name": "Sumber Pinang",
+        "latitude": -8.158137,
+        "longitude": 113.762287,
+        "fallback_radius_m": 2767.7
     },
     {
         "district_code": "3509230",
         "code": "3509230006",
-        "name": "Bedadung"
+        "name": "Bedadung",
+        "latitude": -8.134526,
+        "longitude": 113.762193,
+        "fallback_radius_m": 2556.7
     },
     {
         "district_code": "3509230",
         "code": "3509230007",
-        "name": "Patemon"
+        "name": "Patemon",
+        "latitude": -8.129067,
+        "longitude": 113.748891,
+        "fallback_radius_m": 2377.4
     },
     {
         "district_code": "3509240",
         "code": "3509240001",
-        "name": "Gambiran"
+        "name": "Gambiran",
+        "latitude": -8.162047,
+        "longitude": 113.806813,
+        "fallback_radius_m": 2361.8
     },
     {
         "district_code": "3509240",
         "code": "3509240002",
-        "name": "Plalangan"
+        "name": "Plalangan",
+        "latitude": -8.141695,
+        "longitude": 113.832103,
+        "fallback_radius_m": 3713.0
     },
     {
         "district_code": "3509240",
         "code": "3509240003",
-        "name": "Ajung"
+        "name": "Ajung",
+        "latitude": -8.127386,
+        "longitude": 113.826204,
+        "fallback_radius_m": 2575.1
     },
     {
         "district_code": "3509240",
         "code": "3509240004",
-        "name": "Glagahwero"
+        "name": "Glagahwero",
+        "latitude": -8.141329,
+        "longitude": 113.805321,
+        "fallback_radius_m": 2325.5
     },
     {
         "district_code": "3509240",
         "code": "3509240005",
-        "name": "Sumber Jeruk"
+        "name": "Sumber Jeruk",
+        "latitude": -8.134436,
+        "longitude": 113.791918,
+        "fallback_radius_m": 2269.1
     },
     {
         "district_code": "3509240",
         "code": "3509240006",
-        "name": "Gumuksari"
+        "name": "Gumuksari",
+        "latitude": -8.128136,
+        "longitude": 113.776401,
+        "fallback_radius_m": 2407.8
     },
     {
         "district_code": "3509240",
         "code": "3509240007",
-        "name": "Patempuran"
+        "name": "Patempuran",
+        "latitude": -8.110601,
+        "longitude": 113.793232,
+        "fallback_radius_m": 3187.9
     },
     {
         "district_code": "3509240",
         "code": "3509240008",
-        "name": "Kalisat"
+        "name": "Kalisat",
+        "latitude": -8.112362,
+        "longitude": 113.807066,
+        "fallback_radius_m": 2845.5
     },
     {
         "district_code": "3509240",
         "code": "3509240009",
-        "name": "Sumber Ketempah"
+        "name": "Sumber Ketempah",
+        "latitude": -8.117361,
+        "longitude": 113.810379,
+        "fallback_radius_m": 3914.7
     },
     {
         "district_code": "3509240",
         "code": "3509240010",
-        "name": "Sukoreno"
+        "name": "Sukoreno",
+        "latitude": -8.105853,
+        "longitude": 113.788005,
+        "fallback_radius_m": 2636.3
     },
     {
         "district_code": "3509240",
         "code": "3509240011",
-        "name": "Sumber Kalong"
+        "name": "Sumber Kalong",
+        "latitude": -8.084999,
+        "longitude": 113.793401,
+        "fallback_radius_m": 2580.9
     },
     {
         "district_code": "3509240",
         "code": "3509240012",
-        "name": "Sebanen"
+        "name": "Sebanen",
+        "latitude": -8.099027,
+        "longitude": 113.824535,
+        "fallback_radius_m": 1976.7
     },
     {
         "district_code": "3509250",
         "code": "3509250001",
-        "name": "Suren"
+        "name": "Suren",
+        "latitude": -8.16794,
+        "longitude": 113.848167,
+        "fallback_radius_m": 3736.1
     },
     {
         "district_code": "3509250",
         "code": "3509250002",
-        "name": "Sumber Salak"
+        "name": "Sumber Salak",
+        "latitude": -8.151069,
+        "longitude": 113.956016,
+        "fallback_radius_m": 8000.0
     },
     {
         "district_code": "3509250",
         "code": "3509250003",
-        "name": "Sumber Bulus"
+        "name": "Sumber Bulus",
+        "latitude": -8.13911,
+        "longitude": 113.898621,
+        "fallback_radius_m": 3272.7
     },
     {
         "district_code": "3509250",
         "code": "3509250004",
-        "name": "Sumber Lesung"
+        "name": "Sumber Lesung",
+        "latitude": -8.146493,
+        "longitude": 113.87276,
+        "fallback_radius_m": 3055.7
     },
     {
         "district_code": "3509250",
         "code": "3509250005",
-        "name": "Lembengan"
+        "name": "Lembengan",
+        "latitude": -8.151848,
+        "longitude": 113.83289,
+        "fallback_radius_m": 4110.1
     },
     {
         "district_code": "3509250",
         "code": "3509250006",
-        "name": "Sumber Anget"
+        "name": "Sumber Anget",
+        "latitude": -8.120548,
+        "longitude": 113.848489,
+        "fallback_radius_m": 2413.9
     },
     {
         "district_code": "3509250",
         "code": "3509250007",
-        "name": "Ledokombo"
+        "name": "Ledokombo",
+        "latitude": -8.123914,
+        "longitude": 113.868986,
+        "fallback_radius_m": 2818.6
     },
     {
         "district_code": "3509250",
         "code": "3509250008",
-        "name": "Slateng"
+        "name": "Slateng",
+        "latitude": -8.128647,
+        "longitude": 113.954184,
+        "fallback_radius_m": 8000.0
     },
     {
         "district_code": "3509250",
         "code": "3509250009",
-        "name": "Sukogidri"
+        "name": "Sukogidri",
+        "latitude": -8.104412,
+        "longitude": 113.862136,
+        "fallback_radius_m": 2432.8
     },
     {
         "district_code": "3509250",
         "code": "3509250010",
-        "name": "Karang Paiton"
+        "name": "Karang Paiton",
+        "latitude": -8.106126,
+        "longitude": 113.84289,
+        "fallback_radius_m": 1866.1
     },
     {
         "district_code": "3509260",
         "code": "3509260001",
-        "name": "Randu Agung"
+        "name": "Randu Agung",
+        "latitude": -8.089217,
+        "longitude": 113.872478,
+        "fallback_radius_m": 2655.1
     },
     {
         "district_code": "3509260",
         "code": "3509260002",
-        "name": "Cumedak"
+        "name": "Cumedak",
+        "latitude": -8.099432,
+        "longitude": 113.893933,
+        "fallback_radius_m": 3787.9
     },
     {
         "district_code": "3509260",
         "code": "3509260003",
-        "name": "Gunung Malang"
+        "name": "Gunung Malang",
+        "latitude": -8.102225,
+        "longitude": 113.967929,
+        "fallback_radius_m": 8000.0
     },
     {
         "district_code": "3509260",
         "code": "3509260004",
-        "name": "Rowosari"
+        "name": "Rowosari",
+        "latitude": -8.088632,
+        "longitude": 113.969198,
+        "fallback_radius_m": 8000.0
     },
     {
         "district_code": "3509260",
         "code": "3509260005",
-        "name": "Sumberjambe"
+        "name": "Sumberjambe",
+        "latitude": -8.06609,
+        "longitude": 113.898715,
+        "fallback_radius_m": 2858.8
     },
     {
         "district_code": "3509260",
         "code": "3509260006",
-        "name": "Sumber Pakem"
+        "name": "Sumber Pakem",
+        "latitude": -8.06524,
+        "longitude": 113.878297,
+        "fallback_radius_m": 2851.4
     },
     {
         "district_code": "3509260",
         "code": "3509260007",
-        "name": "Plereyan"
+        "name": "Plereyan",
+        "latitude": -8.042741,
+        "longitude": 113.87838,
+        "fallback_radius_m": 3352.4
     },
     {
         "district_code": "3509260",
         "code": "3509260008",
-        "name": "Pringgondani"
+        "name": "Pringgondani",
+        "latitude": -8.034781,
+        "longitude": 113.894106,
+        "fallback_radius_m": 3548.4
     },
     {
         "district_code": "3509260",
         "code": "3509260009",
-        "name": "Jambe Arum"
+        "name": "Jambe Arum",
+        "latitude": -8.067903,
+        "longitude": 113.966168,
+        "fallback_radius_m": 8000.0
     },
     {
         "district_code": "3509270",
         "code": "3509270001",
-        "name": "Sumberwaru"
+        "name": "Sumberwaru",
+        "latitude": -8.087595,
+        "longitude": 113.815875,
+        "fallback_radius_m": 2066.1
     },
     {
         "district_code": "3509270",
         "code": "3509270002",
-        "name": "Sukorejo"
+        "name": "Sukorejo",
+        "latitude": -8.089852,
+        "longitude": 113.834289,
+        "fallback_radius_m": 2182.2
     },
     {
         "district_code": "3509270",
         "code": "3509270003",
-        "name": "Sukosari"
+        "name": "Sukosari",
+        "latitude": -8.085326,
+        "longitude": 113.847376,
+        "fallback_radius_m": 2597.6
     },
     {
         "district_code": "3509270",
         "code": "3509270004",
-        "name": "Balet Baru"
+        "name": "Balet Baru",
+        "latitude": -8.074243,
+        "longitude": 113.825583,
+        "fallback_radius_m": 2598.6
     },
     {
         "district_code": "3509270",
         "code": "3509270005",
-        "name": "Sumber Wringin"
+        "name": "Sumber Wringin",
+        "latitude": -8.075692,
+        "longitude": 113.803154,
+        "fallback_radius_m": 2407.4
     },
     {
         "district_code": "3509270",
         "code": "3509270006",
-        "name": "Mojogemi"
+        "name": "Mojogemi",
+        "latitude": -8.062108,
+        "longitude": 113.791029,
+        "fallback_radius_m": 2218.9
     },
     {
         "district_code": "3509270",
         "code": "3509270007",
-        "name": "Sukokerto"
+        "name": "Sukokerto",
+        "latitude": -8.056902,
+        "longitude": 113.810525,
+        "fallback_radius_m": 2351.3
     },
     {
         "district_code": "3509270",
         "code": "3509270008",
-        "name": "Sukowono"
+        "name": "Sukowono",
+        "latitude": -8.059311,
+        "longitude": 113.833365,
+        "fallback_radius_m": 2931.8
     },
     {
         "district_code": "3509270",
         "code": "3509270009",
-        "name": "Dawuhan Mangli"
+        "name": "Dawuhan Mangli",
+        "latitude": -8.058263,
+        "longitude": 113.845081,
+        "fallback_radius_m": 2163.2
     },
     {
         "district_code": "3509270",
         "code": "3509270010",
-        "name": "Arjasa"
+        "name": "Arjasa",
+        "latitude": -8.066998,
+        "longitude": 113.865373,
+        "fallback_radius_m": 2627.7
     },
     {
         "district_code": "3509270",
         "code": "3509270011",
-        "name": "Sumberdanti"
+        "name": "Sumberdanti",
+        "latitude": -8.051173,
+        "longitude": 113.856775,
+        "fallback_radius_m": 2269.3
     },
     {
         "district_code": "3509270",
         "code": "3509270012",
-        "name": "Pocangan"
+        "name": "Pocangan",
+        "latitude": -8.029845,
+        "longitude": 113.854316,
+        "fallback_radius_m": 2209.5
     },
     {
         "district_code": "3509280",
         "code": "3509280001",
-        "name": "Panduman"
+        "name": "Panduman",
+        "latitude": -8.070782,
+        "longitude": 113.716458,
+        "fallback_radius_m": 5664.1
     },
     {
         "district_code": "3509280",
         "code": "3509280002",
-        "name": "Jelbuk"
+        "name": "Jelbuk",
+        "latitude": -8.079295,
+        "longitude": 113.764435,
+        "fallback_radius_m": 2021.6
     },
     {
         "district_code": "3509280",
         "code": "3509280003",
-        "name": "Sukowiryo"
+        "name": "Sukowiryo",
+        "latitude": -8.084128,
+        "longitude": 113.779681,
+        "fallback_radius_m": 3158.5
     },
     {
         "district_code": "3509280",
         "code": "3509280004",
-        "name": "Suger Kidul"
+        "name": "Suger Kidul",
+        "latitude": -8.053155,
+        "longitude": 113.772094,
+        "fallback_radius_m": 2620.7
     },
     {
         "district_code": "3509280",
         "code": "3509280005",
-        "name": "Suko Jember"
+        "name": "Suko Jember",
+        "latitude": -8.064523,
+        "longitude": 113.763783,
+        "fallback_radius_m": 2781.5
     },
     {
         "district_code": "3509280",
         "code": "3509280006",
-        "name": "Suco Pangepok"
+        "name": "Suco Pangepok",
+        "latitude": -8.029708,
+        "longitude": 113.71008,
+        "fallback_radius_m": 6899.3
     },
     {
         "district_code": "3509710",
         "code": "3509710001",
-        "name": "Mangli"
+        "name": "Mangli",
+        "latitude": -8.191777,
+        "longitude": 113.666531,
+        "fallback_radius_m": 3850.3
     },
     {
         "district_code": "3509710",
         "code": "3509710002",
-        "name": "Sempusari"
+        "name": "Sempusari",
+        "latitude": -8.186678,
+        "longitude": 113.658594,
+        "fallback_radius_m": 2350.9
     },
     {
         "district_code": "3509710",
         "code": "3509710003",
-        "name": "Kaliwates"
+        "name": "Kaliwates",
+        "latitude": -8.182211,
+        "longitude": 113.676375,
+        "fallback_radius_m": 2178.8
     },
     {
         "district_code": "3509710",
         "code": "3509710004",
-        "name": "Tegal Besar"
+        "name": "Tegal Besar",
+        "latitude": -8.199114,
+        "longitude": 113.690117,
+        "fallback_radius_m": 3559.0
     },
     {
         "district_code": "3509710",
         "code": "3509710005",
-        "name": "Jember Kidul"
+        "name": "Jember Kidul",
+        "latitude": -8.176881,
+        "longitude": 113.690475,
+        "fallback_radius_m": 1819.7
     },
     {
         "district_code": "3509710",
         "code": "3509710006",
-        "name": "Kepatihan"
+        "name": "Kepatihan",
+        "latitude": -8.174949,
+        "longitude": 113.700108,
+        "fallback_radius_m": 1655.6
     },
     {
         "district_code": "3509710",
         "code": "3509710007",
-        "name": "Kebon Agung"
+        "name": "Kebon Agung",
+        "latitude": -8.153355,
+        "longitude": 113.673641,
+        "fallback_radius_m": 2683.4
     },
     {
         "district_code": "3509720",
         "code": "3509720001",
-        "name": "Keranjingan"
+        "name": "Keranjingan",
+        "latitude": -8.203043,
+        "longitude": 113.710098,
+        "fallback_radius_m": 3761.1
     },
     {
         "district_code": "3509720",
         "code": "3509720002",
-        "name": "Wirolegi"
+        "name": "Wirolegi",
+        "latitude": -8.189936,
+        "longitude": 113.741927,
+        "fallback_radius_m": 3344.5
     },
     {
         "district_code": "3509720",
         "code": "3509720003",
-        "name": "Karangrejo"
+        "name": "Karangrejo",
+        "latitude": -8.181978,
+        "longitude": 113.731401,
+        "fallback_radius_m": 2959.9
     },
     {
         "district_code": "3509720",
         "code": "3509720004",
-        "name": "Kebonsari"
+        "name": "Kebonsari",
+        "latitude": -8.187242,
+        "longitude": 113.705703,
+        "fallback_radius_m": 2410.6
     },
     {
         "district_code": "3509720",
         "code": "3509720005",
-        "name": "Sumbersari"
+        "name": "Sumbersari",
+        "latitude": -8.170422,
+        "longitude": 113.718405,
+        "fallback_radius_m": 2617.6
     },
     {
         "district_code": "3509720",
         "code": "3509720006",
-        "name": "Tegal Gede"
+        "name": "Tegal Gede",
+        "latitude": -8.15545,
+        "longitude": 113.724081,
+        "fallback_radius_m": 2163.0
     },
     {
         "district_code": "3509720",
         "code": "3509720007",
-        "name": "Antirogo"
+        "name": "Antirogo",
+        "latitude": -8.151247,
+        "longitude": 113.743984,
+        "fallback_radius_m": 3066.0
     },
     {
         "district_code": "3509730",
         "code": "3509730001",
-        "name": "Gebang"
+        "name": "Gebang",
+        "latitude": -8.144313,
+        "longitude": 113.690215,
+        "fallback_radius_m": 4191.0
     },
     {
         "district_code": "3509730",
         "code": "3509730002",
-        "name": "Jember Lor"
+        "name": "Jember Lor",
+        "latitude": -8.15741,
+        "longitude": 113.702668,
+        "fallback_radius_m": 2426.6
     },
     {
         "district_code": "3509730",
         "code": "3509730003",
-        "name": "Patrang"
+        "name": "Patrang",
+        "latitude": -8.147202,
+        "longitude": 113.713375,
+        "fallback_radius_m": 2495.3
     },
     {
         "district_code": "3509730",
         "code": "3509730004",
-        "name": "Baratan"
+        "name": "Baratan",
+        "latitude": -8.127177,
+        "longitude": 113.723477,
+        "fallback_radius_m": 3567.4
     },
     {
         "district_code": "3509730",
         "code": "3509730005",
-        "name": "Bintoro"
+        "name": "Bintoro",
+        "latitude": -8.110465,
+        "longitude": 113.700453,
+        "fallback_radius_m": 4587.6
     },
     {
         "district_code": "3509730",
         "code": "3509730006",
-        "name": "Slawu"
+        "name": "Slawu",
+        "latitude": -8.146567,
+        "longitude": 113.690957,
+        "fallback_radius_m": 2252.1
     },
     {
         "district_code": "3509730",
         "code": "3509730007",
-        "name": "Jumerto"
+        "name": "Jumerto",
+        "latitude": -8.12446,
+        "longitude": 113.684426,
+        "fallback_radius_m": 2488.1
     },
     {
         "district_code": "3509730",
         "code": "3509730008",
-        "name": "Banjar Sengon"
+        "name": "Banjar Sengon",
+        "latitude": -8.127814,
+        "longitude": 113.676292,
+        "fallback_radius_m": 2540.5
     }
 ]

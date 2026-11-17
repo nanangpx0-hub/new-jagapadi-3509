@@ -13,7 +13,7 @@ use Spatie\Permission\Models\Role;
 
 final class UserController extends Controller
 {
-    private const ROLES = ['admin', 'operator', 'statistisi', 'petugas', 'viewer'];
+    private const ROLES = ['superadmin', 'admin', 'operator', 'statistisi', 'petugas', 'viewer'];
 
     /**
      * Daftar pengguna (paginasi + filter role + pencarian nama/email/NIP).
@@ -22,7 +22,7 @@ final class UserController extends Controller
     {
         $perPage = min(50, max(5, (int) $request->query('per_page', 15)));
 
-        $query = User::with('roles:id,name')->orderByDesc('created_at');
+        $query = User::with(['roles:id,name', 'assignedDistrict:id,code,name'])->orderByDesc('created_at');
 
         if ($role = trim((string) $request->query('role', ''))) {
             $query->role($role);
@@ -40,7 +40,7 @@ final class UserController extends Controller
 
         return response()->json([
             'status' => 'ok',
-            'data' => $users->items(),
+            'data' => array_map(fn (User $u): array => $this->payload($u), $users->items()),
             'meta' => [
                 'current_page' => $users->currentPage(),
                 'last_page' => $users->lastPage(),
@@ -62,10 +62,15 @@ final class UserController extends Controller
             'nip' => ['nullable', 'string', 'max:30'],
             'password' => ['required', 'string', 'min:8'],
             'role' => ['required', 'string', Rule::in(self::ROLES)],
+            'assigned_district_id' => ['nullable', 'exists:districts,id'],
         ]);
 
         /** @var User $actor */
         $actor = $request->user();
+
+        if ($validated['role'] === 'superadmin' && ! $actor->hasRole('superadmin')) {
+            return response()->json(['message' => 'Hanya Superadmin yang dapat membuat akun Superadmin.'], 403);
+        }
 
         $user = new User;
         $user->forceFill([
@@ -76,15 +81,19 @@ final class UserController extends Controller
             'password' => bcrypt($validated['password']),
             'is_active' => true,
             'must_change_password' => true,
+            'assigned_district_id' => $validated['assigned_district_id'] ?? null,
             'created_by' => $actor->id,
         ]);
         $user->save();
         $user->assignRole($validated['role']);
 
+        activity('users')->causedBy($actor)->performedOn($user)->event('created')
+            ->log("Pengguna {$user->name} ditambahkan.");
+
         return response()->json([
             'status' => 'ok',
             'message' => 'Pengguna berhasil ditambahkan.',
-            'data' => $this->payload($user->fresh('roles')),
+            'data' => $this->payload($user->load(['roles', 'assignedDistrict'])),
         ], 201);
     }
 
@@ -95,7 +104,7 @@ final class UserController extends Controller
     {
         return response()->json([
             'status' => 'ok',
-            'data' => $this->payload($user->load('roles')),
+            'data' => $this->payload($user->load(['roles', 'assignedDistrict'])),
         ]);
     }
 
@@ -104,13 +113,25 @@ final class UserController extends Controller
      */
     public function update(Request $request, User $user): JsonResponse
     {
+        /** @var User $actor */
+        $actor = $request->user();
+
+        if ($denied = $this->guardSuperadminTarget($actor, $user)) {
+            return $denied;
+        }
+
         $validated = $request->validate([
             'name' => ['sometimes', 'string', 'max:255'],
             'email' => ['sometimes', 'string', 'email', 'max:255', Rule::unique('users', 'email')->ignore($user->id)->whereNull('deleted_at')],
             'phone' => ['sometimes', 'nullable', 'string', 'max:30'],
             'nip' => ['sometimes', 'nullable', 'string', 'max:30'],
             'role' => ['sometimes', 'string', Rule::in(self::ROLES)],
+            'assigned_district_id' => ['sometimes', 'nullable', 'exists:districts,id'],
         ]);
+
+        if (isset($validated['role']) && $validated['role'] === 'superadmin' && ! $actor->hasRole('superadmin')) {
+            return response()->json(['message' => 'Hanya Superadmin yang dapat menetapkan peran Superadmin.'], 403);
+        }
 
         if (isset($validated['email'])) {
             $validated['email'] = strtolower($validated['email']);
@@ -123,10 +144,15 @@ final class UserController extends Controller
             $user->syncRoles([$validated['role']]);
         }
 
+        /** @var User $actor */
+        $actor = $request->user();
+        activity('users')->causedBy($actor)->performedOn($user)->event('updated')
+            ->log("Data pengguna {$user->name} diperbarui.");
+
         return response()->json([
             'status' => 'ok',
             'message' => 'Pengguna berhasil diperbarui.',
-            'data' => $this->payload($user->fresh('roles')),
+            'data' => $this->payload($user->load(['roles', 'assignedDistrict'])),
         ]);
     }
 
@@ -138,6 +164,10 @@ final class UserController extends Controller
         /** @var User $actor */
         $actor = $request->user();
 
+        if ($denied = $this->guardSuperadminTarget($actor, $user)) {
+            return $denied;
+        }
+
         if ($actor->id === $user->id) {
             return response()->json(['message' => 'Anda tidak dapat mengubah status akun Anda sendiri.'], 422);
         }
@@ -145,22 +175,35 @@ final class UserController extends Controller
         $user->is_active = ! $user->is_active;
         $user->save();
 
+        activity('users')->causedBy($actor)->performedOn($user)->event('toggled_status')
+            ->log("Status akun {$user->name} diubah menjadi ".($user->is_active ? 'aktif' : 'nonaktif').'.');
+
         return response()->json([
             'status' => 'ok',
             'message' => $user->is_active ? 'Akun diaktifkan.' : 'Akun dinonaktifkan.',
-            'data' => $this->payload($user->fresh('roles')),
+            'data' => $this->payload($user->load(['roles', 'assignedDistrict'])),
         ]);
     }
 
     /**
      * Reset kata sandi ke default (wajib ganti saat login berikutnya).
      */
-    public function resetPassword(User $user): JsonResponse
+    public function resetPassword(Request $request, User $user): JsonResponse
     {
+        /** @var User $actor */
+        $actor = $request->user();
+
+        if ($denied = $this->guardSuperadminTarget($actor, $user)) {
+            return $denied;
+        }
+
         $user->forceFill([
             'password' => bcrypt('password'),
             'must_change_password' => true,
         ])->save();
+
+        activity('users')->causedBy($actor)->performedOn($user)->event('password_reset')
+            ->log("Kata sandi {$user->name} direset oleh administrator.");
 
         return response()->json([
             'status' => 'ok',
@@ -176,16 +219,32 @@ final class UserController extends Controller
         /** @var User $actor */
         $actor = $request->user();
 
+        if ($denied = $this->guardSuperadminTarget($actor, $user)) {
+            return $denied;
+        }
+
         if ($actor->id === $user->id) {
             return response()->json(['message' => 'Anda tidak dapat menghapus akun Anda sendiri.'], 422);
         }
 
         $user->delete();
 
+        activity('users')->causedBy($actor)->performedOn($user)->event('deleted')
+            ->log("Akun {$user->name} dihapus.");
+
         return response()->json([
             'status' => 'ok',
             'message' => 'Akun berhasil dihapus (soft delete).',
         ]);
+    }
+
+    private function guardSuperadminTarget(User $actor, User $target): ?JsonResponse
+    {
+        if ($target->hasRole('superadmin') && ! $actor->hasRole('superadmin')) {
+            return response()->json(['message' => 'Hanya Superadmin yang dapat memodifikasi akun Superadmin.'], 403);
+        }
+
+        return null;
     }
 
     /**
@@ -201,6 +260,12 @@ final class UserController extends Controller
             'nip' => $user->nip,
             'is_active' => (bool) $user->is_active,
             'must_change_password' => (bool) $user->must_change_password,
+            'assigned_district_id' => $user->assigned_district_id,
+            'assigned_district' => $user->assignedDistrict ? [
+                'id' => $user->assignedDistrict->id,
+                'code' => $user->assignedDistrict->code,
+                'name' => $user->assignedDistrict->name,
+            ] : null,
             'roles' => $user->getRoleNames(),
             'created_at' => $user->created_at?->toISOString(),
         ];

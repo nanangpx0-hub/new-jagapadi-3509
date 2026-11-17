@@ -10,7 +10,7 @@
     "./api-types": "./src/api-types.d.ts"
   },
   "scripts": {
-    "sync-types": "php ../../apps/api/artisan scramble:export --path=./openapi.json && openapi-typescript ./openapi.json -o ./src/api-types.d.ts",
+    "sync-types": "php ../../apps/api/artisan scramble:export --path=../../packages/shared/openapi.json && openapi-typescript ./openapi.json -o ./src/api-types.d.ts",
     "typecheck": "tsc --noEmit",
     "lint": "tsc --noEmit",
     "build": "tsc --noEmit"

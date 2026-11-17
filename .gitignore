@@ -22,6 +22,7 @@ data/
 
 # Perintah lokal & artefak test
 .phpunit.result.cache
+e2e-remote/*.png
 
 # Database lokal & runtime Laravel
 *.sqlite

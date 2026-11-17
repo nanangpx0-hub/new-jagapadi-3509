@@ -103,7 +103,9 @@ export function HomePage() {
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-wider text-tinta3">
-            {todayId} · Kabupaten Jember
+            {todayId}
+            {user?.assigned_district ? ` · Kec. ${user.assigned_district.name}` : ''}
+            {' · Kabupaten Jember'}
           </p>
           <h1 className="mt-1 font-display text-2xl font-bold tracking-tight text-tinta sm:text-3xl">
             {greeting()}, {user?.name.split(' ')[0]}
@@ -112,7 +114,7 @@ export function HomePage() {
             Ringkasan {isVerifier ? 'laporan masuk se-kabupaten' : 'laporan lapangan Anda'} hari ini.
           </p>
         </div>
-        {!isVerifier && (
+        {hasPermission('reports.create') && !isVerifier && (
           <button
             type="button"
             onClick={() => navigate('/reports/new')}

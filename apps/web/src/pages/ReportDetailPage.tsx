@@ -3,6 +3,7 @@ import {
   ArrowLeft,
   BadgeCheck,
   Camera,
+  ClipboardPlus,
   ImageIcon,
   Loader2,
   MapPin,
@@ -19,8 +20,10 @@ import { Panel } from '../components/Panel';
 import { StatusBadge } from '../components/StatusBadge';
 import {
   archiveReport,
+  createFollowup,
   deleteReport,
   getReport,
+  listFollowups,
   publicPhotoUrl,
   rejectReport,
   submitReport,
@@ -61,6 +64,14 @@ export function ReportDetailPage() {
   );
   const photoInputRef = useRef<HTMLInputElement>(null);
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
+  const [followupOpen, setFollowupOpen] = useState(false);
+  const [followupBusy, setFollowupBusy] = useState(false);
+  const [fogDate, setFogDate] = useState(new Date().toISOString().slice(0, 10));
+  const [fogMethod, setFogMethod] = useState('Mekanis');
+  const [fogArea, setFogArea] = useState('');
+  const [fogChemicals, setFogChemicals] = useState('');
+  const [fogOutcome, setFogOutcome] = useState('Menurun');
+  const [fogNotes, setFogNotes] = useState('');
 
   const query = useQuery({
     queryKey: ['report', reportId],
@@ -69,9 +80,43 @@ export function ReportDetailPage() {
   });
   const report = query.data;
 
+  const showFollowups = report?.status === 'Diverifikasi' && report?.report_type === 'pest';
+  const followupsQuery = useQuery({
+    queryKey: ['report-followups', reportId],
+    queryFn: () => listFollowups(reportId),
+    enabled: showFollowups === true,
+  });
+
   const invalidate = () => {
     void queryClient.invalidateQueries({ queryKey: ['report', reportId] });
+    void queryClient.invalidateQueries({ queryKey: ['report-followups', reportId] });
     void queryClient.invalidateQueries({ queryKey: ['reports'] });
+  };
+
+  const handleSaveFollowup = async () => {
+    if (!report) return;
+    setFollowupBusy(true);
+    setActionError(null);
+    try {
+      await createFollowup(report.id, {
+        action_date: fogDate,
+        control_method: fogMethod,
+        controlled_area_ha: fogArea ? Number(fogArea) : null,
+        chemicals_or_agents_used: fogChemicals || null,
+        outcome_status: fogOutcome,
+        notes: fogNotes || null,
+      });
+      setActionNotice('Tindak lanjut Gerdal berhasil dicatat.');
+      setFollowupOpen(false);
+      setFogArea('');
+      setFogChemicals('');
+      setFogNotes('');
+      invalidate();
+    } catch (err) {
+      setActionError(err instanceof Error ? err.message : 'Gagal mencatat tindak lanjut.');
+    } finally {
+      setFollowupBusy(false);
+    }
   };
 
   const run = async (operation: () => Promise<unknown>, successMessage: string) => {
@@ -128,15 +173,16 @@ export function ReportDetailPage() {
   }
 
   const isOwner = user?.id === report.user?.id;
+  const isAdmin = Boolean(user?.roles.includes('superadmin') || user?.roles.includes('admin'));
   const isEditable = report.status === 'Draf' || report.status === 'Ditolak';
   const canVerify = hasPermission('reports.verify') && report.status === 'Submitted';
   const canArchive = hasPermission('reports.archive') && report.status === 'Diverifikasi';
   const canDelete =
-    (user && hasPermission('reports.delete') && user.roles.includes('admin')) ||
+    (user && hasPermission('reports.delete') && isAdmin) ||
     (isOwner && report.status === 'Draf');
-  const canEdit = isEditable && (isOwner || user?.roles.includes('admin'));
-  const canSubmit = isEditable && (isOwner || user?.roles.includes('admin'));
-  const canAddPhoto = isOwner || user?.roles.includes('admin');
+  const canEdit = isEditable && (isOwner || isAdmin);
+  const canSubmit = isEditable && (isOwner || isAdmin);
+  const canAddPhoto = isOwner || isAdmin;
 
   return (
     <div className="space-y-4">
@@ -209,6 +255,14 @@ export function ReportDetailPage() {
                 <dd className="mt-0.5 text-sm text-tinta">{report.village?.name ?? '—'}</dd>
               </div>
               <div>
+                <dt className="text-[11px] font-semibold uppercase tracking-wider text-tinta3">SLS / Dusun / RW</dt>
+                <dd className="mt-0.5 text-sm text-tinta">
+                  {report.sls
+                    ? `${report.sls.name} (${report.sls.code || report.sls.idsls})`
+                    : '—'}
+                </dd>
+              </div>
+              <div>
                 <dt className="text-[11px] font-semibold uppercase tracking-wider text-tinta3">Lokasi</dt>
                 <dd className="mt-0.5 text-sm text-tinta">{report.location_name ?? '—'}</dd>
               </div>
@@ -249,8 +303,34 @@ export function ReportDetailPage() {
             </dl>
           </Panel>
 
+          {/* Konteks Statistik BPS */}
+          {(report.commodity || report.ksa_segment_code || report.ksa_phase || (report.statistical_impacts?.length ?? 0) > 0) && (
+            <Panel title="Konteks Statistik BPS" bodyClassName="p-5">
+              <dl className="grid grid-cols-2 gap-x-6 gap-y-3 sm:grid-cols-3">
+                <Detail label="Komoditas" value={report.commodity ?? '—'} />
+                <Detail label="Segmen KSA" value={report.ksa_segment_code ?? '—'} />
+                <Detail label="Fase KSA" value={report.ksa_phase ?? '—'} />
+                <Detail
+                  label="Dampak Indikator"
+                  value={report.statistical_impacts?.length ? report.statistical_impacts.join(', ') : '—'}
+                />
+                <Detail label="Subround" value={report.subround ? `SR ${report.subround}` : '—'} />
+                <Detail label="Triwulan" value={report.quarter ? `Tw ${report.quarter}` : '—'} />
+              </dl>
+            </Panel>
+          )}
+
           {/* Detail domain */}
-          <Panel title={report.report_type === 'pest' ? 'Detail Hama & OPT' : 'Detail Irigasi'} bodyClassName="p-5">
+          <Panel
+            title={
+              report.report_type === 'pest'
+                ? 'Detail Hama & OPT'
+                : report.report_type === 'irrigation'
+                  ? 'Detail Irigasi'
+                  : `Detail ${REPORT_TYPE_LABEL[report.report_type]}`
+            }
+            bodyClassName="p-5"
+          >
             {report.report_type === 'pest' && report.pestDetail ? (
               <dl className="grid grid-cols-2 gap-x-6 gap-y-3 sm:grid-cols-3">
                 <Detail label="OPT" value={report.pestDetail.opt?.name ?? `#${report.pestDetail.opt_id}`} />
@@ -258,16 +338,44 @@ export function ReportDetailPage() {
                 <Detail label="Umur tanaman" value={report.pestDetail.crop_age_days != null ? `${report.pestDetail.crop_age_days} hari` : '—'} />
                 <Detail label="Fase" value={report.pestDetail.crop_phase ?? '—'} />
                 <Detail label="Intensitas" value={report.pestDetail.intensity_level} />
+                <Detail
+                  label="Populasi terukur"
+                  value={
+                    report.pestDetail.population_intensity != null
+                      ? `${Number(report.pestDetail.population_intensity).toLocaleString('id-ID')} ${report.pestDetail.etl_unit ?? report.pestDetail.opt?.etl_unit ?? ''}`.trim()
+                      : '—'
+                  }
+                />
+                <Detail
+                  label="Ambang Ekonomi (ETL)"
+                  value={
+                    report.pestDetail.opt?.etl_reference != null
+                      ? `${Number(report.pestDetail.opt.etl_reference).toLocaleString('id-ID')} ${report.pestDetail.opt.etl_unit ?? report.pestDetail.etl_unit ?? ''}`.trim()
+                      : '—'
+                  }
+                />
+                <div className="col-span-2 sm:col-span-3">
+                  <dt className="text-[11px] font-semibold uppercase tracking-wider text-tinta3">Status ETL</dt>
+                  <dd className="mt-1">
+                    {report.pestDetail.is_above_etl ? (
+                      <span className="inline-flex items-center gap-1.5 rounded-full border border-chip-warn-bg bg-chip-warn-bg/40 px-3 py-1.5 text-xs font-bold text-chip-warn-fg">
+                        ⚠️ Di Atas Ambang Ekonomi (ETL) — Perlu Tindakan Segera
+                      </span>
+                    ) : report.pestDetail.population_intensity != null ? (
+                      <span className="inline-flex items-center gap-1.5 rounded-full border border-chip-verifikasi-bg bg-chip-verifikasi-bg/40 px-3 py-1.5 text-xs font-bold text-chip-verifikasi-fg">
+                        Di Bawah Ambang Ekonomi (ETL)
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center rounded-full border border-garis bg-panel2 px-3 py-1.5 text-xs font-semibold text-tinta2">
+                        Belum Dinilai (populasi tidak diisi)
+                      </span>
+                    )}
+                  </dd>
+                </div>
                 <Detail label="Luas terserang" value={`${Number(report.pestDetail.affected_area_ha).toLocaleString('id-ID')} ha`} />
-                <Detail label="Luas waspada" value={report.pestDetail.threatened_area_ha != null ? `${Number(report.pestDetail.threatened_area_ha).toLocaleString('id-ID')} ha` : '—'} />
-                {report.pestDetail.control_recommendation && (
-                  <div className="col-span-2 sm:col-span-3">
-                    <dt className="text-[11px] font-semibold uppercase tracking-wider text-tinta3">Rekomendasi</dt>
-                    <dd className="mt-0.5 text-sm text-tinta">{report.pestDetail.control_recommendation}</dd>
-                  </div>
-                )}
+                <Detail label="Luas Populasi" value={report.pestDetail.threatened_area_ha != null ? `${Number(report.pestDetail.threatened_area_ha).toLocaleString('id-ID')} ha` : '—'} />
               </dl>
-            ) : report.irrigationDetail ? (
+            ) : report.report_type === 'irrigation' && report.irrigationDetail ? (
               <dl className="grid grid-cols-2 gap-x-6 gap-y-3 sm:grid-cols-3">
                 <Detail label="Daerah irigasi" value={report.irrigationDetail.irrigation_area_name ?? '—'} />
                 <Detail label="Jenis saluran" value={report.irrigationDetail.channel_type} />
@@ -282,6 +390,40 @@ export function ReportDetailPage() {
                   </div>
                 )}
               </dl>
+            ) : report.report_type === 'fertilizer' && report.fertilizerDetail ? (
+              <dl className="grid grid-cols-2 gap-x-6 gap-y-3 sm:grid-cols-3">
+                <Detail label="Jenis pupuk" value={report.fertilizerDetail.fertilizer_type} />
+                <Detail label="Takaran" value={`${report.fertilizerDetail.dosage_amount} ${report.fertilizerDetail.dosage_unit}`} />
+                <Detail label="Cara aplikasi" value={report.fertilizerDetail.application_method ?? '—'} />
+                <Detail label="Ketersediaan" value={report.fertilizerDetail.availability_status ?? '—'} />
+              </dl>
+            ) : report.report_type === 'harvest' && report.harvestDetail ? (
+              <dl className="grid grid-cols-2 gap-x-6 gap-y-3 sm:grid-cols-3">
+                <Detail label="Komoditas" value={report.harvestDetail.commodity} />
+                <Detail label="Varietas" value={report.harvestDetail.variety ?? '—'} />
+                <Detail label="Luas panen" value={`${Number(report.harvestDetail.harvest_area_ha).toLocaleString('id-ID')} ha`} />
+                <Detail label="Volume" value={`${report.harvestDetail.harvest_volume} ${report.harvestDetail.volume_unit}`} />
+                <Detail label="Produktivitas" value={report.harvestDetail.productivity_ton_ha != null ? `${Number(report.harvestDetail.productivity_ton_ha).toLocaleString('id-ID')} ton/ha` : '—'} />
+                <Detail label="Harga petani" value={report.harvestDetail.farmer_price_per_kg != null ? `Rp ${Number(report.harvestDetail.farmer_price_per_kg).toLocaleString('id-ID')}/kg` : '—'} />
+              </dl>
+            ) : report.report_type === 'weather' && report.weatherDetail ? (
+              <dl className="grid grid-cols-2 gap-x-6 gap-y-3 sm:grid-cols-3">
+                <Detail label="Kondisi" value={report.weatherDetail.weather_condition} />
+                <Detail label="Suhu" value={report.weatherDetail.temperature_c != null ? `${report.weatherDetail.temperature_c} °C` : '—'} />
+                <Detail label="Kelembapan" value={report.weatherDetail.humidity_pct != null ? `${report.weatherDetail.humidity_pct} %` : '—'} />
+                <Detail label="Curah hujan" value={report.weatherDetail.rainfall_mm != null ? `${report.weatherDetail.rainfall_mm} mm` : '—'} />
+                <Detail label="Kecepatan angin" value={report.weatherDetail.wind_speed_kmh != null ? `${report.weatherDetail.wind_speed_kmh} km/jam` : '—'} />
+                <Detail label="Arah angin" value={report.weatherDetail.wind_direction ?? '—'} />
+                <Detail label="Luas terdampak" value={report.weatherDetail.impacted_area_ha != null ? `${report.weatherDetail.impacted_area_ha} ha` : '—'} />
+              </dl>
+            ) : report.report_type === 'equipment' && report.equipmentDetail ? (
+              <dl className="grid grid-cols-2 gap-x-6 gap-y-3 sm:grid-cols-3">
+                <Detail label="Kategori" value={report.equipmentDetail.equipment_category} />
+                <Detail label="Nama alat" value={report.equipmentDetail.equipment_name} />
+                <Detail label="Jumlah unit" value={String(report.equipmentDetail.unit_count)} />
+                <Detail label="Kondisi" value={report.equipmentDetail.condition_status} />
+                <Detail label="Kelompok pemilik" value={report.equipmentDetail.ownership_group ?? '—'} />
+              </dl>
             ) : (
               <p className="text-sm text-tinta2">Detail domain belum diisi.</p>
             )}
@@ -292,6 +434,107 @@ export function ReportDetailPage() {
               </p>
             )}
           </Panel>
+
+          {showFollowups && (
+            <Panel
+              title="Riwayat Pengendalian / Gerdal"
+              actions={
+                (isOwner || isAdmin) ? (
+                  <button
+                    type="button"
+                    onClick={() => setFollowupOpen((v) => !v)}
+                    className="inline-flex min-h-9 items-center gap-1.5 rounded-md bg-cta px-3 text-xs font-bold text-ctafg hover:bg-sawah800"
+                  >
+                    <ClipboardPlus size={14} aria-hidden="true" />
+                    Catat Tindak Lanjut Gerdal
+                  </button>
+                ) : undefined
+              }
+              bodyClassName="p-5"
+            >
+              {followupOpen && (isOwner || isAdmin) ? (
+                <div className="mb-4 grid gap-3 rounded-md border border-garis bg-panel2 p-4">
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    <label className="block">
+                      <span className="mb-1 block text-[11px] font-semibold uppercase tracking-wider text-tinta3">Tanggal aksi</span>
+                      <input type="date" value={fogDate} onChange={(e) => setFogDate(e.target.value)} className="min-h-11 w-full rounded-md border border-garis bg-panel px-3 text-sm text-tinta" />
+                    </label>
+                    <label className="block">
+                      <span className="mb-1 block text-[11px] font-semibold uppercase tracking-wider text-tinta3">Metode pengendalian</span>
+                      <select value={fogMethod} onChange={(e) => setFogMethod(e.target.value)} className="min-h-11 w-full rounded-md border border-garis bg-panel px-3 text-sm text-tinta">
+                        <option>Mekanis</option>
+                        <option>Hayati</option>
+                        <option>Kimiawi</option>
+                      </select>
+                    </label>
+                    <label className="block">
+                      <span className="mb-1 block text-[11px] font-semibold uppercase tracking-wider text-tinta3">Luas terkendali (ha)</span>
+                      <input type="number" min={0} step="0.01" inputMode="decimal" value={fogArea} onChange={(e) => setFogArea(e.target.value)} placeholder="1.5" className="min-h-11 w-full rounded-md border border-garis bg-panel px-3 text-sm text-tinta" />
+                    </label>
+                    <label className="block">
+                      <span className="mb-1 block text-[11px] font-semibold uppercase tracking-wider text-tinta3">Status hasil</span>
+                      <select value={fogOutcome} onChange={(e) => setFogOutcome(e.target.value)} className="min-h-11 w-full rounded-md border border-garis bg-panel px-3 text-sm text-tinta">
+                        <option>Terkendali</option>
+                        <option>Menurun</option>
+                        <option>Tetap</option>
+                        <option>Meluas</option>
+                      </select>
+                    </label>
+                    <label className="block sm:col-span-2">
+                      <span className="mb-1 block text-[11px] font-semibold uppercase tracking-wider text-tinta3">Bahan aktif (agens hayati / pestisida)</span>
+                      <input value={fogChemicals} onChange={(e) => setFogChemicals(e.target.value)} placeholder="Beauveria bassiana / Pimetrozen…" className="min-h-11 w-full rounded-md border border-garis bg-panel px-3 text-sm text-tinta" />
+                    </label>
+                    <label className="block sm:col-span-2">
+                      <span className="mb-1 block text-[11px] font-semibold uppercase tracking-wider text-tinta3">Catatan</span>
+                      <textarea value={fogNotes} onChange={(e) => setFogNotes(e.target.value)} className="min-h-20 w-full rounded-md border border-garis bg-panel px-3 py-2 text-sm text-tinta" placeholder="Ket. pelaksanaan Gerdal…" />
+                    </label>
+                  </div>
+                  <div className="flex justify-end gap-2">
+                    <button type="button" onClick={() => setFollowupOpen(false)} className="min-h-11 rounded-md border border-garis px-4 text-sm font-semibold text-tinta2">Batal</button>
+                    <button type="button" disabled={followupBusy} onClick={() => void handleSaveFollowup()} className="min-h-11 rounded-md bg-cta px-4 text-sm font-bold text-ctafg disabled:opacity-60">
+                      {followupBusy ? 'Menyimpan…' : 'Simpan'}
+                    </button>
+                  </div>
+                </div>
+              ) : null}
+
+              {followupsQuery.isLoading ? (
+                <div className="flex h-24 items-center justify-center"><Loader2 size={22} className="animate-spin text-tinta3" aria-hidden="true" /></div>
+              ) : (followupsQuery.data?.length ?? 0) === 0 ? (
+                <p className="text-sm text-tinta2">Belum ada tindak lanjut Gerdal dicatat. Gunakan tombol di atas untuk mencatat gerakan pengendalian kelompok tani.</p>
+              ) : (
+                <ol className="relative space-y-0 border-l-2 border-garis pl-5">
+                  {(report.pestDetail ? (
+                    <li className="relative pb-4">
+                      <span aria-hidden="true" className="absolute -left-[27px] top-1 h-3 w-3 rounded-full bg-red-500 ring-2 ring-panel" />
+                      <p className="text-sm font-bold text-tinta">Awal serangan — {report.pestDetail.opt?.name ?? 'OPT'}</p>
+                      <p className="text-xs text-tinta2">
+                        {report.report_date} · Intensitas {report.pestDetail.intensity_level} · {Number(report.pestDetail.affected_area_ha).toLocaleString('id-ID')} ha terserang
+                      </p>
+                    </li>
+                  ) : null)}
+                  {followupsQuery.data?.map((item) => (
+                    <li key={item.id} className="relative pb-4">
+                      <span aria-hidden="true" className="absolute -left-[27px] top-1 h-3 w-3 rounded-full bg-cta ring-2 ring-panel" />
+                      <div className="flex flex-wrap items-center gap-2">
+                        <p className="text-sm font-bold text-tinta">
+                          Sesudah Gerdal — {item.outcome_status} · {item.control_method}
+                        </p>
+                        <span className="rounded-full bg-chip-verifikasi-bg px-2 py-0.5 text-[11px] font-bold text-chip-verifikasi-fg">{item.control_method}</span>
+                      </div>
+                      <p className="mt-0.5 text-xs text-tinta2">
+                        {item.action_date}
+                        {item.controlled_area_ha != null ? ` · ${Number(item.controlled_area_ha).toLocaleString('id-ID')} ha terkendali` : ''}
+                        {item.chemicals_or_agents_used ? ` · ${item.chemicals_or_agents_used}` : ''}
+                        {item.user?.name ? ` · oleh ${item.user.name}` : ''}
+                      </p>
+                      {item.notes && <p className="mt-1 text-xs text-tinta2">{item.notes}</p>}
+                    </li>
+                  ))}
+                </ol>
+              )}
+            </Panel>
+          )}
 
           {/* Foto */}
           <Panel

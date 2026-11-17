@@ -18,6 +18,7 @@ class RolePermissionSeeder extends Seeder
 
         // Daftar Permission sesuai docs/PRD.md §3.2
         $permissions = [
+            'system.manage',
             'users.manage',
             'audit.view',
             'regions.view',
@@ -43,9 +44,15 @@ class RolePermissionSeeder extends Seeder
             Permission::firstOrCreate(['name' => $permissionName, 'guard_name' => 'web']);
         }
 
-        // Definisi 5 Role & Matriks Permission
+        $adminPermissions = array_values(array_filter(
+            $permissions,
+            fn (string $permission): bool => $permission !== 'system.manage'
+        ));
+
+        // Definisi 6 Role & Matriks Permission
         $rolePermissions = [
-            'admin' => $permissions, // Admin memiliki semua permission
+            'superadmin' => $permissions, // Superadmin memiliki semua permission termasuk system.manage
+            'admin' => $adminPermissions, // Admin memiliki semua permission kecuali system.manage
             'operator' => [
                 'regions.view',
                 'opts.view',

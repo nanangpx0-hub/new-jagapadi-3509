@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -23,6 +24,7 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
+        'assigned_district_id',
         'name',
         'email',
         'phone',
@@ -57,6 +59,13 @@ class User extends Authenticatable
             'password' => 'hashed',
             'is_active' => 'boolean',
             'must_change_password' => 'boolean',
+            'assigned_district_id' => 'integer',
         ];
+    }
+
+    /** @return BelongsTo<District, $this> */
+    public function assignedDistrict(): BelongsTo
+    {
+        return $this->belongsTo(District::class, 'assigned_district_id');
     }
 }

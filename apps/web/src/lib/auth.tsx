@@ -17,6 +17,8 @@ export interface AuthUser {
   nip?: string | null;
   must_change_password: boolean;
   theme_preference?: string | null;
+  assigned_district_id?: number | null;
+  assigned_district?: { id: number; code: string; name: string } | null;
   roles: string[];
   permissions: string[];
 }

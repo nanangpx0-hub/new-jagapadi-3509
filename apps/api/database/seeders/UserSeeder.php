@@ -16,6 +16,13 @@ class UserSeeder extends Seeder
 
         $users = [
             [
+                'name' => 'Super Administrator BPS 3509',
+                'email' => 'superadmin@jagapadi.test',
+                'phone' => '081234567800',
+                'nip' => '198001012005011000',
+                'role' => 'superadmin',
+            ],
+            [
                 'name' => 'Administrator Jember',
                 'email' => 'admin@jagapadi.test',
                 'phone' => '081234567890',

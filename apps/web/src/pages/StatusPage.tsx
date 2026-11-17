@@ -91,9 +91,9 @@ export function StatusPage() {
 
       <div className="grid gap-4 sm:grid-cols-2">
         <section className="rounded-lg border border-garis bg-panel p-5 shadow-card">
-          <h2 className="font-display text-sm font-bold text-tinta">Lima Peran Pengguna</h2>
+          <h2 className="font-display text-sm font-bold text-tinta">Enam Peran Pengguna</h2>
           <ul className="mt-2 flex flex-wrap gap-1.5">
-            {['admin', 'operator', 'statistisi', 'petugas', 'viewer'].map((role) => (
+            {['superadmin', 'admin', 'operator', 'statistisi', 'petugas', 'viewer'].map((role) => (
               <li key={role} className="rounded-full bg-chip-draf-bg px-3 py-1 text-xs font-semibold capitalize text-chip-draf-fg">
                 {role}
               </li>
@@ -111,7 +111,7 @@ export function StatusPage() {
           </ul>
           <p className="mt-3 flex items-center gap-1.5 text-[11px] text-tinta3">
             <Wifi size={12} aria-hidden="true" />
-            Hama &amp; Irigasi aktif di Fase 2 — domain lainnya menyusul Fase 4.
+            Seluruh 6 domain laporan fenomena pertanian aktif.
           </p>
         </section>
       </div>

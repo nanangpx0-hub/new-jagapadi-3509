@@ -29,10 +29,11 @@ export function ReportEditPage() {
     return <Navigate to="/reports" replace />;
   }
 
-  // Hanya Draf/Ditolak milik sendiri atau admin yang boleh mengedit (ditegakkan server; ini guard UI)
+  // Hanya Draf/Ditolak milik sendiri atau admin/superadmin yang boleh mengedit (ditegakkan server; ini guard UI)
   const isEditable = report.status === 'Draf' || report.status === 'Ditolak';
   const isOwner = user?.id === report.user?.id;
-  if (!isEditable || (!isOwner && !user?.roles.includes('admin'))) {
+  const isAdmin = Boolean(user?.roles.includes('superadmin') || user?.roles.includes('admin'));
+  if (!isEditable || (!isOwner && !isAdmin)) {
     return <Navigate to={`/reports/${report.id}`} replace />;
   }
 

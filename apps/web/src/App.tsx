@@ -5,10 +5,12 @@ import { AppShell } from './components/AppShell';
 import { AuthProvider } from './lib/auth';
 import { ThemeProvider } from './lib/theme';
 import { AkunPage } from './pages/AkunPage';
+import { AuditLogsPage } from './pages/AuditLogsPage';
 import { HomePage } from './pages/HomePage';
 import { LoginPage } from './pages/LoginPage';
 import { MapPage } from './pages/MapPage';
 import { OptsPage } from './pages/OptsPage';
+import { PhenomenaPage } from './pages/PhenomenaPage';
 import { ReportDetailPage } from './pages/ReportDetailPage';
 import { ReportEditPage } from './pages/ReportEditPage';
 import { ReportNewPage } from './pages/ReportNewPage';
@@ -58,6 +60,8 @@ export default function App() {
                 <Route path="/opts" element={<OptsPage />} />
                 <Route path="/users" element={<UsersPage />} />
                 <Route path="/peta" element={<MapPage />} />
+                <Route path="/fenomena" element={<PhenomenaPage />} />
+                <Route path="/audit-logs" element={<AuditLogsPage />} />
                 <Route path="/status" element={<StatusPage />} />
                 <Route path="/akun" element={<AkunPage />} />
                 <Route path="*" element={<NotFound />} />

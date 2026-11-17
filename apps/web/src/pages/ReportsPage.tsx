@@ -5,6 +5,7 @@ import { EmptyState } from '../components/EmptyState';
 import { KpiCard } from '../components/KpiCard';
 import { StatusBadge } from '../components/StatusBadge';
 import { getReportMetrics, listDistricts, listReports } from '../lib/api';
+import { useAuth } from '../lib/auth';
 import { REPORT_STATUS_LABEL, REPORT_TYPE_LABEL, type ReportStatus } from '../lib/types';
 
 const STATUS_FILTERS: Array<ReportStatus | 'all'> = ['all', 'Draf', 'Submitted', 'Diverifikasi', 'Ditolak', 'Diarsipkan'];
@@ -18,27 +19,37 @@ function formatDateId(date: string): string {
 }
 
 export function ReportsPage() {
+  const { hasPermission } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
   const status = (searchParams.get('status') ?? 'all') as ReportStatus | 'all';
   const reportType = searchParams.get('report_type') ?? 'all';
   const districtId = searchParams.get('district_id') ? Number(searchParams.get('district_id')) : undefined;
+  const subround = searchParams.get('subround') ?? '';
+  const quarter = searchParams.get('quarter') ?? '';
   const page = Math.max(1, Number(searchParams.get('page') ?? '1') || 1);
 
   const query = useQuery({
-    queryKey: ['reports', { status, report_type: reportType, district_id: districtId, page }],
+    queryKey: ['reports', { status, report_type: reportType, district_id: districtId, subround, quarter, page }],
     queryFn: () =>
       listReports({
         status: status === 'all' ? undefined : status,
         report_type: reportType === 'all' ? undefined : reportType,
         district_id: districtId,
+        subround: subround ? Number(subround) : undefined,
+        quarter: quarter ? Number(quarter) : undefined,
         page,
       }),
     placeholderData: (previous) => previous,
   });
 
   const metricsQuery = useQuery({
-    queryKey: ['report-metrics', { report_type: reportType, district_id: districtId }],
-    queryFn: () => getReportMetrics({ report_type: reportType === 'all' ? undefined : reportType, district_id: districtId }),
+    queryKey: ['report-metrics', { report_type: reportType, district_id: districtId, subround, quarter }],
+    queryFn: () => getReportMetrics({
+      report_type: reportType === 'all' ? undefined : reportType,
+      district_id: districtId,
+      subround: subround ? Number(subround) : undefined,
+      quarter: quarter ? Number(quarter) : undefined,
+    }),
   });
 
   const districtsQuery = useQuery({ queryKey: ['districts'], queryFn: listDistricts });
@@ -66,19 +77,26 @@ export function ReportsPage() {
             {meta ? `${meta.total} laporan` : 'Memuat…'} · Kabupaten Jember
           </p>
         </div>
-        <Link
-          to="/reports/new"
-          className="inline-flex min-h-11 items-center gap-2 rounded-md bg-cta px-4 text-sm font-bold text-ctafg shadow-pop transition-colors hover:bg-sawah800"
-        >
-          <PenLine size={17} aria-hidden="true" />
-          Buat Laporan
-        </Link>
+        {hasPermission('reports.create') && (
+          <Link
+            to="/reports/new"
+            className="inline-flex min-h-11 items-center gap-2 rounded-md bg-cta px-4 text-sm font-bold text-ctafg shadow-pop transition-colors hover:bg-sawah800"
+          >
+            <PenLine size={17} aria-hidden="true" />
+            Buat Laporan
+          </Link>
+        )}
       </div>
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         <KpiCard label="Total Laporan" value={metrics?.total ?? '—'} icon={FileText} tone="blue" />
         <KpiCard label="Diverifikasi" value={metrics?.diverifikasi ?? '—'} icon={FileText} tone="green" />
-        <KpiCard label="Perlu Tindakan" value={metrics?.submitted ?? '—'} icon={FileText} tone="amber" />
+        <KpiCard
+          label={hasPermission('reports.verify') ? 'Perlu Verifikasi' : 'Menunggu Verifikasi'}
+          value={metrics?.submitted ?? '—'}
+          icon={FileText}
+          tone="amber"
+        />
         <KpiCard label="Luas Terdampak (Ha)" value={metrics ? metrics.affected_area_ha.toLocaleString('id-ID') : '—'} icon={FileText} tone="green" />
       </div>
 
@@ -110,8 +128,32 @@ export function ReportsPage() {
           onChange={(e) => setParams({ report_type: e.target.value === 'all' ? null : e.target.value })}
         >
           <option value="all">Semua jenis</option>
-          <option value="pest">Hama & Penyakit</option>
-          <option value="irrigation">Irigasi</option>
+          {(Object.keys(REPORT_TYPE_LABEL) as Array<keyof typeof REPORT_TYPE_LABEL>).map((type) => (
+            <option key={type} value={type}>{REPORT_TYPE_LABEL[type]}</option>
+          ))}
+        </select>
+        <select
+          aria-label="Filter subround"
+          className="min-h-10 shrink-0 rounded-full border border-garis bg-panel px-3 text-xs font-semibold text-tinta2 focus:outline-none focus:ring-2 focus:ring-cta"
+          value={subround}
+          onChange={(e) => setParams({ subround: e.target.value || null, quarter: null })}
+        >
+          <option value="">Semua SR</option>
+          <option value="1">SR I</option>
+          <option value="2">SR II</option>
+          <option value="3">SR III</option>
+        </select>
+        <select
+          aria-label="Filter triwulan"
+          className="min-h-10 shrink-0 rounded-full border border-garis bg-panel px-3 text-xs font-semibold text-tinta2 focus:outline-none focus:ring-2 focus:ring-cta"
+          value={quarter}
+          onChange={(e) => setParams({ quarter: e.target.value || null, subround: null })}
+        >
+          <option value="">Semua Tw</option>
+          <option value="1">Tw I</option>
+          <option value="2">Tw II</option>
+          <option value="3">Tw III</option>
+          <option value="4">Tw IV</option>
         </select>
         <select
           aria-label="Filter kecamatan"
@@ -140,11 +182,17 @@ export function ReportsPage() {
         <EmptyState
           icon={FileText}
           title="Belum ada laporan"
-          description="Tidak ada laporan yang cocok dengan filter ini. Buat laporan baru dari lapangan atau ubah filternya."
+          description={
+            hasPermission('reports.create')
+              ? 'Tidak ada laporan yang cocok dengan filter ini. Buat laporan baru dari lapangan atau ubah filternya.'
+              : 'Tidak ada laporan yang cocok dengan filter ini.'
+          }
           action={
-            <Link to="/reports/new" className="inline-flex min-h-11 items-center gap-2 rounded-md bg-cta px-4 text-sm font-bold text-ctafg">
-              <PenLine size={17} aria-hidden="true" /> Buat Laporan
-            </Link>
+            hasPermission('reports.create') ? (
+              <Link to="/reports/new" className="inline-flex min-h-11 items-center gap-2 rounded-md bg-cta px-4 text-sm font-bold text-ctafg">
+                <PenLine size={17} aria-hidden="true" /> Buat Laporan
+              </Link>
+            ) : undefined
           }
         />
       ) : (

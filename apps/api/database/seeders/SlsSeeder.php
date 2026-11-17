@@ -25,7 +25,7 @@ class SlsSeeder extends Seeder
             return;
         }
 
-        /** @var list<array{idsls:string, code:string, name:string, village_code:string, district_code:string, kk:int|null, muatan:int|null, luas:float|null}> $rows */
+        /** @var list<array{idsls:string, code:string, name:string, village_code:string, district_code:string, kk:int|null, muatan:int|null, luas:float|null, latitude:float|null, longitude:float|null}> $rows */
         $rows = json_decode((string) file_get_contents($path), true);
 
         /** @var array<string, int> $villageMap */
@@ -43,7 +43,16 @@ class SlsSeeder extends Seeder
             }
         };
 
-        DB::table('sls')->truncate();
+        if (DB::connection()->getDriverName() === 'mysql') {
+            DB::statement('SET FOREIGN_KEY_CHECKS=0');
+            try {
+                DB::table('sls')->truncate();
+            } finally {
+                DB::statement('SET FOREIGN_KEY_CHECKS=1');
+            }
+        } else {
+            DB::table('sls')->truncate();
+        }
 
         foreach ($rows as $row) {
             $villageId = $villageMap[$row['village_code']] ?? null;
@@ -59,6 +68,8 @@ class SlsSeeder extends Seeder
                 'idsls' => $row['idsls'],
                 'code' => $row['code'],
                 'name' => $row['name'],
+                'latitude' => $row['latitude'] ?? null,
+                'longitude' => $row['longitude'] ?? null,
                 'kk' => $row['kk'] ?? null,
                 'muatan' => $row['muatan'] ?? null,
                 'luas' => $row['luas'] ?? null,

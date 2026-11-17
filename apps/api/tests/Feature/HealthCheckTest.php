@@ -12,15 +12,21 @@ final class HealthCheckTest extends TestCase
     {
         $response = $this->getJson('/api/health');
 
+        $driver = (string) config('database.default');
+
         $response
             ->assertStatus(200)
             ->assertJsonPath('status', 'ok')
             ->assertJsonPath('service', 'jagapadi-v3-api')
             ->assertJsonPath('checks.database.status', 'ok')
-            ->assertJsonPath('checks.database.driver', 'pgsql')
+            ->assertJsonPath('checks.database.driver', $driver)
             ->assertJsonPath('checks.postgis.status', 'ok')
             ->assertJsonPath('checks.redis.status', 'ok')
             ->assertJsonPath('checks.storage.status', 'ok')
             ->assertJsonPath('checks.storage.writable', true);
+
+        if ($driver === 'pgsql') {
+            $response->assertJsonPath('checks.database.driver', 'pgsql');
+        }
     }
 }

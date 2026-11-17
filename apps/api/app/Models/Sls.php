@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Sls extends Model
 {
@@ -17,6 +18,8 @@ class Sls extends Model
         'idsls',
         'code',
         'name',
+        'latitude',
+        'longitude',
         'kk',
         'muatan',
         'luas',
@@ -27,6 +30,8 @@ class Sls extends Model
         return [
             'kk' => 'integer',
             'muatan' => 'integer',
+            'latitude' => 'float',
+            'longitude' => 'float',
             'luas' => 'float',
         ];
     }
@@ -39,5 +44,10 @@ class Sls extends Model
     public function district(): BelongsTo
     {
         return $this->belongsTo(District::class);
+    }
+
+    public function reports(): HasMany
+    {
+        return $this->hasMany(Report::class);
     }
 }

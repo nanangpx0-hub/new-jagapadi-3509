@@ -1,4 +1,4 @@
-import { Loader2, MapPin, Search } from 'lucide-react';
+import { Building2, Database, Layers, Loader2, MapPin, Search } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { CascadingRegionSelect, type DistrictItem, type VillageItem } from '../components/CascadingRegionSelect';
@@ -46,6 +46,55 @@ export function WilayahPage() {
           onVillageChange={setVillage}
         />
       </Panel>
+
+      {!district && (
+        <div className="grid gap-4 sm:grid-cols-3">
+          <div className="rounded-lg border border-garis bg-panel p-5 shadow-card">
+            <div className="flex items-center gap-3">
+              <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-kpi-green-bg text-kpi-green-fg">
+                <Building2 size={20} />
+              </span>
+              <div>
+                <p className="text-[11px] font-bold uppercase tracking-wider text-tinta3">Cakupan Wilayah</p>
+                <p className="font-display text-xl font-bold text-tinta">31 Kecamatan</p>
+              </div>
+            </div>
+            <p className="mt-3 text-xs text-tinta2">
+              Terdiri dari 248 desa dan kelurahan di seluruh Kabupaten Jember (BPS 3509).
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-garis bg-panel p-5 shadow-card">
+            <div className="flex items-center gap-3">
+              <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-kpi-blue-bg text-kpi-blue-fg">
+                <Layers size={20} />
+              </span>
+              <div>
+                <p className="text-[11px] font-bold uppercase tracking-wider text-tinta3">Satuan Lingkungan</p>
+                <p className="font-display text-xl font-bold text-tinta">16.543 SLS</p>
+              </div>
+            </div>
+            <p className="mt-3 text-xs text-tinta2">
+              Level terkecil RT, RW, dan Dusun untuk ketepatan spasial pelaporan OPT pangan.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-garis bg-panel p-5 shadow-card">
+            <div className="flex items-center gap-3">
+              <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-kpi-amber-bg text-kpi-amber-fg">
+                <Database size={20} />
+              </span>
+              <div>
+                <p className="text-[11px] font-bold uppercase tracking-wider text-tinta3">Geospasial</p>
+                <p className="font-display text-xl font-bold text-tinta">PostGIS Spatial</p>
+              </div>
+            </div>
+            <p className="mt-3 text-xs text-tinta2">
+              Batas polygon wilayah terintegrasi langsung dengan pemetaan GIS dan peta sebaran.
+            </p>
+          </div>
+        </div>
+      )}
 
       {district && (
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
